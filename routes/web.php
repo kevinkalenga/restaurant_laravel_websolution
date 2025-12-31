@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminDashboardController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +19,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+// require __DIR__.'/admin.php';
 
-// auth vient de larav breeze et on verif middleware 
-Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->middleware('auth', 'role:admin')->name('admin.dashboard');
