@@ -45,3 +45,14 @@
         </div>
     </form>
 </x-guest-layout>
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+  // return redirect()->intended(route('admin.dashboard', absolute: false))
+                //     ->with('status', $status);
+                 // Redirige vers le dashboard admin
+
+// return redirect()->intended(route('dashboard', absolute: false))
+            // ->with('status', $status);
+             // Redirige vers le dashboard user
+            //   absolute: false

@@ -21,6 +21,9 @@
     <link href="{{asset('frontend/css/iziToast.min.css')}}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
     <!-- <link rel="stylesheet" href="css/rtl.css"> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+
 </head>
 
 <body>
@@ -123,6 +126,9 @@
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+@include('frontend.partials.toast')
 
 
 </body>

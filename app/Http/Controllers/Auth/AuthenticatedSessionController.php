@@ -28,15 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $status = 'Login successfully!';
+         $status = 'Login successfully!';
 
             if ($request->user()->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard', absolute: false))
-                    ->with('status', $status);
+               // Redirige vers le dashboard admin
+               return redirect()->intended(route('admin.dashboard', absolute: false))->with('status', $status);
             }
 
-            return redirect()->intended(route('dashboard', absolute: false))
-            ->with('status', $status);
+            //Redirige vers le dashboard user
+            return redirect()->intended(route('dashboard', absolute: false))->with('status', $status);
     }
 
     /**
@@ -50,6 +50,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')
+        ->with('status', 'You have been logged out successfully!');
     }
+
+
+
 }
