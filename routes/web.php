@@ -13,6 +13,7 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 
 // Admin Auth route
 Route::get('admin/login', [AdminAuthController::class, 'index'])->name('admin.login');
+
 // Laravel breeze default
 Route::get('/dashboard', function () {
     return view('dashboard');

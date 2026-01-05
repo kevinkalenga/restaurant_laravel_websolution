@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 
 class AdminAuthController extends Controller
 {
@@ -14,32 +15,32 @@ class AdminAuthController extends Controller
     }
 
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'email' => ['required', 'email'],
+    //         'password' => ['required'],
+    //     ]);
 
-        if (Auth::guard('admin')->attempt($credentials)) {
+    //     if (Auth::guard('admin')->attempt($credentials)) {
 
-        if (Auth::guard('admin')->user()->role !== 'admin') {
-            Auth::guard('admin')->logout();
+    //     if (Auth::guard('admin')->user()->role !== 'admin') {
+    //         Auth::guard('admin')->logout();
 
-            return back()->withErrors([
-                'email' => 'Accès réservé aux administrateurs',
-            ]);
-        }
+    //         return back()->withErrors([
+    //             'email' => 'You must be an Administrator',
+    //         ]);
+    //     }
 
-        $request->session()->regenerate();
+    //     $request->session()->regenerate();
 
-        return redirect()->route('admin.dashboard');
-    }
+    //     return redirect()->route('admin.dashboard');
+    // }
 
-        return back()->withErrors([
-            'email' => 'Invalide credentials',
-        ]);
-    } 
+    //     return back()->withErrors([
+    //         'email' => 'Invalide credentials',
+    //     ]);
+    // } 
 
 
 }
