@@ -20,12 +20,12 @@
                         
                         @method('PUT')
                         
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                            <div id="image-preview" class="image-preview">
                              <label for="image-upload" id="image-label">Choose File</label>
                              <input type="file" name="avatar" id="image-upload" />
                             </div>
-                        </div> -->
+                        </div>
                         
                         <div class="form-group">
                            <label>Name</label>
