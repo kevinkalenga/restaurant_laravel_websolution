@@ -12,9 +12,13 @@
   <link rel="stylesheet" href="{{asset('admin/assets/modules/fontawesome/css/all.min.css')}}">
  
 
+
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('admin/assets/css/components.css')}}">
+  <link rel="stylesheet" href="{{ asset('admin/assets/izitoast/iziToast.min.css') }}">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+
  
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -62,5 +66,17 @@
   <!-- Template JS File -->
   <script src="{{asset('admin/assets/js/scripts.js')}}"></script>
   <script src="{{asset('admin/assets/js/custom.js')}}"></script>
+ <script src="{{ asset('admin/assets/izitoast/iziToast.min.js') }}"></script>
+
+
+
+ 
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+@include('partials.toast')
+
+ 
+
 </body>
 </html>
+

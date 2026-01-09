@@ -128,7 +128,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 
-@include('frontend.partials.toast')
+@include('partials.toast')
 
 
 </body>
