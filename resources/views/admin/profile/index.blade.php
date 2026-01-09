@@ -15,7 +15,7 @@
                   <!-- enctype="multipart/form-data" -->
                   </div>
                   <div class="card-body">
-                    <form action="{{route('admin.profile.update')}}" method="POST" >
+                    <form action="{{route('admin.profile.update')}}" method="POST" enctype="multipart/form-data">
                         @csrf 
                         
                         @method('PUT')
@@ -70,7 +70,7 @@
 
 @endsection
 
-<!-- @push('scripts') 
+@push('scripts') 
   <script>
      $(document).ready(function(){
         $('.image-preview').css({
@@ -81,4 +81,4 @@
      })
   </script>
 
-@endpush -->
+@endpush
