@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\ProfileUpdateRequest;
+use App\Http\Requests\Admin\ProfilePasswordUpdateRequest;
 use Auth;
 
 class ProfileController extends Controller
@@ -14,7 +15,7 @@ class ProfileController extends Controller
      return view('admin.profile.index');
     }
 
-    public function updateProfile(ProfileUpdateRequest $request)
+   public function updateProfile(ProfileUpdateRequest $request)
    {
       // dd($request->all());
       // user instance
@@ -30,5 +31,15 @@ class ProfileController extends Controller
      
      
      return redirect()->back()->with('status', 'Admin Updated Successfully!');
+   }
+
+   public function updatePassword(ProfilePasswordUpdateRequest $request)
+   {
+      // dd($request->all());
+       $user = Auth::user();
+       $user->password = bcrypt($request->password); //new pwd
+       $user->save();
+      
+       return redirect()->back()->with('status', 'Password Updated Successfully!');
    }
 }
