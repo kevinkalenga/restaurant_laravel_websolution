@@ -23,7 +23,7 @@ class ProfileUpdateRequest extends FormRequest
     {
          // users the table in db, email is the column
         return [
-            // 'avatar' => ['nullable', 'image', 'max:3000'],
+            'avatar' => ['nullable', 'image', 'max:3000'],
             'name' => ['required', 'max:50'],
             'email' => ['required', 'email', 'max:200', 'unique:users,email,'.Auth()->user()->id]
         ];
