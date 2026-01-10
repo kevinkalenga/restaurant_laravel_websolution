@@ -38,12 +38,12 @@ class ProfileController extends Controller
     public function updateAvatar(Request $request)
     {
         // Handle img file 
-        // $imagePath = $this->uploadImage($request, 'avatar');
+        $imagePath = $this->uploadImage($request, 'avatar');
 
-        // $user = Auth::user();
-        // $user->avatar = $imagePath;
-        // $user->save();
+        $user = Auth::user();
+        $user->avatar = $imagePath;
+        $user->save();
 
-        // return redirect()->back()->with('status', 'Avatar Updated Successfully!');
+        return redirect()->back()->with('status', 'Avatar Updated Successfully!');
     }
 }
