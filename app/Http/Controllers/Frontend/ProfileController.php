@@ -33,4 +33,17 @@ class ProfileController extends Controller
       
          return redirect()->back()->with('status', 'Password Updated Successfully!');
     }
+
+
+    public function updateAvatar(Request $request)
+    {
+        // Handle img file 
+        // $imagePath = $this->uploadImage($request, 'avatar');
+
+        // $user = Auth::user();
+        // $user->avatar = $imagePath;
+        // $user->save();
+
+        // return redirect()->back()->with('status', 'Avatar Updated Successfully!');
+    }
 }

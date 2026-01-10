@@ -1252,3 +1252,49 @@
 
 @endsection 
 
+@push('scripts') 
+
+ <script>
+    $(document).ready(function(){
+        
+          $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+        
+         $('#upload').on('change', function () {
+           let formData = new FormData($('#avatar_form')[0]);
+
+           $.ajax({
+             url: "{{ route('profile.avatar.update') }}",
+             type: 'POST',
+             data: formData,
+             processData: false,
+             contentType: false,
+             success: function (response) {
+                // if (response && response.status === 'success') {
+                //    window.location.reload();
+                // }
+                 if (response.status === 'success') {
+                   iziToast.success({
+                       title: 'Succès',
+                       message: 'Profile Picture Updated Successfully!',
+                       position: 'topRight'
+                   });
+
+                   setTimeout(() => {
+                       window.location.reload();
+                   }, 1000);
+                }
+             },
+             error: function (error) {
+                console.error(error);
+             }
+        });
+    });
+    })
+ </script>
+
+@endpush
+
