@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\ProfileUpdateRequest;
 use App\Http\Requests\Admin\ProfilePasswordUpdateRequest;
 use Auth;
+use App\Traits\FileUploadTrait;
 
 class ProfileController extends Controller
 {
+     use FileUploadTrait;
+
+
     public function index()
     {
      return view('admin.profile.index');
@@ -21,12 +25,12 @@ class ProfileController extends Controller
       // user instance
      $user = Auth::user();
      
-    //   $imagePath = $this->uploadImage($request, 'avatar');
+       $imagePath = $this->uploadImage($request, 'avatar');
       //dd($imagePath);
 
      $user->name = $request->name;
      $user->email = $request->email;
-    //  $user->avatar = isset($imagePath) ? $imagePath : $user->avatar;
+     $user->avatar = isset($imagePath) ? $imagePath : $user->avatar;
      $user->save();
      
      
