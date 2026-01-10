@@ -1153,7 +1153,7 @@
                                     </div>
                                 </div>
 
-                              
+                                   @include('frontend.dashboard.change_password')
 
                             </div>
                         </div>
