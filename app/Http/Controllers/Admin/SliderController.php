@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\Slider;
 
 class SliderController extends Controller
 {
@@ -23,6 +25,19 @@ class SliderController extends Controller
      */
     public function index()
     {
+        if(request()->ajax()) {
+          $sliders = Slider::query();
+          return DataTables::of($sliders)
+            ->addColumn('action', function($slider){
+                return '<a href="'.route("sliders.edit", $slider->id).'" class="btn btn-sm btn-primary">Edit</a>';
+            })
+            ->addColumn('image', function($slider){
+                return '<img src="'.asset($slider->image).'" width="80">';
+            })
+            ->rawColumns(['action','image'])
+            ->make(true);
+        }
+    
         return view('admin.slider.index');
     }
 
