@@ -5,6 +5,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SliderController;
 
 
 
@@ -19,4 +20,7 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile
 Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('admin.profile.update');
 Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password.update'); 
 
-//  Route::get('/login', [AdminAuthController::class, 'index'])->name('admin.login');
+//** Slider Route **/
+Route::resource('/sliders', SliderController::class);
+
+

@@ -145,23 +145,7 @@
     });
     
     
-    @if (session('status'))
-        iziToast.success({
-            title: 'Info',
-            message: {!! json_encode(session('status')) !!},
-            position: 'topRight',
-        });
-    @endif
-
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            iziToast.error({
-                title: 'Erreur',
-                message: {!! json_encode($error) !!},
-                position: 'topRight',
-            });
-        @endforeach
-    @endif 
+    
     
 
 
