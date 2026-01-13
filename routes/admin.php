@@ -15,10 +15,10 @@ use App\Http\Controllers\Admin\SliderController;
 
 
 // auth vient de larav breeze et on verif middleware (le prefix est dans bootstrap/app.php)
-Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile');
-Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('admin.profile.update');
-Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password.update'); 
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update'); 
 
 //** Slider Route **/
 Route::resource('/sliders', SliderController::class);

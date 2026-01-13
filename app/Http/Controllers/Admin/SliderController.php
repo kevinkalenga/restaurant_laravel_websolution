@@ -29,7 +29,7 @@ class SliderController extends Controller
           $sliders = Slider::query();
           return DataTables::of($sliders)
             ->addColumn('action', function($slider){
-                return '<a href="'.route("sliders.edit", $slider->id).'" class="btn btn-sm btn-primary">Edit</a>';
+                return '<a href="'.route("admin.sliders.edit", $slider->id).'" class="btn btn-sm btn-primary">Edit</a>';
             })
             ->addColumn('image', function($slider){
                 return '<img src="'.asset($slider->image).'" width="80">';
@@ -46,7 +46,7 @@ class SliderController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.slider.create');
     }
 
     /**
@@ -54,7 +54,7 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

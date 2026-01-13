@@ -10,7 +10,7 @@
         <div class="card-header">
             <h4>Sliders List</h4>
             <div class="card-header-action">
-                <a href="{{ route('sliders.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.sliders.create') }}" class="btn btn-primary">
                     Create New
                 </a>
             </div>
@@ -43,7 +43,7 @@ $(function () {
     $('#sliders-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("sliders.index") }}',
+        ajax: '{{ route("admin.sliders.index") }}',
         columns: [
             { data: 'id', name: 'id' },
             { data: 'image', name: 'image', orderable: false, searchable: false,
