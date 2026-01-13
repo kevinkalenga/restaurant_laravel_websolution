@@ -16,7 +16,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
                 
                 <div class="form-group">
@@ -83,7 +83,7 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Slider</button>
+                <button type="submit" class="btn btn-primary">Create Slider</button>
                 <a href="{{ route('admin.sliders.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>

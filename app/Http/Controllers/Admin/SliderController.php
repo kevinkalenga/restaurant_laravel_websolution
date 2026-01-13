@@ -54,7 +54,29 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+              'image' => 'required|image|max:2048',
+              'offer' => 'nullable|string|max:255',
+              'title' => 'required|string|max:255',
+              'sub_title' => 'required|string|max:255',
+              'short_description' => 'required|text',
+              'button_link' => 'nullable|url',
+              'status' => 'required|boolean',
+        ]);
+
+        $imagePath = $request->file('image')->store('uploads', 'public');
+
+        Slider::create([
+              'image' => '/storage/' . $imagePath,
+              'offer' => $request->offer,
+              'title' => $request->title,
+              'sub_title' => $request->sub_title,
+              'short_description' => $request->short_description,
+              'button_link' => $request->button_link,
+              'status' => $request->status,
+        ]);
+
+        return redirect()->route('sliders.index')->with('success', 'Slider created successfully!');
     }
 
     /**
