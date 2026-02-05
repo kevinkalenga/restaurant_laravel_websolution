@@ -16,9 +16,9 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.sliders.update', $slider->id) }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
-
+                @method('PUT')
                 @if(session('success'))
                   <div class="alert alert-success">
                    {{ session('success') }}

@@ -135,7 +135,44 @@ class SliderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $slider = Slider::findOrFail($id);
+
+        $request->validate([
+           'image' => 'nullable|image|max:2048',
+           'offer' => 'nullable|string|max:255',
+           'title' => 'required|string|max:255',
+           'sub_title' => 'required|string|max:255',
+           'short_description' => 'required|string',
+           'button_link' => 'nullable|url',
+           'status' => 'required|boolean',
+        ]);
+
+        // Si une nouvelle image est uploadée
+        if ($request->hasFile('image')) {
+
+           // Supprimer l'ancienne image
+           if ($slider->image && file_exists(public_path($slider->image))) {
+               unlink(public_path($slider->image));
+           }
+
+           // Upload nouvelle image via le trait
+           $slider->image = $this->uploadImage($request, 'image', 'uploads');
+        }
+
+         // Mise à jour des autres champs
+        $slider->update([
+           'offer' => $request->offer,
+           'title' => $request->title,
+           'sub_title' => $request->sub_title,
+           'short_description' => $request->short_description,
+           'button_link' => $request->button_link,
+           'status' => $request->status,
+        ]);
+
+
+         return redirect()
+           ->route('admin.sliders.index')
+           ->with('status', 'Slider updated successfully!');
     }
 
     /**
