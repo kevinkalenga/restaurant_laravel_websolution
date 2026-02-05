@@ -24,27 +24,7 @@ class SliderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     if(request()->ajax()) {
-    //       $sliders = Slider::query();
-    //       return DataTables::of($sliders)
-    //         ->addColumn('action', function($slider){
-    //             // return '<a href="'.route("admin.sliders.edit", $slider->id).'" class="btn btn-sm btn-primary">Edit</a>';
-    //              return '<img src="'.asset('storage/'.$slider->image).'" 
-    //              style="width:80px; height:60px; object-fit:cover;">';
-    //         })
-    //         ->addColumn('image', function($slider){
-    //             // return '<img src="'.asset($slider->image).'" width="80">';
-    //             return '<img src="'.asset('storage/'.$slider->image).'" width="80">';
-
-    //         })
-    //         ->rawColumns(['action','image'])
-    //         ->make(true);
-    //     }
     
-    //     return view('admin.slider.index');
-    // }
 
     public function index()
     {
@@ -56,9 +36,32 @@ class SliderController extends Controller
                 // 🔥 Chemin correct pour ton trait : public/uploads/…
                 return asset($slider->image);
             })
-            ->addColumn('action', function ($slider) {
-                return '<a href="'.route("admin.sliders.edit", $slider->id).'" class="btn btn-sm btn-primary">Edit</a>';
-            })
+             ->addColumn('action', function ($slider) {
+    return '
+        <a href="'.route('admin.sliders.edit', $slider->id).'" 
+           class="text-primary fw-bold">
+            Edit
+        </a>
+        |
+        <a href="'.route('admin.sliders.destroy', $slider->id).'" 
+           class="text-danger fw-bold"
+           onclick="event.preventDefault();
+           if(confirm(\'Are you sure you want to delete?\')) {
+               document.getElementById(\'delete-form-'.$slider->id.'\').submit();
+           }">
+            Delete
+        </a>
+
+        <form id="delete-form-'.$slider->id.'" 
+              action="'.route('admin.sliders.destroy', $slider->id).'" 
+              method="POST" style="display:none;">
+            '.csrf_field().'
+            '.method_field('DELETE').'
+        </form>
+    ';
+})
+->rawColumns(['action'])
+
             ->rawColumns(['action']) // seul 'action' doit être raw ici car le <img> est géré par le render JS
             ->make(true);
       }
