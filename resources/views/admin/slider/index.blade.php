@@ -63,6 +63,7 @@ $(function () {
             { data: 'status', name: 'status',
               render: function(data) {
                   return data ? 'Active' : 'Inactive';
+                
               }
             },
             { data: 'action', name: 'action', orderable: false, searchable: false }
