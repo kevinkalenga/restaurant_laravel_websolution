@@ -21,6 +21,7 @@ Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profi
 Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update'); 
 
 //** Slider Route **/
+// Cette seule ligne crée automatiquement toutes les routes CRUD pour les sliders.(php artisan route:list)
 Route::resource('/sliders', SliderController::class);
 
 

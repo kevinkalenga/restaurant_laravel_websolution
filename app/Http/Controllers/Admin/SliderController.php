@@ -180,6 +180,17 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $slider = Slider::findOrFail($id);
+
+        // Supprimer l'image si elle existe
+       if (file_exists(public_path($slider->image))) {
+        unlink(public_path($slider->image));
+       }
+
+        $slider->delete();
+
+        return redirect()
+        ->route('admin.sliders.index')
+        ->with('status', 'Slider deleted successfully!');
     }
 }
