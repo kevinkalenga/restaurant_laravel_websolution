@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class SectionTitle extends Model
 {
-    //
+    protected $fillable = ['key', 'value'];
 }
