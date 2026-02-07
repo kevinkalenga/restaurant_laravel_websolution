@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\WhyChooseUsController;
 
 
 
@@ -23,5 +24,8 @@ Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->n
 //** Slider Route **/
 // Cette seule ligne crée automatiquement toutes les routes CRUD pour les sliders.(php artisan route:list)
 Route::resource('/sliders', SliderController::class);
+
+// Why choose us Routes
+Route::resource('/why-choose-us', WhyChooseUsController::class);
 
 

@@ -52,10 +52,14 @@
             <li class="menu-header">Dashboard</li>
             
               <li class=active><a class="nav-link" href="index-0.html"><i class="fas fa-fire"></i> General Dashboard</a></li>
+
+              <li class="menu-header">Starter</li>
                
               <li><a class="nav-link" href="{{route('admin.sliders.index')}}"><i class="far fa-square"></i> <span>Slider</span></a></li>
+              
+              <li><a class="nav-link" href="{{route('admin.why-choose-us.index')}}"><i class="far fa-square"></i> <span>Why choose us</span></a></li>
           
-            <li class="menu-header">Starter</li>
+           
             <!-- <li class="dropdown">
               <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Layout</span></a>
               <ul class="dropdown-menu">
