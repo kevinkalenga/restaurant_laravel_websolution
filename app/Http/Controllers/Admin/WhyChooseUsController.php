@@ -24,7 +24,7 @@ class WhyChooseUsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.why-choose-us.create');
     }
 
     /**

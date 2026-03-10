@@ -55,7 +55,9 @@
     <div class="card card-primary">
         <div class="card-header">
             <h4>All Items</h4>
-           
+            <div class="card-header-action">
+                <a href="{{route('admin.why-choose-us.create')}}" class="btn btn-primary">Create New</a>
+            </div>
         </div>
 
         <div class="card-body">
