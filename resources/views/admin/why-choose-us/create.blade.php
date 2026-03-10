@@ -16,7 +16,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.why-choose-us.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
 
                 @if(session('success'))
@@ -54,13 +54,11 @@
 
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select name="status" class="form-control @error('status') is-invalid @enderror">
+                    <select name="status" class="form-control" required>
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                  
                 </div>
 
                 <button type="submit" class="btn btn-primary">Create Slider</button>

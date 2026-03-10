@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SectionTitle;
+use App\Models\WhyChooseUs;
 
 class WhyChooseUsController extends Controller
 {
@@ -32,7 +33,18 @@ class WhyChooseUsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = $request->validate([
+           'icon' => ['required','max:50'],
+           'title' => ['required','max:255'],
+           'short_description' => ['required','max:500'],
+           'status' => ['required','boolean']
+        ]);
+
+        WhyChooseUs::create($data);
+
+        return redirect()->route('admin.why-choose-us.index')
+         ->with('success', 'Item created successfully!');
     }
 
     /**
