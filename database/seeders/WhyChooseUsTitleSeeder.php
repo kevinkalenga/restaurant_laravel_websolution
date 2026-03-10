@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\SectionTitle;
-class WhyChooseUsSeeder extends Seeder
+class WhyChooseUsTitleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
