@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SectionTitle;
 
 class WhyChooseUsController extends Controller
 {
@@ -12,8 +13,10 @@ class WhyChooseUsController extends Controller
      */
     public function index()
     {
-        
-       return view('admin.why-choose-us.index');
+       $keys = ['why_choose_top_title', 'why_choose_main_title', 'why_choose_sub_title'];
+       $titles = SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
+       //dd($title);
+       return view('admin.why-choose-us.index', compact('titles'));
     }
 
     /**
