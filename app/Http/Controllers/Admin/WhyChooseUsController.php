@@ -63,20 +63,15 @@ class WhyChooseUsController extends Controller
         return redirect()->route('admin.why-choose-us.index')->with('success', 'Item created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $whyChooseUs = WhyChooseUs::findOrFail($id);
+        return view('admin.why-choose-us.edit', compact('whyChooseUs'));
     }
 
     /**
@@ -84,7 +79,20 @@ class WhyChooseUsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+         $data = $request->validate([
+           'icon' => ['required','max:50'],
+           'title' => ['required','max:255'],
+           'short_description' => ['required','max:500'],
+           'status' => ['required','boolean']
+        ]);
+
+        $whyChoose = WhyChooseUs::findOrFail($id);
+
+        $whyChoose->update($data);
+
+         return redirect()->route('admin.why-choose-us.index')
+           ->with('success', 'Item updated successfully!');
     }
 
     public function updateTitle(Request $request)
