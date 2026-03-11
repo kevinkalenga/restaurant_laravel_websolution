@@ -113,6 +113,41 @@ $('#sliders-table').DataTable({
 
 });
 
+/* DELETE */
+$(document).on('click', '.delete-item', function(e){
+
+    e.preventDefault();
+
+    let id = $(this).data('id');
+
+    if(confirm('Are you sure?')){
+
+        $.ajax({
+            url: '/admin/why-choose-us/' + id,
+            type: 'DELETE',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response){
+
+               table.ajax.reload(null, false); // ← recharge la table sans recharger la page
+                alert(response.message);         // affiche un petit message
+
+            }
+        });
+
+    }
+
 });
+
+
+
+});
+
+
+
+
+
+
 </script>
 @endpush

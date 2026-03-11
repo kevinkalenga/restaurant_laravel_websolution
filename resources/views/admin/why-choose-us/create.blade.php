@@ -61,7 +61,7 @@
                   
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create Slider</button>
+                <button type="submit" class="btn btn-primary">Create</button>
                 <a href="{{ route('admin.sliders.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>

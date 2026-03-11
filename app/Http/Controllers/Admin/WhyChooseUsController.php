@@ -127,6 +127,12 @@ class WhyChooseUsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $whyChoose = WhyChooseUs::findOrFail($id);
+        $whyChoose->delete();
+
+        return response()->json([
+          'status' => 'success',
+           'message' => 'Item deleted successfully!'
+       ]);
     }
 }
