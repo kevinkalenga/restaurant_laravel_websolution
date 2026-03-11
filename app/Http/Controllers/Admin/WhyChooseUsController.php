@@ -6,17 +6,34 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SectionTitle;
 use App\Models\WhyChooseUs;
+use Yajra\DataTables\DataTables;
 
 class WhyChooseUsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+       if ($request->ajax()) {
+
+        $data = WhyChooseUs::select(['id','icon','title','short_description','status']);
+
+        return DataTables::of($data)
+            ->addColumn('action', function ($row) {
+
+                $edit = '<a href="'.route('admin.why-choose-us.edit',$row->id).'" class="btn btn-primary btn-sm">Edit</a>';
+
+                $delete = '<a href="#" data-id="'.$row->id.'" class="btn btn-danger btn-sm delete-item">Delete</a>';
+
+                return $edit.' '.$delete;
+            })
+            ->make(true);
+       }
+
        $keys = ['why_choose_top_title', 'why_choose_main_title', 'why_choose_sub_title'];
        $titles = SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
-       //dd($title);
+
        return view('admin.why-choose-us.index', compact('titles'));
     }
 
@@ -43,8 +60,7 @@ class WhyChooseUsController extends Controller
 
         WhyChooseUs::create($data);
 
-        return redirect()->route('admin.why-choose-us.index')
-         ->with('success', 'Item created successfully!');
+        return redirect()->route('admin.why-choose-us.index')->with('success', 'Item created successfully!');
     }
 
     /**

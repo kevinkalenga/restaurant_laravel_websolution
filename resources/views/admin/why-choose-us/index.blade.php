@@ -65,12 +65,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Image</th>
-                        <th>Offer</th>
+                        <th>Icon</th>
                         <th>Title</th>
-                        <th>Sub Title</th>
                         <th>Short Description</th>
-                        <th>Button Link</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -84,35 +81,38 @@
 @push('scripts')
 <script>
 $(function () {
-    $('#sliders-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{{ route("admin.why-choose-us.index") }}',
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'image', name: 'image', orderable: false, searchable: false,
-              render: function(data, type, row) {
-                  return '<img src="'+data+'" width="80">';
-              }
-            },
-            { data: 'offer', name: 'offer' },
-            { data: 'title', name: 'title' },
-            { data: 'sub_title', name: 'sub_title' },
-            { data: 'short_description', name: 'short_description' },
-            { data: 'button_link', name: 'button_link',
-              render: function(data, type, row) {
-                  return '<a href="'+data+'" target="_blank">'+data+'</a>';
-              }
-            },
-            { data: 'status', name: 'status',
-              render: function(data) {
-                  return data ? 'Active' : 'Inactive';
-                
-              }
-            },
-            { data: 'action', name: 'action', orderable: false, searchable: false }
-        ]
-    });
+
+$('#sliders-table').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: '{{ route("admin.why-choose-us.index") }}',
+
+    columns: [
+        { data: 'id', name: 'id' },
+
+        { data: 'icon', name: 'icon',
+            render: function(data){
+                return '<i class="'+data+'"></i>';
+            }
+        },
+
+        { data: 'title', name: 'title' },
+
+        { data: 'short_description', name: 'short_description' },
+
+        { data: 'status', name: 'status',
+            render: function(data){
+                return data == 1 
+                ? '<span class="badge badge-success">Active</span>'
+                : '<span class="badge badge-danger">Inactive</span>';
+            }
+        },
+
+        { data: 'action', name: 'action', orderable:false, searchable:false }
+    ]
+
+});
+
 });
 </script>
 @endpush
