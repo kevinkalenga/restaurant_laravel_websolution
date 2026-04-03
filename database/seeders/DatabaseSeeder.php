@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Slider;
+use App\Models\Product;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         // User::factory(10)->create();
 
         // User::factory()->create([
@@ -28,5 +30,8 @@ class DatabaseSeeder extends Seeder
         Slider::factory(3)->create();
         WhyChooseUs::factory(3)->create();
         $this->call(CategorySeeder::class);
+        // php artisan tinker et  \App\Models\Product::factory(5)->create()
+        Product::factory(10)->create();
+        
     }
 }
