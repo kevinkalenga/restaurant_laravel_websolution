@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 
 
 
@@ -30,7 +31,10 @@ Route::resource('/sliders', SliderController::class);
 Route::put('/why-choose-title-update', [WhyChooseUsController::class, 'updateTitle'])->name('why-choose-title.update');
 Route::resource('/why-choose-us', WhyChooseUsController::class);
 
-// Product Category Routes
+// Product Category Routes(pour le crud)
 Route::resource('/category', CategoryController::class);
+
+// Product Category Routes(pour le crud)
+Route::resource('/product', ProductController::class);
 
 
