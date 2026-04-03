@@ -6,31 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use DataTables;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
-    {
-        if (request()->ajax()) {
-           $categories = Category::query();
+{
+      if (request()->ajax()) {
+        $categories = Category::query();
 
-           return DataTables::of($categories)
-
-            ->addColumn('image', function ($category) {
-                return asset($category->image);
-            })
+        return DataTables::of($categories)
 
             ->addColumn('action', function ($category) {
                 return '
-                    <a href="'.route('admin.categories.edit', $category->id).'" 
+                    <a href="'.route('admin.category.edit', $category->id).'" 
                        class="text-primary fw-bold">
                         Edit
                     </a>
                     |
-                    <a href="'.route('admin.categories.destroy', $category->id).'" 
+                    <a href="'.route('admin.category.destroy', $category->id).'" 
                        class="text-danger fw-bold"
                        onclick="event.preventDefault();
                        if(confirm(\'Are you sure you want to delete?\')) {
@@ -40,7 +38,7 @@ class CategoryController extends Controller
                     </a>
 
                     <form id="delete-form-'.$category->id.'" 
-                          action="'.route('admin.categories.destroy', $category->id).'" 
+                          action="'.route('admin.category.destroy', $category->id).'" 
                           method="POST" style="display:none;">
                         '.csrf_field().'
                         '.method_field('DELETE').'
@@ -48,11 +46,11 @@ class CategoryController extends Controller
                 ';
             })
 
-            ->rawColumns(['action']) // important ⚠️
+            ->rawColumns(['action'])
             ->make(true);
-        }
+       }
 
-      return view('admin.product.category.index');
+       return view('admin.product.category.index');
     }
 
     /**
