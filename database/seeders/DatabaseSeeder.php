@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(WhyChooseUsTitleSeeder::class);
         Slider::factory(3)->create();
         WhyChooseUs::factory(3)->create();
+        $this->call(CategorySeeder::class);
     }
 }
