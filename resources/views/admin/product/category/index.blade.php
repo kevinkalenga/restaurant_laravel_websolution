@@ -10,24 +10,22 @@
         <div class="card-header">
             <h4>All Categories</h4>
             <div class="card-header-action">
-                <a href="{{ route('admin.sliders.create') }}" class="btn btn-primary">
+                <a href="{{ route('admin.category.create') }}" class="btn btn-primary">
                     Create New
                 </a>
             </div>
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered" id="sliders-table">
+            <table class="table table-bordered" id="categories-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Image</th>
-                        <th>Offer</th>
-                        <th>Title</th>
-                        <th>Sub Title</th>
-                        <th>Short Description</th>
-                        <th>Button Link</th>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Show at Home</th>
                         <th>Status</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,32 +38,29 @@
 @push('scripts')
 <script>
 $(function () {
-    $('#sliders-table').DataTable({
+    $('#categories-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("admin.sliders.index") }}',
+        ajax: '{{ route("admin.category.index") }}',
         columns: [
             { data: 'id', name: 'id' },
-            { data: 'image', name: 'image', orderable: false, searchable: false,
-              render: function(data, type, row) {
-                  return '<img src="'+data+'" width="80">';
+            { data: 'name', name: 'name' },
+            { data: 'slug', name: 'slug' },
+
+            { data: 'show_at_home', name: 'show_at_home',
+              render: function(data) {
+                  return data ? 'Yes' : 'No';
               }
             },
-            { data: 'offer', name: 'offer' },
-            { data: 'title', name: 'title' },
-            { data: 'sub_title', name: 'sub_title' },
-            { data: 'short_description', name: 'short_description' },
-            { data: 'button_link', name: 'button_link',
-              render: function(data, type, row) {
-                  return '<a href="'+data+'" target="_blank">'+data+'</a>';
-              }
-            },
+
             { data: 'status', name: 'status',
               render: function(data) {
                   return data ? 'Active' : 'Inactive';
-                
               }
             },
+
+            { data: 'created_at', name: 'created_at' },
+
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ]
     });

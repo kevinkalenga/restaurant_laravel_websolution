@@ -31,6 +31,6 @@ Route::put('/why-choose-title-update', [WhyChooseUsController::class, 'updateTit
 Route::resource('/why-choose-us', WhyChooseUsController::class);
 
 // Product Category Routes
-Route::resource('/category', CategoryController::class)->name('category.index');
+Route::resource('/category', CategoryController::class);
 
 

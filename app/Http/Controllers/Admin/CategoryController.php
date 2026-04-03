@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -59,7 +60,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.product.category.create');
     }
 
     /**
@@ -67,8 +68,31 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'status' => ['required', 'boolean'],
+            'show_at_home' => ['required', 'boolean'],
+        ]);
+
+        // Création
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name); // auto slug
+        $category->status = $request->status;
+        $category->show_at_home = $request->show_at_home;
+        $category->save();
+
+        // Redirection
+        return redirect()
+            ->route('admin.category.index')
+            ->with('success', 'Category created successfully!');
+
+        
+
     }
+
+        
 
     /**
      * Display the specified resource.
