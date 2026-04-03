@@ -92,20 +92,15 @@ class CategoryController extends Controller
 
         
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+         $category = Category::findOrFail($id);
+        return view('admin.product.category.edit', compact('category'));
     }
 
     /**
@@ -113,14 +108,40 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Récupérer la catégorie
+        $category = Category::findOrFail($id);
+
+        // Validation
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'status' => ['required', 'boolean'],
+            'show_at_home' => ['required', 'boolean'],
+        ]);
+
+        // Mise à jour
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name); // auto slug
+        $category->status = $request->status;
+        $category->show_at_home = $request->show_at_home;
+        $category->save();
+
+        // Redirection avec message de succès
+        return redirect()
+            ->route('admin.category.index')
+            ->with('success', 'Category updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(string $id)
     {
-        //
+       $category = Category::findOrFail($id);
+       $category->delete();
+
+       return redirect()
+           ->route('admin.category.index')
+           ->with('success', 'Category deleted successfully!');
     }
 }
