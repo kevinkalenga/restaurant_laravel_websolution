@@ -143,10 +143,57 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    
+      /**
+ * Update the specified resource in storage.
+ */
+  public function update(Request $request, string $id)
+  {
+    $product = Product::findOrFail($id);
+
+    // Validation
+    $request->validate([
+        'name' => ['required', 'max:255'],
+        'category_id' => ['required', 'exists:categories,id'],
+        'thumb_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        'short_description' => ['nullable', 'string'],
+        'long_description' => ['nullable', 'string'],
+        'price' => ['required', 'numeric', 'min:0'],
+        'offer_price' => ['nullable', 'numeric', 'min:0'],
+        'sku' => ['nullable', 'string', 'max:255'],
+        'seo_title' => ['nullable', 'string', 'max:255'],
+        'seo_description' => ['nullable', 'string'],
+        'show_at_home' => ['required', 'boolean'],
+        'status' => ['required', 'boolean'],
+    ]);
+
+    // Upload de l'image si nécessaire
+    if ($request->hasFile('thumb_image')) {
+        $thumbImagePath = $this->uploadImage($request, 'thumb_image', 'uploads/products');
+        $product->thumb_image = $thumbImagePath;
     }
+
+    // Mise à jour des autres champs
+    $product->name = $request->name;
+    $product->slug = Str::slug($request->name);
+    $product->category_id = $request->category_id;
+    $product->short_description = $request->short_description;
+    $product->long_description = $request->long_description;
+    $product->price = $request->price;
+    $product->offer_price = $request->offer_price ?? 0;
+    $product->sku = $request->sku;
+    $product->seo_title = $request->seo_title;
+    $product->seo_description = $request->seo_description;
+    $product->show_at_home = $request->show_at_home;
+    $product->status = $request->status;
+    $product->save();
+
+    return redirect()
+        ->route('admin.product.index')
+        ->with('success', 'Product updated successfully!');
+  }
+
+
 
     /**
      * Remove the specified resource from storage.
