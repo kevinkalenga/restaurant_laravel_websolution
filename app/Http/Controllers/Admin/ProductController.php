@@ -29,18 +29,31 @@ class ProductController extends Controller
             ->addColumn('action', function ($product) {
                 return '
                     <a href="'.route('admin.product.edit', $product->id).'" 
-                       class="text-primary fw-bold">
-                        Edit
+                       class="btn btn-sm btn-primary mr-1" title="Edit">
+                         <i class="fas fa-edit"></i>
                     </a>
                     |
                     <a href="'.route('admin.product.destroy', $product->id).'" 
-                       class="text-danger fw-bold"
+                       class="btn btn-sm btn-danger mr-1"
                        onclick="event.preventDefault();
                        if(confirm(\'Are you sure you want to delete?\')) {
                            document.getElementById(\'delete-form-'.$product->id.'\').submit();
                        }">
-                        Delete
+                        <i class="fas fa-trash"></i>
                     </a>
+                     |
+                     <div class="btn-group dropleft">
+                          <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button>
+                            <div class="dropdown-menu dropleft" x-placement="left-start" style="position:absolute; transform:
+                                translated3d(-2px, 0px, 0px); top:0px; left:0px; will-change: transform;">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another Action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                     </div>
 
                     <form id="delete-form-'.$product->id.'" 
                           action="'.route('admin.product.destroy', $product->id).'" 
@@ -115,20 +128,16 @@ class ProductController extends Controller
         ->with('success', 'Product created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+         $product = Product::findOrFail($id);
+         $categories = Category::all(); 
+        return view('admin.product.edit', compact('product', 'categories'));
     }
 
     /**

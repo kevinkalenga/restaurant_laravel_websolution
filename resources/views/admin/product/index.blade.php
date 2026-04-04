@@ -22,16 +22,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Slug</th>
                         <th>Thumb Image</th>
-                        <th>Category</th>
-                        <th>Short Description</th>
-                        <th>Long Description</th>
                         <th>Price</th>
                         <th>Offer Price</th>
-                        <th>SKU</th>
-                        <th>SEO Title</th>
-                        <th>SEO Description</th>
                         <th>Show at Home</th>
                         <th>Status</th>
                         <th>Created At</th>
@@ -53,21 +46,31 @@ $(function () {
         ajax: '{{ route("admin.product.index") }}',
         columns: [
             { data: 'id', name: 'id' },
+
             { data: 'name', name: 'name' },
-            { data: 'slug', name: 'slug' },
+
             { data: 'thumb_image', name: 'thumb_image',
+              orderable: false, searchable: false,
               render: function(data) {
                   return data ? '<img src="'+data+'" width="50">' : '';
               }
             },
-            { data: 'category.name', name: 'category.name' },
-            { data: 'short_description', name: 'short_description' },
-            { data: 'long_description', name: 'long_description' },
-            { data: 'price', name: 'price' },
-            { data: 'offer_price', name: 'offer_price' },
-            { data: 'sku', name: 'sku' },
-            { data: 'seo_title', name: 'seo_title' },
-            { data: 'seo_description', name: 'seo_description' },
+
+            { 
+                data: 'price', 
+                name: 'price',
+                render: function(data) {
+                    return '$' + parseFloat(data).toFixed(2);
+                }
+            },
+
+            { 
+                data: 'offer_price', 
+                name: 'offer_price',
+                render: function(data) {
+                    return '$' + parseFloat(data).toFixed(2);
+                }
+            },
 
             { data: 'show_at_home', name: 'show_at_home',
               render: function(data) {
