@@ -33,7 +33,7 @@ class SliderController extends Controller
 
         return DataTables::of($sliders)
             ->addColumn('image', function ($slider) {
-                // 🔥 Chemin correct pour ton trait : public/uploads/…
+                //  Chemin correct pour ton trait : public/uploads/…
                 return asset($slider->image);
             })
              ->addColumn('action', function ($slider) {
