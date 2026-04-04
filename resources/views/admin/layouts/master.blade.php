@@ -16,6 +16,7 @@
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}">
+  <link rel="stylesheet" href="{{asset('admin/assets/modules/summernote/summernote-bs4.css')}}">
   
   <link rel="stylesheet" href="{{asset('admin/assets/css/components.css')}}">
   <link rel="stylesheet" href="{{ asset('admin/assets/izitoast/iziToast.min.css') }}">
@@ -72,7 +73,7 @@
   <script src="{{asset('admin/assets/js/custom.js')}}"></script>
  <script src="{{ asset('admin/assets/izitoast/iziToast.min.js') }}"></script>
 
-
+ <script src="{{asset('admin/assets/modules/summernote/summernote-bs4.js')}}"></script>
 
  
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>

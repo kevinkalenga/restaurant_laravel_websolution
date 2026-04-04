@@ -60,7 +60,7 @@
                 <!-- Long Description -->
                 <div class="form-group">
                     <label for="long_description">Long Description</label>
-                    <textarea name="long_description" class="form-control">{{ old('long_description') }}</textarea>
+                    <textarea name="long_description" class="form-control summernote">{{ old('long_description') }}</textarea>
                 </div>
 
                 <!-- Price & Offer -->
