@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
 use App\Models\Poruduct;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -56,7 +57,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+         return view('admin.product.create', compact('categories'));
     }
 
     /**
