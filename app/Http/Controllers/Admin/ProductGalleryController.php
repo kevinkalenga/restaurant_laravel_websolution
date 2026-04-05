@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\FileUploadTrait;
+use App\Models\ProductGallery;
 
 class ProductGalleryController extends Controller
 {
@@ -15,7 +16,8 @@ class ProductGalleryController extends Controller
     public function index($productId)
     {
         $product = \App\Models\Product::findOrFail($productId);
-        return view('admin.product.gallery.index', compact('product'));
+        $images = ProductGallery::where('product_id', $productId)->get();
+        return view('admin.product.gallery.index', compact('product', 'images'));
     }
 
     /**
@@ -74,8 +76,22 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(string $id)
     {
-        //
+        // récupère l’image ou erreur 404
+        $image = ProductGallery::findOrFail($id);
+
+        // Supprimer le fichier du dossier
+        if (file_exists(public_path($image->image))) {
+            unlink(public_path($image->image));
+        }
+
+        // Supprimer en base
+        $image->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Image Deleted Successfully !');
     }
 }
