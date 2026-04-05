@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGalleryController;
 
 
 
@@ -34,7 +35,12 @@ Route::resource('/why-choose-us', WhyChooseUsController::class);
 // Product Category Routes(pour le crud)
 Route::resource('/category', CategoryController::class);
 
-// Product Category Routes(pour le crud)
+// Product Routes(pour le crud)
 Route::resource('/product', ProductController::class);
+
+// Product Gellery Routes
+Route::get('/product-gallery/{product}', [ProductGalleryController::class, 'index'])->name('product-gallery.show-index');
+Route::resource('/product-gallery', ProductGalleryController::class);
+
 
 
