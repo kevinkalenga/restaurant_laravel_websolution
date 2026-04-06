@@ -3,7 +3,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Products Gallery ({{$product->name}})</h1>
+        <h1>Products Sizes ({{$product->name}})</h1>
     </div>
 
     <div>
@@ -12,23 +12,38 @@
 
     <div class="card card-primary">
         <div class="card-header">
-            <h4>All Images</h4>
+            <h4>Create Size</h4>
             
         </div>
 
         <div class="card-body">
-            <div class="col-md-8">
-                <form action="{{route('admin.product-gallery.store')}}" method="POST" enctype="multipart/form-data">
+           
+                <form action="{{route('admin.product-size.store')}}" method="POST" enctype="multipart/form-data">
                   @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <div class="form-group">
-                        <input type="file" class="form-control" name="image">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                               <label for="">Name</label>
+                               <input type="text" class="form-control" name="name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Price</label>
+                              <input type="text" class="form-control" name="price">
+                            </div>
+                        </div>
                     </div>
+                    
+                    
+                   
                     <div class="form-group">
-                       <button type="submit" class="btn btn-primary">Upload</button>
+                       <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                 </form>
-            </div>
+           
         </div>
     </div>
     <div class="card card-primary">
