@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProductSizeController;
+use App\Http\Controllers\Admin\ProductOptionController;
 
 
 
@@ -46,6 +47,10 @@ Route::resource('/product-gallery', ProductGalleryController::class);
 // Product Size Routes
 Route::get('/product-size/{product}', [ProductSizeController::class, 'index'])->name('product-size.show-index');
 Route::resource('/product-size', ProductSizeController::class);
+
+// Product Option Routes
+
+Route::resource('/product-option', ProductOptionController::class);
 
 
 
