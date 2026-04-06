@@ -8,21 +8,7 @@ use App\Models\ProductOption;
 
 class ProductOptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -53,35 +39,24 @@ class ProductOptionController extends Controller
         ->with('success', 'Option Created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        // récupère l’image ou erreur 404
+        $option = ProductOption::findOrFail($id);
+
+
+        // Supprimer en base
+        $option->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Option Deleted Successfully !');
     }
 }
