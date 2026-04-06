@@ -20,13 +20,7 @@ class ProductGalleryController extends Controller
         return view('admin.product.gallery.index', compact('product', 'images'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -57,21 +51,7 @@ class ProductGalleryController extends Controller
 
    
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+ 
 
     /**
      * Remove the specified resource from storage.
