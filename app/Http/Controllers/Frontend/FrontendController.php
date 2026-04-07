@@ -27,4 +27,9 @@ class FrontendController extends Controller
         $keys = ['why_choose_top_title', 'why_choose_main_title', 'why_choose_sub_title'];
         return SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
     }
+
+    public function showProduct($slug)
+    {
+      return view('frontend.pages.product-view');
+    }
 }

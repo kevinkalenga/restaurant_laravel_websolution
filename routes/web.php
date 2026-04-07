@@ -10,6 +10,8 @@ use App\Http\Controllers\Frontend\ProfileController;
 
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
+
 
 
 Route::group(['middleware' => 'auth'], function(){

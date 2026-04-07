@@ -37,7 +37,7 @@
                     <div class="fp__menu_item">
                         <div class="fp__menu_item_img">
                             <img src="{{asset($product->thumb_image)}}" alt="{{$product->title}}" class="img-fluid w-100">
-                            <a class="category" href="#">{{$product->category->name}}</a>
+                            <a class="category" href="#">{{@$product->category->name}}</a>
                         </div>
                         <div class="fp__menu_item_text">
                             <p class="rating">
@@ -48,7 +48,7 @@
                                 <i class="far fa-star"></i>
                                 <span>145</span>
                             </p>
-                            <a class="title" href="menu_details.html">{{$product->name}}</a>
+                            <a class="title" href="{{route('product.show', $product->slug)}}">{{$product->name}}</a>
                             <h5 class="price">
                                 @if($product->offer_price > 0)
                                   ${{$product->offer_price}}
