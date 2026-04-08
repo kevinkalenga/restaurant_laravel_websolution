@@ -32,6 +32,8 @@ class FrontendController extends Controller
     public function showProduct($slug)
     {
       $product = Product::with(['productImages', 'productSizes', 'productOptions'])->where(['slug' => $slug, 'status' => 1])->firstOrFail();
-      return view('frontend.pages.product-view', compact('product'));
+       // show products by their category and ignore the product that we are viewing   
+      $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->take(8)->latest()->get();
+      return view('frontend.pages.product-view', compact('product', 'relatedProducts'));
     }
 }
