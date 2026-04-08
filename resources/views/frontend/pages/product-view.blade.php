@@ -6,14 +6,14 @@
     <!--=============================
         BREADCRUMB START
     ==============================-->
-    <section class="fp__breadcrumb" style="background: url(images/counter_bg.jpg);">
+    <section class="fp__breadcrumb" style="background: url({{asset('frontend/images/counter_bg.jpg')}});">
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
                     <h1>menu Details</h1>
                     <ul>
-                        <li><a href="index.html">home</a></li>
-                        <li><a href="#">menu Details</a></li>
+                        <li><a href="{{url('/')}}">home</a></li>
+                        <li><a href="javascript:;">menu Details</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,16 +34,12 @@
                     <div class="exzoom hidden" id="exzoom">
                         <div class="exzoom_img_box fp__menu_details_images">
                             <ul class='exzoom_img_ul'>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu1.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu2.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu3.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu4.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu5.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu6.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu7.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu8.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu1.png" alt="product"></li>
-                                <li><img class="zoom ing-fluid w-100" src="images/menu2.png" alt="product"></li>
+                                <li><img class="zoom ing-fluid w-100" src="{{asset($product->thumb_image)}}" alt="product"></li>
+
+                                @foreach($product->productImages as $images)
+                                   <li><img class="zoom ing-fluid w-100" src="{{asset($images->image)}}" alt="product"></li>
+                                @endforeach
+                                
                             </ul>
                         </div>
                         <div class="exzoom_nav"></div>
