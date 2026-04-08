@@ -31,7 +31,7 @@ class FrontendController extends Controller
 
     public function showProduct($slug)
     {
-      $product = Product::where(['slug' => $slug, 'status' => 1])->firstOrFail();
+      $product = Product::with(['productImages', 'productSizes', 'productOptions'])->where(['slug' => $slug, 'status' => 1])->firstOrFail();
       return view('frontend.pages.product-view', compact('product'));
     }
 }
