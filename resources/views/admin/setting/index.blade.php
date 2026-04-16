@@ -37,12 +37,12 @@
                               <div class="card-body border">
                                  <div class="form-group">
                                     <label for="">Site Name</label>
-                                    <input type="text" name="" class="form-control" name="site_name">
+                                    <input type="text" class="form-control" name="site_name">
                                  </div>
                                  <div class="form-group">
                                     <label for="">Default Currency</label>
                                     <select name="site_default_currency" id="" class="select2 form-control">
-                                        <option value="">test</option>
+                                        <option value="usd">USD</option>
                                     </select>
                                  </div>
                                   <div class="row">
