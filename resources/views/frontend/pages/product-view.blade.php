@@ -283,7 +283,7 @@
                                     @else  
                                       ${{$relatedProduct->price}}
                                     @endif
-                                    $80.00 <del>90.00</del></h5>
+                                   
                                 <ul class="d-flex flex-wrap justify-content-center">
                                     <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
                                                 class="fas fa-shopping-basket"></i></a></li>

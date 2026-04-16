@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProductSizeController;
 use App\Http\Controllers\Admin\ProductOptionController;
+use App\Http\Controllers\Admin\SettingController;
 
 
 
@@ -51,6 +52,9 @@ Route::resource('/product-size', ProductSizeController::class);
 // Product Option Routes
 
 Route::resource('/product-option', ProductOptionController::class);
+
+// Setting Routes
+Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
 
 
 
