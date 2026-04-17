@@ -39,6 +39,8 @@
 
 @push('scripts')
 <script>
+    const currencyIcon = "{{ config('settings.site_currency_icon') }}";
+    const currencyPosition = "{{ config('settings.site_currency_icon_position') }}";
 $(function () {
     $('#products-table').DataTable({
         processing: true,
@@ -60,7 +62,14 @@ $(function () {
                 data: 'price', 
                 name: 'price',
                 render: function(data) {
-                    return '$' + parseFloat(data).toFixed(2);
+                    //  return '$' + parseFloat(data).toFixed(2);
+                    //   return currencyPosition + parseFloat(data).toFixed(2);
+                    const price = Number(data);
+                    if (isNaN(price)) return '';
+
+                    return currencyPosition === 'left'
+                        ? currencyIcon + price.toFixed(2)
+                    : price.toFixed(2) + currencyIcon;
                 }
             },
 
@@ -68,7 +77,14 @@ $(function () {
                 data: 'offer_price', 
                 name: 'offer_price',
                 render: function(data) {
-                    return '$' + parseFloat(data).toFixed(2);
+                    //  return '$' + parseFloat(data).toFixed(2);
+                    //  return currencyPosition + parseFloat(data).toFixed(2);
+                     const price = Number(data);
+                     if (isNaN(price)) return '';
+
+                     return currencyPosition === 'left'
+                         ? currencyIcon + price.toFixed(2)
+                         : price.toFixed(2) + currencyIcon;
                 }
             },
 

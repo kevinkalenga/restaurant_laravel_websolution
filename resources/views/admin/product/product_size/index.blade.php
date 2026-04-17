@@ -64,7 +64,7 @@
                             <tr>
                                 <td>{{++$loop->index}}</td>
                                 <td>{{$size->name}}</td>
-                                <td>{{$size->price}}</td>
+                                <td>{{currencyPosition($size->price)}}</td>
                                 <td>
                                     <form action="{{ route('admin.product-size.destroy', $size->id) }}" method="POST" style="display:inline;">
                                         @csrf
@@ -144,7 +144,7 @@
                             <tr>
                                 <td>{{++$loop->index}}</td>
                                 <td>{{$option->name}}</td>
-                                <td>{{$option->price}}</td>
+                                <td>{{currencyPosition($option->price)}}</td>
                                 <td>
                                     <form action="{{ route('admin.product-option.destroy', $option->id) }}" method="POST" style="display:inline;">
                                         @csrf

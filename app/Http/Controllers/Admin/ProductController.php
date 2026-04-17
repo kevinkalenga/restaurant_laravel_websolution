@@ -20,7 +20,6 @@ class ProductController extends Controller
     {
       if (request()->ajax()) {
         $products = Product::query(); // Modèle Product
-
         return DataTables::of($products)
              ->addColumn('thumb_image', function ($product) {
                  return asset($product->thumb_image);

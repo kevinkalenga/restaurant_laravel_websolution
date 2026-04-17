@@ -42,7 +42,12 @@
                                  <div class="form-group">
                                     <label for="">Default Currency</label>
                                     <select name="site_default_currency" id="" class="select2 form-control">
-                                        <option value="usd">USD</option>
+                                        <option value="">Select</option>
+                                        @foreach(config('currency.currency_list') as $currency_country) 
+                                            
+                                             <option @selected(config('settings.site_default_currency') === $currency_country) value="{{$currency_country}}">{{$currency_country}}</option>
+
+                                        @endforeach
                                     </select>
                                  </div>
                                   <div class="row">
