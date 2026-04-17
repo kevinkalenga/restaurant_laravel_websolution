@@ -1,8 +1,9 @@
 <?php  
 
 namespace App\Services; 
-use Cach;
+use Cache;
 use App\Models\Setting;
+
 
 
 class SettingsService {
@@ -21,6 +22,6 @@ class SettingsService {
 
     function clearCachedSettings()
     {
-        Cach::forget('settings');
+        Cache::forget('settings');
     }
 }
