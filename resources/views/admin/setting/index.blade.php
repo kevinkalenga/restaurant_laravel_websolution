@@ -37,7 +37,7 @@
                               <div class="card-body border">
                                  <div class="form-group">
                                     <label for="">Site Name</label>
-                                    <input type="text" class="form-control" name="site_name">
+                                    <input type="text" class="form-control" name="site_name" value="{{config('settings.site_name')}}">
                                  </div>
                                  <div class="form-group">
                                     <label for="">Default Currency</label>
@@ -49,7 +49,7 @@
                                     <div class="col-md-6">
                                       <div class="form-group">
                                         <label for="">Currency Icon</label>
-                                        <input type="text" name="site_currency_icon" class="form-control">
+                                        <input type="text" name="site_currency_icon" class="form-control" value="{{config('settings.site_currency_icon')}}">
                                       </div>
                                     
                                     </div>
@@ -57,8 +57,8 @@
                                       <div class="form-group">
                                         <label for="">Currency Icon Position</label>
                                         <select name="site_currency_icon_position" id="" class="select2 form-control">
-                                           <option value="right">Right</option>
-                                           <option value="left">Left</option>
+                                           <option @selected(config('settings.site_currency_icon_position') === 'right') value="right">Right</option>
+                                           <option @selected(config('settings.site_currency_icon_position') === 'left') value="left">Left</option>
                                         </select>
                                       </div>
                                     
