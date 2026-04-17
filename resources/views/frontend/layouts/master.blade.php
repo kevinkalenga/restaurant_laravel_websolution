@@ -151,7 +151,8 @@
 
 });
 </script>
-
+  <!-- Load global js -->
+@include('frontend.layouts.global_scripts')
 @stack('scripts')
 
 
