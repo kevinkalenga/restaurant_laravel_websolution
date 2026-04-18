@@ -81,8 +81,11 @@
                         <i class="fal fa-plus"></i>
                     </button>
                 </div>
-
-                <h3>$320.00</h3>
+                @if($product->offer_price > 0)
+                  <h3 id="total_price"> {{currencyPosition($product->offer_price)}}</h3>
+                @else 
+                  <h3 id="total_price"> {{currencyPosition($product->price)}}</h3>
+                @endif
             </div>
         </div>
 
@@ -99,6 +102,9 @@
         $('input[name="product_size"]').on('change', function(){
            updateTotalPrice()
         })
+        $('input[name="product_option[]"]').on('change', function(){
+           updateTotalPrice()
+        })
         // Function to update the total price base on selected option
         function updateTotalPrice() {
           let basePrice = parseFloat($('input[name="base_price"]').val())
@@ -107,10 +113,21 @@
 
           // Calculate the selected size price 
           let selectedSize = $('input[name="product_size"]:checked') ;
+          
           if(selectedSize.length > 0) {
             selectedSizePrice = parseFloat(selectedSize.data("price"))
+           
           }
-          alert(selectedSizePrice)
+          // Calculate selected options price 
+          let selectedOptions = $('input[name="product_option[]"]:checked')
+          $(selectedOptions).each(function(){
+            selectedOptionsPrice += parseFloat($(this).data("price"))
+          })
+
+          // Calculate the total price 
+          let totalPrice = basePrice + selectedSizePrice + selectedOptionsPrice;
+
+          $('#total_price').text("{{config('settings.site_currency_icon')}}" + totalPrice);
         }
     })
 </script>
