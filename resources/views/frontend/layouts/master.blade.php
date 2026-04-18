@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{asset('frontend/css/toastr.min.css')}}">
     <link href="{{asset('frontend/css/iziToast.min.css')}}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
+    <link rel="stylesheet" href="{{asset('frontend/css/custom.css')}}">
     <!-- <link rel="stylesheet" href="css/rtl.css"> -->
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
@@ -27,6 +28,12 @@
 </head>
 
 <body>
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <span class="loader"></span>
+        </div>
+    </div>
 
     <!--=============================
         TOPBAR START
