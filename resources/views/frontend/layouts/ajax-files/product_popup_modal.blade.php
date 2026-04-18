@@ -2,8 +2,9 @@
     <i class="fal fa-times"></i>
 </button>
 
-<form action="">
+<form action="" id="modal_add_to_cart_form">
    
+  <input type="hidden" name="product_id" value="{{$product->id}}">
 
     <div class="fp__cart_popup_img">
         <img src="{{asset($product->thumb_image)}}" alt="{{$product->name}}" class="img-fluid w-100">
@@ -75,7 +76,7 @@
                         <i class="fal fa-minus"></i>
                     </button>
 
-                    <input id="quantity" type="text" placeholder="1" value="1" readonly>
+                    <input id="quantity" name="quantity" type="text" placeholder="1" value="1" readonly>
 
                     <button class="btn btn-success increment">
                         <i class="fal fa-plus"></i>
@@ -91,8 +92,9 @@
 
         <ul class="details_button_area d-flex flex-wrap">
             <li>
-                <a class="common_btn" href="#">add to cart</a>
+                <button type="submit" class="common_btn" href="#">add to cart</button>
             </li>
+           
         </ul>
     </div>
 </form>
@@ -148,5 +150,23 @@
 
           $('#total_price').text("{{config('settings.site_currency_icon')}}" + totalPrice);
         }
+
+        // Add to cart function
+        $("#modal_add_to_cart_form").on('submit', function(e) {
+            e.preventDefault();
+            // this is the form
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                url: '{{route("add-to-cart")}}',
+                data: formData,
+                success: function(response){
+
+                },
+                error: function(xhr, status, error){
+                    console.error(error)
+                }
+            })
+        })
     })
 </script>
