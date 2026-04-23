@@ -59,6 +59,8 @@ $(function () {
         arrows: false,
     });
 
+    
+
 
     //=======OFFER ITEM SLIDER======
     $('.offer_item_slider').slick({
@@ -554,5 +556,8 @@ $(function () {
             autoPlay: true,
         });
     }
+
+
+   
 
 });
