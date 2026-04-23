@@ -154,6 +154,16 @@
         // Add to cart function
         $("#modal_add_to_cart_form").on('submit', function(e) {
             e.preventDefault();
+            
+            // Validation
+              // SIZE validation seulement si le produit en a
+            let sizeInputs = $("input[name='product_size']");
+            let selectedSize = $("input[name='product_size']:checked").val();
+            
+            if (sizeInputs.length > 0 && !selectedSize) {
+              alert("Please select a size before adding to cart");
+              return;
+            }
             // this is the form
             let formData = $(this).serialize();
             $.ajax({

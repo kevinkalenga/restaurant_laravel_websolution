@@ -11,17 +11,29 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+            // 1. Récupérer le produit avec relations
         $product = Product::with(['productSizes', 'productOptions'])
-        ->findOrFail($request->product_id);
+            ->findOrFail($request->product_id);
 
-        // SIZE (peut être null)
-        $productSize = $product->productSizes
-            ->firstWhere('id', $request->product_size);
+        // 2. Récupérer la taille (peut être null)
+        $productSize = null;
 
-        // OPTIONS (collection)
+        if ($request->product_size) {
+            $productSize = $product->productSizes
+                ->firstWhere('id', $request->product_size);
+
+            // sécurité métier
+            if (!$productSize) {
+                return redirect()->back()
+                    ->withErrors('Invalid size for this product');
+            }
+        }
+
+        // 3. Récupérer les options (toujours en collection)
         $productOptions = $product->productOptions
             ->whereIn('id', $request->product_option ?? []);
 
+        // 4. Construire le tableau options
         $options = [
             'product_size' => $productSize ? [
                 'id' => $productSize->id,
@@ -37,6 +49,7 @@ class CartController extends Controller
             ]
         ];
 
+        // 5. Ajouter les options sélectionnées
         foreach ($productOptions as $option) {
             $options['product_options'][] = [
                 'id' => $option->id,
@@ -45,15 +58,17 @@ class CartController extends Controller
             ];
         }
 
-        Cart::add([
-            'id' => $product->id,
-            'name' => $product->name,
-            'qty' => $request->quantity ?? 1,
-            'price' => $product->offer_price > 0 ? $product->offer_price : $product->price,
-            'weight' => 0,
-            'options' => $options
-        ]);
+       // 6. Ajouter au panier
+       Cart::add([
+           'id' => $product->id,
+           'name' => $product->name,
+           'qty' => $request->quantity ?? 1,
+           'price' => $product->offer_price > 0 ? $product->offer_price : $product->price,
+           'weight' => 0,
+           'options' => $options
+       ]);
 
-        return redirect()->back()->with('status', 'Product Added Into Cart Successfully!');
+       return redirect()->back()
+           ->with('status', 'Product Added Into Cart Successfully!');
     }
 }
