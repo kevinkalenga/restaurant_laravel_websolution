@@ -41,7 +41,7 @@
 
                 @foreach($product->productSizes as $productSize)
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="product_size" data-price="{{$productSize->price}}" id="size-{{$productSize->id}}">
+                        <input class="form-check-input" value="{{$productSize->id}}" type="radio" name="product_size" data-price="{{$productSize->price}}" id="size-{{$productSize->id}}">
                         
                         <label class="form-check-label" for="size-{{$productSize->id}}">
                             {{$productSize->name}} <span>+ ${{$productSize->price}}</span>
@@ -57,7 +57,7 @@
 
                 @foreach($product->productOptions as $productOption)
                     <div class="form-check">
-                        <input class="form-check-input" name="product_option[]" data-price="{{$productOption->price}}" type="checkbox" value="" id="option-{{$productOption->id}}">
+                        <input class="form-check-input" value="{{$productOption->id}}" name="product_option[]" data-price="{{$productOption->price}}" type="checkbox" value="" id="option-{{$productOption->id}}">
                         
                         <label class="form-check-label" for="option-{{$productOption->id}}">
                             {{$productOption->name}} <span>+ ${{$productOption->price}}</span>
@@ -161,8 +161,15 @@
             let selectedSize = $("input[name='product_size']:checked").val();
             
             if (sizeInputs.length > 0 && !selectedSize) {
-              alert("Please select a size before adding to cart");
+               iziToast.error({
+                 title: 'Error',
+                 message: 'Please select a size before adding to cart',
+                 position: 'topRight',
+                 timeout: 4000
+                });
               return;
+            //   alert("Please select a size before adding to cart");
+              
             }
             // this is the form
             let formData = $(this).serialize();
@@ -171,10 +178,18 @@
                 url: '{{route("add-to-cart")}}',
                 data: formData,
                 success: function(response){
-
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
                 },
                 error: function(xhr, status, error){
-                    console.error(error)
+                    iziToast.error({
+                     title: 'Error',
+                     message: xhr.responseJSON.message,
+                     position: 'topRight'
+                    });
                 }
             })
         })

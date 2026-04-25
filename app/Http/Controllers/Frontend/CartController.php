@@ -11,7 +11,8 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-            // 1. Récupérer le produit avec relations
+      try{
+        // 1. Récupérer le produit avec relations
         $product = Product::with(['productSizes', 'productOptions'])
             ->findOrFail($request->product_id);
 
@@ -58,6 +59,8 @@ class CartController extends Controller
             ];
         }
 
+      
+
        // 6. Ajouter au panier
        Cart::add([
            'id' => $product->id,
@@ -68,7 +71,9 @@ class CartController extends Controller
            'options' => $options
        ]);
 
-       return redirect()->back()
-           ->with('status', 'Product Added Into Cart Successfully!');
+        return response(['status' => 'success', 'message' => "Product Added Into Card Successfully!"], 200);
+      }catch(\Exception $e){
+        return response(['status' => 'error', 'message' => "Something went wrong!"], 500);
+      }   
     }
 }
