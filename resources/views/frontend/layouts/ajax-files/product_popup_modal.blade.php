@@ -186,6 +186,7 @@
                         `);
                 },
                 success: function(response){
+                    updateSiderbarCart();
                     iziToast.success({
                         title: 'Success',
                         message: response.message,
