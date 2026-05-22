@@ -35,7 +35,7 @@
             <span class="loader"></span>
         </div>
     </div>
-
+     {{--@dd(Cart::content())--}};
     <!--=============================
         TOPBAR START
     ==============================-->
