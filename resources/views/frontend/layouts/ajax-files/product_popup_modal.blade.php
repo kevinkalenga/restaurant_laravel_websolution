@@ -92,7 +92,7 @@
 
         <ul class="details_button_area d-flex flex-wrap">
             <li>
-                <button type="submit" class="common_btn" href="#">add to cart</button>
+                <button type="submit" class="common_btn modal_cart_button" href="#">add to cart</button>
             </li>
            
         </ul>
@@ -177,6 +177,14 @@
                 method: 'POST',
                 url: '{{route("add-to-cart")}}',
                 data: formData,
+                beforeSend: function () {
+                    $('.modal_cart_button')
+                        .prop('disabled', true)
+                        .html(`
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Loading...
+                        `);
+                },
                 success: function(response){
                     iziToast.success({
                         title: 'Success',
@@ -190,6 +198,11 @@
                      message: xhr.responseJSON.message,
                      position: 'topRight'
                     });
+                },
+                complete: function () {
+                    $('.modal_cart_button')
+                        .prop('disabled', false)
+                        .html('add to cart');
                 }
             })
         })

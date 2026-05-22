@@ -30,7 +30,7 @@
 
 <body>
 
-    <div class="overlay-container">
+    <div class="overlay-container d-none">
         <div class="overlay">
             <span class="loader"></span>
         </div>
