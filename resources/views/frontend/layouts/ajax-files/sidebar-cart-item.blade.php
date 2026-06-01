@@ -1,4 +1,7 @@
-  @foreach(Cart::content() as $cartProduct)
+  <input type="hidden" value="{{cartTotal()}}" id="cart_total">
+  
+  
+    @foreach(Cart::content() as $cartProduct)
                     <li>
                         <div class="menu_cart_img">
                             <img src="{{asset($cartProduct->options->product_info['image'])}}" alt="menu" class="img-fluid w-100">
