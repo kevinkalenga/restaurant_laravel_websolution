@@ -62,7 +62,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="cart_icon"><i class="fas fa-shopping-basket"></i> <span>5</span></a>
+                        <a class="cart_icon"><i class="fas fa-shopping-basket"></i> <span class="cart_count">{{count(Cart::content())}}</span></a>
                     </li>
                     <li>
                         <a href="{{route('login')}}"><i class="fas fa-user"></i></a>
@@ -75,11 +75,11 @@
             </div>
         </div>
     </nav>
-
+     
     <div class="fp__menu_cart_area">
         <div class="fp__menu_cart_boody">
             <div class="fp__menu_cart_header">
-                <h5>total item (05)</h5>
+                <h5>total item (<span class="cart_count" style="font-size:20px;">{{count(Cart::content())}}</span>)</h5>
                 <span class="close_cart"><i class="fal fa-times"></i></span>
             </div>
             <ul class="cart_contents">
