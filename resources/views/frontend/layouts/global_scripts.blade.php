@@ -25,26 +25,26 @@
 
    /** Update sidebar cart **/ 
 
-   function updateSiderbarCart() {
+   function updateSiderbarCart(callback = null) {
        $.ajax({
          method: 'GET',
          url: '{{route("get-cart-products")}}',
-         beforeSend: function(){
-            
-         },
+      
          success: function(response) {
            $('.cart_contents').html(response);
            let cartTotal = $('#cart_total').val()
            let cartCount = $('#cart_product_count').val()
            $('.cart_subtotal').text("{{currencyPosition(':cartTotal') }}".replace(':cartTotal', cartTotal));
            $('.cart_count').text(cartCount);
+
+           if(callback && typeof callback === 'function') {
+             callback()
+           }
          },
          error: function(xhr, status, error) {
             console.error(error)
          },
-         complete: function(){
-             
-         }
+        
       })
    }
 
@@ -53,12 +53,38 @@
       $.ajax({
          method: 'GET',
          url: '{{route("cart-product-remove", ":rowId")}}'.replace(":rowId", $rowId),
+         beforeSend: function() {
+            $('.overlay-container').removeClass('d-none');
+            $('.overlay').addClass('active');
+         },
          success: function(response) {
+            if(response.status === 'success') {
+                  console.log('Product removed');
+                updateSiderbarCart(function(){
+                     iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                     
+                      console.log('Toast displayed');
+                     $('.overlay').removeClass('active');
+                     $('.overlay-container').addClass('d-none');
+                })
 
+                
+            }
          },
          error: function(xhr, status, error) {
-            console.log(error)
-         }
+             iziToast.error({
+               title: 'Error',
+                message: xhr.responseJSON.message,
+               position: 'topRight'
+            });
+
+            
+         },
+        
       })
    }
 </script>
