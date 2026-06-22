@@ -72,10 +72,11 @@
                             
                         </h3>
                         <p class="short_description">{!! $product->short_description !!}</p>
-                        <form action="">
+                        <form action="" id="v_add_to_cart_form">
                             @csrf 
 
                             <input type="hidden" name="base_price" class="v_base_price" value="{{$product->offer_price > 0 ? $product->offer_price : $product->price}}">
+                             <input type="hidden" name="product_id" value="{{$product->id}}">
                             @if ($product->productSizes()->exists())
                                 <div class="details_size">
                                 
@@ -83,8 +84,8 @@
                                     <h5>select size</h5>
                                     @foreach($product->productSizes as $productSize)
                                     <div class="form-check">
-                                        <input class="form-check-input v_product_size" type="radio" name="flexRadioDefault"
-                                         id="size-{{$productSize->id}}" data-price="{{$productSize->price}}">
+                                        <input class="form-check-input v_product_size" type="radio" name="product_size"
+                                         id="size-{{$productSize->id}}" data-price="{{$productSize->price}}"  value="{{$productSize->id}}">
                                         <label class="form-check-label" for="size-{{$productSize->id}}">
                                             {{$productSize->name}} <span>+ {{currencyPosition($productSize->price)}}</span>
                                         </label>
@@ -97,8 +98,9 @@
                                     <h5>select option <span>(optional)</span></h5>
                                     @foreach($product->productOptions as $productOption)
                                     <div class="form-check">
-                                        <input class="form-check-input v_product_option" type="checkbox" value=""
-                                         id="option-{{$productOption->id}}" data-price="{{$productOption->price}}">
+                                        <!-- <input class="form-check-input v_product_option" name="product_option[]" type="checkbox" value=""
+                                         id="option-{{$productOption->id}}" data-price="{{$productOption->price}}" value="{{$productOption->id}}"> -->
+                                         <input class="form-check-input v_product_option" value="{{$productOption->id}}" name="product_option[]" data-price="{{$productOption->price}}" type="checkbox" value="" id="option-{{$productOption->id}}">
                                         <label class="form-check-label" for="option-{{$productOption->id}}">
                                             {{$productOption->name}} <span>+ {{currencyPosition($productOption->price)}}</span>
                                         </label>
@@ -111,7 +113,7 @@
                                 <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                                     <div class="quentity_btn">
                                         <button class="btn btn-danger  v_decrement"><i class="fal fa-minus"></i></button>
-                                        <input type="text" name="qty" placeholder="1" value="1" readonly id="v_quantity">
+                                        <input type="text" name="quantity" placeholder="1" value="1" readonly id="v_quantity">
                                         <button class="btn btn-success v_increment"><i class="fal fa-plus"></i></button>
                                     </div>
                                     <h3 id="v_total_price">{{$product->offer_price > 0 ? currencyPosition($product->offer_price) : currencyPosition($product->price)}}</h3>
@@ -119,7 +121,7 @@
                             </div>
                         </form>
                         <ul class="details_button_area d-flex flex-wrap">
-                            <li><a class="common_btn" href="#">add to cart</a></li>
+                            <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
                             <li><a class="wishlist" href="#"><i class="far fa-heart"></i></a></li>
                         </ul>
                     </div>
@@ -462,7 +464,70 @@
           let totalPrice = (basePrice + selectedSizePrice + selectedOptionsPrice) * quantity;
 
           $('#v_total_price').text("{{config('settings.site_currency_icon')}}" + totalPrice);
-        }
+        } 
+
+         
+        $('.v_submit_button').on('click', function(e){
+            e.preventDefault();
+            $('#v_add_to_cart_form').submit();
+        })
+
+        // Add to cart function
+        $("#v_add_to_cart_form").on('submit', function(e) {
+            e.preventDefault();
+            
+            // Validation
+              // SIZE validation seulement si le produit en a
+            let sizeInputs = $(".v_product_size");
+            let selectedSize = $(".v_product_size:checked").val();
+            
+            if (sizeInputs.length > 0 && !selectedSize) {
+               iziToast.error({
+                 title: 'Error',
+                 message: 'Please select a size before adding to cart',
+                 position: 'topRight',
+                 timeout: 4000
+                });
+              return;
+            //   alert("Please select a size before adding to cart");
+              
+            }
+            // this is the form
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                url: '{{route("add-to-cart")}}',
+                data: formData,
+                beforeSend: function () {
+                    $('.v_submit_button')
+                        .prop('disabled', true)
+                        .html(`
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Loading...
+                        `);
+                },
+                success: function(response){
+                    updateSiderbarCart();
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                },
+                error: function(xhr, status, error){
+                    iziToast.error({
+                     title: 'Error',
+                     message: xhr.responseJSON.message,
+                     position: 'topRight'
+                    });
+                },
+                complete: function () {
+                    $('.v_submit_button')
+                        .prop('disabled', false)
+                        .html('add to cart');
+                }
+            })
+        })
      })
   </script>
 
