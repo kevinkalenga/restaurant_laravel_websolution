@@ -23,6 +23,9 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name("add-to-
 Route::get('/get-cart-products', [CartController::class, 'getCartProduct'])->name("get-cart-products");
 Route::get('/cart-product-remove/{rowId}', [CartController::class, 'cartProductRemove'])->name("cart-product-remove");
 
+/** Cart Page Routes  **/ 
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
 
 
 Route::group(['middleware' => 'auth'], function(){

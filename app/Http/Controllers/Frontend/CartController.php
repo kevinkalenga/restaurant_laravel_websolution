@@ -90,4 +90,9 @@ class CartController extends Controller
             return response(['status' => 'error', 'message' => 'Sorry something went wrong'], 500);
        }
     }
+
+    public function index()
+    {
+        return view('frontend.pages.cart-view');
+    }
 }
