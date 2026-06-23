@@ -72,7 +72,7 @@
 
                                             <td class="fp__pro_name">
                                                 <a href="{{$product->options->product_info['slug']}}">{{$product->name}}</a>
-                                                <span>{{$product->options->product_size['name']}} ({{currencyPosition($product->options->product_size['price'])}})</span>
+                                                <span>{{@$product->options->product_size['name']}} {{@$product->options->product_size['price'] ? '('.currencyPosition(@$product->options->product_size['price']).')' : ''}}</span>
                                                 @foreach($product->options->product_options as $option)
                                                   <p>{{$option['name']}} ({{currencyPosition($option['price'])}})</p>
                                                 @endforeach
@@ -85,7 +85,7 @@
                                             <td class="fp__pro_select">
                                                 <div class="quentity_btn">
                                                     <button class="btn btn-danger decrement"><i class="fal fa-minus"></i></button>
-                                                    <input type="text" placeholder="1" class="quantity" value="{{$product->qty}}" readonly>
+                                                    <input type="text" placeholder="1" class="quantity" data-id="{{$product->rowId}}" value="{{$product->qty}}" readonly>
                                                     <button class="btn btn-success increment"><i class="fal fa-plus"></i></button>
                                                 </div>
                                             </td>
@@ -136,16 +136,47 @@
        $('.increment').on('click', function(){
          let inputField = $(this).siblings(".quantity");
          let currentValue = parseInt(inputField.val());
+         let rowId = inputField.data("id");
          inputField.val(currentValue + 1);
+         
+         cartQtyUpdate(rowId, inputField.val())
        })
        $('.decrement').on('click', function(){
          let inputField = $(this).siblings(".quantity");
          let currentValue = parseInt(inputField.val());
+          let rowId = inputField.data("id");
+         
          if(inputField.val() > 1) {
             inputField.val(currentValue - 1);
+            cartQtyUpdate(rowId, inputField.val());
          }
          
        })
+
+       function cartQtyUpdate(rowId, qty) {
+        $.ajax({
+            method: 'post',
+            url: '{{route('cart.quantity-update')}}',
+            data: {
+                'rowId': rowId,
+                'qty': qty
+            },
+            beforeSend: function(){
+
+            },
+            success: function(response) {
+                console.log(response.status);   // success
+                console.log(response.message);  // Updated Cart Successfully!
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseJSON.status);   // error
+                console.log(xhr.responseJSON.message);  // Something went wrong
+            },
+            complete: function(){
+
+            }
+        })
+       }
     })
 </script>
 

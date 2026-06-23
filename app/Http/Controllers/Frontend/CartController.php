@@ -95,4 +95,23 @@ class CartController extends Controller
     {
         return view('frontend.pages.cart-view');
     }
+
+    public function cartQtyUpdate(Request $request)
+    {
+        try {
+            Cart::update($request->rowId, $request->qty);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Updated Cart Successfully!'
+            ]);
+        } catch (\Exception $e) {
+            logger($e);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong'
+            ], 500);
+        }
+    }
 }
