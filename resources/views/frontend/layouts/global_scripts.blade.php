@@ -1,4 +1,20 @@
 <script>
+   
+  /** Show Loader **/ 
+
+   function showLoader() {
+      $('.overlay-container').removeClass('d-none');
+      $('.overlay').addClass('active');
+   }
+   /** Hide Loader **/ 
+
+   function hideLoader() {
+      $('.overlay').removeClass('active');
+      $('.overlay-container').addClass('d-none');
+   }
+   
+   
+   
    /** Load product modal **/ 
 
    function loadProductModal(productId) {
@@ -78,7 +94,7 @@
          error: function(xhr, status, error) {
              iziToast.error({
                title: 'Error',
-                message: xhr.responseJSON.message,
+               message: xhr.responseJSON.message,
                position: 'topRight'
             });
 
@@ -87,4 +103,6 @@
         
       })
    }
+
+
 </script>

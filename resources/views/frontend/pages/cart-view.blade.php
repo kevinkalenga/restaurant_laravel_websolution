@@ -162,18 +162,26 @@
                 'qty': qty
             },
             beforeSend: function(){
-
+                showLoader();
+               
             },
             success: function(response) {
-                console.log(response.status);   // success
-                console.log(response.message);  // Updated Cart Successfully!
+                 iziToast.success({
+                    title: 'Success',
+                    message: response.message,
+                    position: 'topRight'
+                });
             },
             error: function(xhr, status, error) {
-                console.log(xhr.responseJSON.status);   // error
-                console.log(xhr.responseJSON.message);  // Something went wrong
+                  hideLoader();
+                iziToast.error({
+                    title: 'Error',
+                    message: xhr.responseJSON.message,
+                    position: 'topRight'
+                });
             },
             complete: function(){
-
+                hideLoader();
             }
         })
        }

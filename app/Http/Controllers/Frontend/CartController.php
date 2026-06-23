@@ -104,7 +104,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Updated Cart Successfully!'
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             logger($e);
 
