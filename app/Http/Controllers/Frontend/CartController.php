@@ -96,6 +96,9 @@ class CartController extends Controller
         return view('frontend.pages.cart-view');
     }
 
+
+
+
     public function cartQtyUpdate(Request $request)
     {
         try {
@@ -103,9 +106,12 @@ class CartController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Updated Cart Successfully!'
+                'message' => 'Cart updated successfully',
+                'product_total' => productTotal($request->rowId)
             ], 200);
+
         } catch (\Exception $e) {
+
             logger($e);
 
             return response()->json([

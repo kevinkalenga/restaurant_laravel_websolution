@@ -91,7 +91,7 @@
                                             </td>
 
                                             <td class="fp__pro_tk">
-                                                <h6>$180,00</h6>
+                                                <h6 class="product_cart_total">{{currencyPosition(productTotal($product->rowId))}}</h6>
                                             </td>
 
                                             <td class="fp__pro_icon">
@@ -139,7 +139,12 @@
          let rowId = inputField.data("id");
          inputField.val(currentValue + 1);
          
-         cartQtyUpdate(rowId, inputField.val())
+         cartQtyUpdate(rowId, inputField.val(), function(response){
+            let productTotal = response.product_total
+            // console.log(productTotal)
+            inputField.closest("tr").find(".product_cart_total")
+                                 .text("{{currencyPosition(":productTotal")}}".replace(":productTotal", productTotal))
+         })
        })
        $('.decrement').on('click', function(){
          let inputField = $(this).siblings(".quantity");
@@ -148,12 +153,19 @@
          
          if(inputField.val() > 1) {
             inputField.val(currentValue - 1);
-            cartQtyUpdate(rowId, inputField.val());
+            //cartQtyUpdate(rowId, inputField.val());
+
+              cartQtyUpdate(rowId, inputField.val(), function(response){
+              let productTotal = response.product_total
+            // console.log(productTotal)
+             inputField.closest("tr").find(".product_cart_total")
+                                 .text("{{currencyPosition(":productTotal")}}".replace(":productTotal", productTotal))
+            })
          }
          
        })
 
-       function cartQtyUpdate(rowId, qty) {
+       function cartQtyUpdate(rowId, qty, callBack) {
         $.ajax({
             method: 'post',
             url: '{{route('cart.quantity-update')}}',
@@ -166,7 +178,12 @@
                
             },
             success: function(response) {
-                 iziToast.success({
+                 console.log('SUCCESS');
+                console.log(response);
+                if(callBack && typeof callBack === "function") {
+                    callBack(response)
+                }
+                iziToast.success({
                     title: 'Success',
                     message: response.message,
                     position: 'topRight'
