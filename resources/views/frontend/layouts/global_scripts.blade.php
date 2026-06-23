@@ -41,7 +41,7 @@
 
    /** Update sidebar cart **/ 
 
-   function updateSiderbarCart(callback = null) {
+   function updateSidebarCart(callback = null) {
        $.ajax({
          method: 'GET',
          url: '{{route("get-cart-products")}}',
@@ -76,7 +76,7 @@
          success: function(response) {
             if(response.status === 'success') {
                   console.log('Product removed');
-                updateSiderbarCart(function(){
+                updateSidebarCart(function(){
                      iziToast.success({
                         title: 'Success',
                         message: response.message,

@@ -120,4 +120,9 @@ class CartController extends Controller
             ], 500);
         }
     }
+
+    public function cartDestroy() {
+        Cart::destroy();
+        return redirect()->back();
+    }
 }

@@ -61,7 +61,7 @@
                                         </th>
 
                                         <th class="fp__pro_icon">
-                                            <a class="clear_all" href="#">clear all</a>
+                                            <a class="clear_all" href="{{route('cart.destroy')}}">clear all</a>
                                         </th>
                                     </tr>
                                     @foreach(Cart::content() as $product)
@@ -99,6 +99,11 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @if(Cart::content()->count() === 0) 
+                                      <tr>
+                                         <td colspan="6" class="text-center fp__pro_name" style="width: 100%; display:inline;">Cart is empty</td>
+                                      </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -221,11 +226,13 @@
                 
                 },
                 success: function(response) {
+                    
                     iziToast.success({
                         title: 'Success',
                         message: response.message,
                         position: 'topRight'
                     });
+                    updateSidebarCart()
                 },
                 error: function(xhr, status, error) {
                     hideLoader();
