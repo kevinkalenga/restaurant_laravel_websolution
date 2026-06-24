@@ -77,6 +77,10 @@
                     <label for="offer_price">Offer Price</label>
                     <input type="number" name="offer_price" step="0.01" class="form-control" value="{{ old('offer_price', $product->offer_price) }}">
                 </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="text" name="quantity" class="form-control" value="{{ old('quantity', $product->quantity) }}">
+                </div>
 
                 <!-- SKU -->
                 <div class="form-group">

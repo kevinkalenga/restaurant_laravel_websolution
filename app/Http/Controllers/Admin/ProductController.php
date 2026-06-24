@@ -92,6 +92,7 @@ class ProductController extends Controller
         'long_description' => ['nullable', 'string'],
         'price' => ['required', 'numeric', 'min:0'],
         'offer_price' => ['nullable', 'numeric', 'min:0'],
+        'quantity' => ['required', 'numeric'],
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
@@ -113,6 +114,7 @@ class ProductController extends Controller
       $product->long_description = $request->long_description;
       $product->price = $request->price;
       $product->offer_price = $request->offer_price ?? 0;
+      $product->quantity = $request->quantity;
       $product->sku = $request->sku;
       $product->seo_title = $request->seo_title;
       $product->seo_description = $request->seo_description;
@@ -157,6 +159,7 @@ class ProductController extends Controller
         'long_description' => ['nullable', 'string'],
         'price' => ['required', 'numeric', 'min:0'],
         'offer_price' => ['nullable', 'numeric', 'min:0'],
+        'quantity' => ['required', 'numeric'],
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
@@ -178,6 +181,7 @@ class ProductController extends Controller
     $product->long_description = $request->long_description;
     $product->price = $request->price;
     $product->offer_price = $request->offer_price ?? 0;
+    $product->quantity = $request->quantity;
     $product->sku = $request->sku;
     $product->seo_title = $request->seo_title;
     $product->seo_description = $request->seo_description;
@@ -195,19 +199,19 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+   public function destroy(string $id)
    {
-    $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
-    // Supprimer l'image du produit si besoin
-    if ($product->thumb_image && file_exists(public_path($product->thumb_image))) {
-        unlink(public_path($product->thumb_image));
+        // Supprimer l'image du produit si besoin
+        if ($product->thumb_image && file_exists(public_path($product->thumb_image))) {
+            unlink(public_path($product->thumb_image));
+        }
+
+        $product->delete();
+
+        return redirect()
+            ->route('admin.product.index')
+            ->with('success', 'Product deleted successfully!');
     }
-
-    $product->delete();
-
-    return redirect()
-        ->route('admin.product.index')
-        ->with('success', 'Product deleted successfully!');
-  }
 }
