@@ -6,15 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Cart;
+use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
-      try{
         // 1. Récupérer le produit avec relations
         $product = Product::with(['productSizes', 'productOptions'])
             ->findOrFail($request->product_id);
+        if($product->quantity < $request->quantity) {
+            throw ValidationException::withMessages(['Quantity is not available!']);
+        }
+      try{
+        
 
         // 2. Récupérer la taille (peut être null)
         $productSize = null;
@@ -101,13 +106,21 @@ class CartController extends Controller
 
     public function cartQtyUpdate(Request $request)
     {
+        $cartItem = Cart::get($request->rowId);
+          // 1. Récupérer le produit si il existe sinon une erreur
+        $product = Product::findOrFail($cartItem->id);
+           
+        if($product->quantity < $request->qty) {
+           return response(['status' => 'error', 'message' => 'Quantity is not available!', 'qty' => $cartItem->qty]);
+        }
+        
         try {
-            Cart::update($request->rowId, $request->qty);
+            $cart = Cart::update($request->rowId, $request->qty);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cart updated successfully',
-                'product_total' => productTotal($request->rowId)
+                'product_total' => productTotal($request->rowId), 'qty' => $cart->qty
             ], 200);
 
         } catch (\Exception $e) {

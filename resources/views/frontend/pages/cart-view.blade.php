@@ -142,70 +142,102 @@
          let inputField = $(this).siblings(".quantity");
          let currentValue = parseInt(inputField.val());
          let rowId = inputField.data("id");
-         inputField.val(currentValue + 1);
+         
+          inputField.val(currentValue + 1);
          
          cartQtyUpdate(rowId, inputField.val(), function(response){
-            let productTotal = response.product_total
-            // console.log(productTotal)
-            inputField.closest("tr").find(".product_cart_total")
-                                 .text("{{currencyPosition(":productTotal")}}".replace(":productTotal", productTotal))
+            if(response.status === 'success') {
+                inputField.val(response.qty);
+                let productTotal = response.product_total
+                // console.log(productTotal)
+                inputField.closest("tr").find(".product_cart_total")
+                                        .text("{{currencyPosition(':productTotal')}}"
+                                        .replace(":productTotal", productTotal))
+            } else if(response.status === 'error') {
+                 inputField.val(response.qty);
+               
+               
+            }
          })
        })
+       
        $('.decrement').on('click', function(){
-         let inputField = $(this).siblings(".quantity");
-         let currentValue = parseInt(inputField.val());
-          let rowId = inputField.data("id");
-         
-         if(inputField.val() > 1) {
-            inputField.val(currentValue - 1);
-            //cartQtyUpdate(rowId, inputField.val());
 
-              cartQtyUpdate(rowId, inputField.val(), function(response){
-              let productTotal = response.product_total
-            // console.log(productTotal)
-             inputField.closest("tr").find(".product_cart_total")
-                                 .text("{{currencyPosition(":productTotal")}}".replace(":productTotal", productTotal))
-            })
-         }
-         
-       })
+            let inputField = $(this).siblings(".quantity");
+            let currentValue = parseInt(inputField.val());
+            let rowId = inputField.data("id");
+
+            if(currentValue <= 1) return;
+
+            let newQty = currentValue - 1;
+
+            cartQtyUpdate(rowId, newQty, function(response){
+
+                if(response.status === 'success') {
+
+                    inputField.val(response.qty);
+
+                    let productTotal = response.product_total;
+
+                    inputField.closest("tr")
+                        .find(".product_cart_total")
+                        .text("{{currencyPosition(':productTotal')}}"
+                        .replace(":productTotal", productTotal));
+
+                } 
+                else if(response.status === 'error') {
+
+                    inputField.val(response.qty);
+                }
+            });
+        });
 
        function cartQtyUpdate(rowId, qty, callBack) {
-        $.ajax({
-            method: 'post',
-            url: '{{route('cart.quantity-update')}}',
-            data: {
-                'rowId': rowId,
-                'qty': qty
-            },
-            beforeSend: function(){
-                showLoader();
-               
-            },
-            success: function(response) {
-                 console.log('SUCCESS');
-                console.log(response);
-                if(callBack && typeof callBack === "function") {
+            $.ajax({
+                method: 'post',
+                url: '{{route("cart.quantity-update")}}',
+                data: {
+                    'rowId': rowId,
+                    'qty': qty
+                },
+                beforeSend: function(){
+                    showLoader();
+                
+                },
+                success: function(response) {
+                    if(callBack && typeof callBack === "function") {
                     callBack(response)
+                    }
+
+                    if(response.status === 'success') {
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.message,
+                            position: 'topRight'
+                        });
+                    } 
+                    else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: response.message,
+                            position: 'topRight'
+                        });
+                    }
+                
+                },
+                
+                error: function(xhr, status, error) {
+                    hideLoader();
+                    iziToast.error({
+                        title: 'Error',
+                        message: xhr.responseJSON.message,
+                        position: 'topRight'
+                    });
+                },
+                complete: function(){
+                    hideLoader();
                 }
-                iziToast.success({
-                    title: 'Success',
-                    message: response.message,
-                    position: 'topRight'
-                });
-            },
-            error: function(xhr, status, error) {
-                  hideLoader();
-                iziToast.error({
-                    title: 'Error',
-                    message: xhr.responseJSON.message,
-                    position: 'topRight'
-                });
-            },
-            complete: function(){
-                hideLoader();
-            }
-        })
+            })
        }
 
         $('.remove_cart_product').on('click', function(e){
