@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\ProductSizeController;
 use App\Http\Controllers\Admin\ProductOptionController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CouponController;
 
 
 
@@ -48,6 +49,10 @@ Route::resource('/product-gallery', ProductGalleryController::class);
 // Product Size Routes
 Route::get('/product-size/{product}', [ProductSizeController::class, 'index'])->name('product-size.show-index');
 Route::resource('/product-size', ProductSizeController::class);
+
+// Coupon Routes
+Route::resource('/coupon', CouponController::class);
+
 
 // Product Option Routes
 
