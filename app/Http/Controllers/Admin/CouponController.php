@@ -101,20 +101,15 @@ class CouponController extends Controller
         ->with('success', 'Coupon created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $coupon = Coupon::findOrFail($id);
+        return view('admin.coupon.edit', compact('coupon'));
     }
 
     /**
@@ -122,7 +117,32 @@ class CouponController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $coupon = Coupon::findOrFail($id);
+          // Validation
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'code' => ['required', 'max:50'],
+            'quantity' => ['required', 'integer'],
+            'min_purchase_amount' => ['required', 'integer'],
+            'expire_date' => ['required', 'date'],
+            'discount_type' => ['required'],
+            'discount' => ['required'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        $coupon->name = $request->name;
+        $coupon->code = $request->code;
+        $coupon->quantity = $request->quantity;
+        $coupon->min_purchase_amount = $request->min_purchase_amount;
+        $coupon->expire_date = $request->expire_date;
+        $coupon->discount_type = $request->discount_type;
+        $coupon->discount = $request->discount;
+        $coupon->status = $request->status;
+        $coupon->save();
+
+        return redirect()
+            ->route('admin.coupon.index')
+            ->with('success', 'Coupon updated successfully!');
     }
 
     /**
@@ -130,6 +150,14 @@ class CouponController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $coupon = Coupon::findOrFail($id);
+
+      
+
+        $coupon->delete();
+
+        return redirect()
+            ->route('admin.coupon.index')
+            ->with('success', 'Coupon deleted successfully!');
     }
 }
