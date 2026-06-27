@@ -112,7 +112,7 @@
                 <div class="col-lg-4 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__cart_list_footer_button">
                         <h6>total cart</h6>
-                        <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
+                        <p>subtotal: <span id="subtotal">{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
                         <p>discount: <span id="discount">{{config('settings.site_currency_icon')}}0</span></p>
                         <p class="total"><span>total:</span> <span id="final_total">{{config('settings.site_currency_icon')}}0</span></p>
@@ -146,13 +146,16 @@
           inputField.val(currentValue + 1);
          
          cartQtyUpdate(rowId, inputField.val(), function(response){
+            console.log(response)
             if(response.status === 'success') {
                 inputField.val(response.qty);
                 let productTotal = response.product_total
                 // console.log(productTotal)
                 inputField.closest("tr").find(".product_cart_total")
                                         .text("{{currencyPosition(':productTotal')}}"
-                                        .replace(":productTotal", productTotal))
+                                        .replace(":productTotal", productTotal));
+                   
+                    updateSubtotal(response.cart_total);
             } else if(response.status === 'error') {
                  inputField.val(response.qty);
                
@@ -160,6 +163,12 @@
             }
          })
        })
+
+        function updateSubtotal(total) {
+            $('#subtotal').text(
+                "{{ currencyPosition(':total') }}".replace(':total', total)
+            );
+        }
        
        $('.decrement').on('click', function(){
 
@@ -172,7 +181,7 @@
             let newQty = currentValue - 1;
 
             cartQtyUpdate(rowId, newQty, function(response){
-
+                  console.log(response)
                 if(response.status === 'success') {
 
                     inputField.val(response.qty);
@@ -183,6 +192,7 @@
                         .find(".product_cart_total")
                         .text("{{currencyPosition(':productTotal')}}"
                         .replace(":productTotal", productTotal));
+                    updateSubtotal(response.cart_total);
 
                 } 
                 else if(response.status === 'error') {
@@ -290,6 +300,8 @@
             //alert(subtotal);
             couponApply(code, subtotal);
         })
+
+     
         
         
         

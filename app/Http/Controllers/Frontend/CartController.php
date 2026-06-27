@@ -120,7 +120,9 @@ class CartController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cart updated successfully',
-                'product_total' => productTotal($request->rowId), 'qty' => $cart->qty
+                'product_total' => productTotal($request->rowId), 
+                 'cart_total' => cartTotal(),
+                'qty' => $cart->qty
             ], 200);
 
         } catch (\Exception $e) {
