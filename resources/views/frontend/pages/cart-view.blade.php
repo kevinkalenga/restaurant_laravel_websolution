@@ -295,7 +295,7 @@
         
         function couponApply(code, subtotal) {
           $.ajax({
-            method: 'GET',
+            method: 'POST',
             url: '{{route("apply.coupon")}}',
             data: {
                 code: code,
@@ -308,7 +308,12 @@
 
             },
             error: function(xhr, status, error) {
-
+               
+                iziToast.error({
+                    title: 'Error',
+                    message: xhr.responseJSON.message,
+                    position: 'topRight'
+                });
             },
             complete: function(){
                 

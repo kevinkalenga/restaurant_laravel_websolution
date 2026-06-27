@@ -9,6 +9,7 @@ use App\Models\WhyChooseUs;
 use App\Models\Category;
 use App\Models\SectionTitle;
 use App\Models\Product;
+use App\Models\Coupon;
 
 class FrontendController extends Controller
 {
@@ -45,6 +46,32 @@ class FrontendController extends Controller
     }
     public function applyCoupon(Request $request)
     {
-      dd($request->all());
+        $subtotal = $request->subtotal;
+        $code = $request->code;
+       // Cibler la colonne code en bd dans la table Coupon et comparer avec la valeur de la requete
+       $coupon = Coupon::where('code', $code)->first();
+       // dd($coupon);
+       
+       // 422 pour tout simplement parler de l'erreur de la requete et non du serveur   
+       if(!$coupon) {
+        return response(['message' => 'Invalid Coupon Code.'], 422);
+       }
+
+       if($coupon->quantity <= 0) {
+         return response(['message' => 'Coupon has been fully redeemed.'], 422);
+       }
+       if($coupon->expire_date < now()) {
+         return response(['message' => 'Coupon is expired.'], 422);
+       }
+
+       if($coupon->discount_type === 'percent') {
+         $discount = $subtotal * ($coupon->discount / 100);
+       }elseif ($coupon->discount_type === 'amount') {
+         $discount = $coupon->discount;
+       }
+
+       $finalTotal = $subtotal - $discount;
+
+       return response(['discount' => $discount, 'finalTotal' => $finalTotal]);
     }
 }
