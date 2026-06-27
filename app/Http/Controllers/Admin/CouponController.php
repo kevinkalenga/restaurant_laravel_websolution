@@ -59,7 +59,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.coupon.create');
     }
 
     /**
@@ -67,7 +67,38 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+      $request->validate([
+        'name' => ['required', 'max:255'],
+        'code' => ['required', 'max:50'],
+        'quantity' => ['required', 'integer'],
+        'min_purchase_amount' => ['required', 'integer'],
+        'expire_date' => ['required', 'date'],
+        'discount_type' => ['required'],
+        'discount' => ['required'],
+        'status' => ['required', 'boolean'],
+      ]);
+
+      
+
+
+      // Création du produit
+      $coupon = new Coupon();
+      $coupon->name = $request->name;
+      $coupon->code = $request->code;
+      $coupon->quantity = $request->quantity;
+      $coupon->min_purchase_amount = $request->min_purchase_amount;
+      $coupon->expire_date = $request->expire_date;
+      $coupon->discount_type = $request->discount_type;
+      $coupon->discount = $request->discount;
+      $coupon->status = $request->status;
+    
+  
+      $coupon->save();
+
+      return redirect()
+        ->route('admin.coupon.index')
+        ->with('success', 'Coupon created successfully!');
     }
 
     /**

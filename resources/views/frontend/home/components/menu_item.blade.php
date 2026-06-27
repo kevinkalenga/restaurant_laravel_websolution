@@ -36,7 +36,9 @@
                     <div class="col-xl-3 col-sm-6 col-lg-4 {{$category->slug}} wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__menu_item">
                         <div class="fp__menu_item_img">
-                            <img src="{{asset($product->thumb_image)}}" alt="{{$product->title}}" class="img-fluid w-100">
+                            
+                              <img src="{{asset($product->thumb_image)}}" alt="{{$product->title}}" class="img-fluid w-100">
+                           
                             <a class="category" href="#">{{@$product->category->name}}</a>
                         </div>
                         <div class="fp__menu_item_text">
