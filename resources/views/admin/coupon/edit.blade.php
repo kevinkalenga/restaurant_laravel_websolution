@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group">
                     <label>Expire Date</label>
-                    <input type="text" name="expire_date" class="form-control" value="{{$coupon->expire_date}}">
+                    <input type="date" name="expire_date" class="form-control" value="{{$coupon->expire_date}}">
                    
                 </div>
               
@@ -50,8 +50,8 @@
                 <div class="form-group">
                     <label>Discount Type</label>
                     <select name="discount_type" class="form-control">
-                        <option @selected($coupon->discount_type === 1) value="1">Percent</option>
-                        <option @selected($coupon->discount_type === 0) value="0">Amount ({{config('settings.site_current_icon')}})</option>
+                        <option @selected($coupon->discount_type === 'percent') value="percent">Percent</option>
+                        <option @selected($coupon->discount_type === 'amount') value="amount">Amount ({{config('settings.site_current_icon')}})</option>
                     </select>
                  
                 </div>
