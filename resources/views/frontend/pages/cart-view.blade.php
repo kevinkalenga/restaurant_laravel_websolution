@@ -114,8 +114,8 @@
                         <h6>total cart</h6>
                         <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span>$10.00</span></p>
-                        <p class="total"><span>total:</span> <span>$134.00</span></p>
+                        <p>discount: <span id="discount">{{config('settings.site_currency_icon')}}0</span></p>
+                        <p class="total"><span>total:</span> <span id="final_total">{{config('settings.site_currency_icon')}}0</span></p>
                         <form id="coupon_form">
                             <input type="text" id="coupon_code" name="code" placeholder="Coupon Code">
                             <button type="submit">apply</button>
@@ -302,13 +302,20 @@
                 subtotal: subtotal
             },
             beforeSend: function(){
-
+                 showLoader();
             },
             success: function(response) {
+              $('#discount').text("{{config('settings.site_currency_icon')}}"+response.discount);
+              $('#final_total').text("{{config('settings.site_currency_icon')}}"+response.finalTotal);
 
+               iziToast.success({
+                    title: 'Success',
+                    message: response.message,
+                    position: 'topRight'
+                });
             },
             error: function(xhr, status, error) {
-               
+                 hideLoader();
                 iziToast.error({
                     title: 'Error',
                     message: xhr.responseJSON.message,
@@ -316,7 +323,7 @@
                 });
             },
             complete: function(){
-                
+                 hideLoader();
             }
           })
         }
