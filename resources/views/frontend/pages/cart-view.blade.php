@@ -114,8 +114,21 @@
                         <h6>total cart</h6>
                         <p>subtotal: <span id="subtotal">{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span id="discount">{{config('settings.site_currency_icon')}}0</span></p>
-                        <p class="total"><span>total:</span> <span id="final_total">{{config('settings.site_currency_icon')}}0</span></p>
+                        <p>discount: <span id="discount">
+                            <!-- if discount variable is set in the session -->
+                            @if(isset(session()->get('coupon')['discount']))
+                               {{config('settings.site_currency_icon')}} {{session()->get('coupon')['discount'] ?? 0}}
+                            @else 
+                                {{config('settings.site_currency_icon')}}0
+                            @endif
+                        </span></p>
+                        <p class="total"><span>total:</span> <span id="final_total">
+                            @if(isset(session()->get('coupon')['discount']))
+                               {{config('settings.site_currency_icon')}} {{cartTotal() - session()->get('coupon')['discount']}}
+                            @else 
+                                {{config('settings.site_currency_icon')}} {{cartTotal()}}
+                            @endif
+                        </span></p>
                         <form id="coupon_form">
                             <input type="text" id="coupon_code" name="code" placeholder="Coupon Code">
                             <button type="submit">apply</button>

@@ -11,6 +11,7 @@ use App\Models\SectionTitle;
 use App\Models\Product;
 use App\Models\Coupon;
 
+
 class FrontendController extends Controller
 {
     public function index()
@@ -46,7 +47,8 @@ class FrontendController extends Controller
     }
     public function applyCoupon(Request $request)
     {
-        $subtotal = $request->subtotal;
+         $subtotal = $request->subtotal;
+       
         $code = $request->code;
        // Cibler la colonne code en bd dans la table Coupon et comparer avec la valeur de la requete
        $coupon = Coupon::where('code', $code)->first();
@@ -70,8 +72,19 @@ class FrontendController extends Controller
          $discount = $coupon->discount;
        }
 
-       $finalTotal = $subtotal - $discount;
+       $discount = round($discount, 2);
+       $finalTotal = round($subtotal - $discount, 2);
 
-       return response(['message' => 'Coupon Applied Successfully.', 'discount' => $discount, 'finalTotal' => $finalTotal]);
+      //  $finalTotal = $subtotal - $discount;
+
+      //  put our coupon in the session
+      session()->put('coupon', [
+          'code' => $coupon->code,
+           'discount' => $discount
+      ]);
+      
+
+
+       return response(['message' => 'Coupon Applied Successfully.', 'discount' => number_format($discount, 2, '.', ''), 'finalTotal' => number_format($finalTotal, 2, '.', '')]);
     }
 }
