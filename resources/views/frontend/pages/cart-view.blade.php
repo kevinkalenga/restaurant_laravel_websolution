@@ -115,19 +115,10 @@
                         <p>subtotal: <span id="subtotal">{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
                         <p>discount: <span id="discount">
-                            <!-- if discount variable is set in the session -->
-                            @if(isset(session()->get('coupon')['discount']))
-                               {{config('settings.site_currency_icon')}} {{session()->get('coupon')['discount'] ?? 0}}
-                            @else 
-                                {{config('settings.site_currency_icon')}}0
-                            @endif
+                            {{ config('settings.site_currency_icon') }}0
                         </span></p>
                         <p class="total"><span>total:</span> <span id="final_total">
-                            @if(isset(session()->get('coupon')['discount']))
-                               {{config('settings.site_currency_icon')}} {{cartTotal() - session()->get('coupon')['discount']}}
-                            @else 
-                                {{config('settings.site_currency_icon')}} {{cartTotal()}}
-                            @endif
+                              {{ config('settings.site_currency_icon') }}{{ cartTotal() }}
                         </span></p>
                         <form id="coupon_form">
                             <input type="text" id="coupon_code" name="code" placeholder="Coupon Code">
@@ -169,6 +160,9 @@
                                         .replace(":productTotal", productTotal));
                    
                     updateSubtotal(response.cart_total);
+                    if ($('#coupon_code').val()) {
+                        couponApply($('#coupon_code').val(), response.cart_total);
+                    }
             } else if(response.status === 'error') {
                  inputField.val(response.qty);
                
@@ -182,6 +176,8 @@
                 "{{ currencyPosition(':total') }}".replace(':total', total)
             );
         }
+
+       
        
        $('.decrement').on('click', function(){
 
@@ -206,6 +202,9 @@
                         .text("{{currencyPosition(':productTotal')}}"
                         .replace(":productTotal", productTotal));
                     updateSubtotal(response.cart_total);
+                    if ($('#coupon_code').val()) {
+                        couponApply($('#coupon_code').val(), response.cart_total);
+                    }
 
                 } 
                 else if(response.status === 'error') {
@@ -246,6 +245,10 @@
                             position: 'topRight'
                         });
                     }
+
+                    $('#final_total').text(
+                        "{{ config('settings.site_currency_icon') }}" + response.cart_total
+                    );
                 
                 },
                 
@@ -309,49 +312,58 @@
         $('#coupon_form').on('submit', function(e){
             e.preventDefault()
             let code = $("#coupon_code").val();
-            let subtotal = getCartTotal();
-            //alert(subtotal);
-            couponApply(code, subtotal);
+            couponApply(code);
+           
         })
+        
 
-     
-        
-        
-        
-        function couponApply(code, subtotal) {
-          $.ajax({
-            method: 'POST',
-            url: '{{route("apply.coupon")}}',
-            data: {
-                code: code,
-                subtotal: subtotal
-            },
-            beforeSend: function(){
-                 showLoader();
-            },
-            success: function(response) {
-              $('#discount').text("{{config('settings.site_currency_icon')}}"+response.discount);
-              $('#final_total').text("{{config('settings.site_currency_icon')}}"+response.finalTotal);
+      
 
-               iziToast.success({
-                    title: 'Success',
-                    message: response.message,
-                    position: 'topRight'
-                });
-            },
-            error: function(xhr, status, error) {
-                 hideLoader();
-                iziToast.error({
-                    title: 'Error',
-                    message: xhr.responseJSON.message,
-                    position: 'topRight'
-                });
-            },
-            complete: function(){
-                 hideLoader();
-            }
-          })
+         
+        function couponApply(code) {
+            $.ajax({
+                method: 'POST',
+                url: '{{route("apply.coupon")}}',
+                data: { code },
+
+                success: function(response) {
+
+                   
+
+                    $('#discount').text(
+                        "{{config('settings.site_currency_icon')}}" + response.discount
+                    );
+
+                    $('#final_total').text(
+                        "{{config('settings.site_currency_icon')}}" + response.finalTotal
+                    );
+
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.message,
+                        position: 'topRight'
+                    });
+                },
+
+                error: function(xhr) {
+
+                    let message = 'Something went wrong';
+
+                    // si backend renvoie JSON (Laravel validation / 422)
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+
+                    iziToast.error({
+                        title: 'Error',
+                        message: message,
+                        position: 'topRight'
+                    });
+                }
+            });
         }
+     
+       
     })
 </script>
 

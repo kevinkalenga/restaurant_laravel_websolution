@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\SectionTitle;
 use App\Models\Product;
 use App\Models\Coupon;
-
+use Cart;
 
 class FrontendController extends Controller
 {
@@ -45,46 +45,43 @@ class FrontendController extends Controller
       
        return view('frontend.layouts.ajax-files.product_popup_modal', compact('product'))->render();
     }
+   
+
+
+
     public function applyCoupon(Request $request)
     {
-         $subtotal = $request->subtotal;
-       
+        $subtotal = cartTotal();
         $code = $request->code;
-       // Cibler la colonne code en bd dans la table Coupon et comparer avec la valeur de la requete
-       $coupon = Coupon::where('code', $code)->first();
-       // dd($coupon);
-       
-       // 422 pour tout simplement parler de l'erreur de la requete et non du serveur   
-       if(!$coupon) {
-        return response(['message' => 'Invalid Coupon Code.'], 422);
-       }
 
-       if($coupon->quantity <= 0) {
-         return response(['message' => 'Coupon has been fully redeemed.'], 422);
-       }
-       if($coupon->expire_date < now()) {
-         return response(['message' => 'Coupon is expired.'], 422);
-       }
+        $coupon = Coupon::where('code', $code)->first();
 
-       if($coupon->discount_type === 'percent') {
-         $discount = $subtotal * ($coupon->discount / 100);
-       }elseif ($coupon->discount_type === 'amount') {
-         $discount = $coupon->discount;
-       }
+        if (!$coupon) {
+            return response(['message' => 'Invalid Coupon Code.'], 422);
+        }
 
-       $discount = round($discount, 2);
-       $finalTotal = round($subtotal - $discount, 2);
+        if ($coupon->quantity <= 0) {
+            return response(['message' => 'Coupon has been fully redeemed.'], 422);
+        }
 
-      //  $finalTotal = $subtotal - $discount;
+        if ($coupon->expire_date < now()) {
+            return response(['message' => 'Coupon is expired.'], 422);
+        }
 
-      //  put our coupon in the session
-      session()->put('coupon', [
-          'code' => $coupon->code,
-           'discount' => $discount
-      ]);
-      
+        $discount = $coupon->discount_type === 'percent'
+            ? $subtotal * ($coupon->discount / 100)
+            : $coupon->discount;
 
+        $discount = round($discount, 2);
+        $finalTotal = round($subtotal - $discount, 2);
 
-       return response(['message' => 'Coupon Applied Successfully.', 'discount' => number_format($discount, 2, '.', ''), 'finalTotal' => number_format($finalTotal, 2, '.', '')]);
+        return response()->json([
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'finalTotal' => $finalTotal,
+            'message' => 'Coupon Applied Successfully.'
+        ]);
     }
+
+  
 }
