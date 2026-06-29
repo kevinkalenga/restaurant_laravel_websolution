@@ -75,11 +75,34 @@ class FrontendController extends Controller
         $discount = round($discount, 2);
         $finalTotal = round($subtotal - $discount, 2);
 
+        
+        // Sauvegarde du coupon en session
+        session()->put('coupon', [
+            'code' => $coupon->code,
+            'discount' => $discount,
+            'finalTotal' => $finalTotal
+        ]);
+        
+        
         return response()->json([
             'subtotal' => $subtotal,
             'discount' => $discount,
             'finalTotal' => $finalTotal,
+            'coupon_code' => $code,
             'message' => 'Coupon Applied Successfully.'
+        ]);
+    }
+
+    public function destroyCoupon()
+    {
+        session()->forget('coupon');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Coupon Removed!',
+            'subtotal' => cartTotal(),
+            'discount' => 0,
+            'finalTotal' => cartTotal()
         ]);
     }
 
