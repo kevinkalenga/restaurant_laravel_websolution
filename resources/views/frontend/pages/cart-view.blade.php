@@ -307,6 +307,20 @@
                         position: 'topRight'
                     });
                     updateSidebarCart()
+
+                     // recalcul UI
+                    $('#subtotal').text(
+                        "{{ config('settings.site_currency_icon') }}" + response.cart_total
+                    );
+
+                    $('#final_total').text(
+                        "{{ config('settings.site_currency_icon') }}" + response.cart_total
+                    );
+
+                     //si coupon existe encore
+                    if ($('#coupon_code').val()) {
+                        couponApply($('#coupon_code').val());
+                    }
                 },
                 error: function(xhr, status, error) {
                     hideLoader();

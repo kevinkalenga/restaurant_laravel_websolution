@@ -86,14 +86,41 @@ class CartController extends Controller
     {
         return view('frontend.layouts.ajax-files.sidebar-cart-item')->render();
     }
+
+
     public function cartProductRemove($rowId)
     {
-       try {
-           Cart::remove($rowId);
-           return response(['status' => 'success', 'message' => 'Item has been removed!'], 200);
-       }catch(\Exception $e) {
-            return response(['status' => 'error', 'message' => 'Sorry something went wrong'], 500);
-       }
+        try {
+            Cart::remove($rowId);
+
+            $subtotal = cartTotal();
+
+            // recalcul coupon si existe
+            if (session()->has('coupon')) {
+                $coupon = session('coupon');
+
+                $discount = $coupon['discount']; // simplifié
+                $finalTotal = $subtotal - $discount;
+
+                session()->put('coupon', [
+                    'code' => $coupon['code'],
+                    'discount' => $discount,
+                    'finalTotal' => $finalTotal
+                ]);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Item has been removed!',
+                'cart_total' => $subtotal
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong'
+            ], 500);
+        }
     }
 
     public function index()

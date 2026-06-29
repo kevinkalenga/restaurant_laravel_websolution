@@ -93,8 +93,18 @@ class FrontendController extends Controller
         ]);
     }
 
+  
+
+      
     public function destroyCoupon()
     {
+        if (!session()->has('coupon')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No coupon found.'
+            ]);
+        }
+
         session()->forget('coupon');
 
         return response()->json([

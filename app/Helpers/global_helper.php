@@ -30,7 +30,7 @@ if(!function_exists('cartTotal')) {
         
        }
        
-        return $total;
+        return round($total, 2);
       
     }
 }
