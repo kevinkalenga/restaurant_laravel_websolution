@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductSizeController;
 use App\Http\Controllers\Admin\ProductOptionController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\DeliveryAreaController;
 
 
 
@@ -52,6 +53,10 @@ Route::resource('/product-size', ProductSizeController::class);
 
 // Coupon Routes
 Route::resource('/coupon', CouponController::class);
+
+
+// Delivery Area Routes
+Route::resource('/delivery-area', DeliveryAreaController::class);
 
 
 // Product Option Routes
