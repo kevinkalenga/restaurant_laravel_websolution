@@ -4,7 +4,10 @@
 <section class="section">
     <div class="section-header">
         <h1>Delivery Area</h1>
-       
+        <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item"><a href="{{ route('admin.delivery-area.index') }}">Delivery Areas</a></div>
+            <div class="breadcrumb-item active">Delivery Area</div>
+        </div>
     </div>
 
     <div class="card card-primary">
@@ -13,7 +16,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.category.store') }}" method="POST" novalidate>
+            <form action="{{ route('admin.delivery-area.store') }}" method="POST" novalidate>
                 @csrf
 
                 <div class="form-group">
