@@ -91,20 +91,15 @@ class DeliveryAreaController extends Controller
         ->with('success', 'Delivery Area created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+         $deliveryArea = DeliveryArea::findOrFail($id);
+        return view('admin.delivery-area.edit', compact('deliveryArea'));
     }
 
     /**
@@ -112,7 +107,27 @@ class DeliveryAreaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $deliveryArea = DeliveryArea::findOrFail($id);
+        $request->validate([
+            'area_name' => ['required', 'max:255'],
+            'min_delivery_time' => ['required', 'max:255'],
+            'max_delivery_time' => ['required', 'max:255'],
+            'delivery_fee' => ['required', 'numeric'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        $deliveryArea->area_name = $request->area_name;
+        $deliveryArea->min_delivery_time = $request->min_delivery_time;
+        $deliveryArea->max_delivery_time = $request->max_delivery_time;
+        $deliveryArea->delivery_fee = $request->delivery_fee;
+        $deliveryArea->status = $request->status;
+    
+  
+        $deliveryArea->save();
+
+         return redirect()
+        ->route('admin.delivery-area.index')
+        ->with('success', 'Delivery Area updated successfully!');
     }
 
     /**
@@ -120,6 +135,14 @@ class DeliveryAreaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+          $deliveryArea = DeliveryArea::findOrFail($id);
+
+      
+
+        $deliveryArea->delete();
+
+        return redirect()
+            ->route('admin.delivery-area.index')
+            ->with('success', 'Delivery Area deleted successfully!');
     }
 }

@@ -72,7 +72,7 @@
                  
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create Coupon</button>
+                <button type="submit" class="btn btn-primary">Update Coupon</button>
               
             </form>
         </div>

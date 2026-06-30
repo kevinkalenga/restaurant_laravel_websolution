@@ -39,6 +39,8 @@
 @push('scripts')
 <script>
 $(function () {
+    const currencyIcon = "{{ config('settings.site_currency_icon') }}";
+    const currencyPosition = "{{ config('settings.site_currency_icon_position') }}";
     $('#delivery-areas-table').DataTable({
         processing: true,
         serverSide: true,
@@ -48,7 +50,18 @@ $(function () {
             { data: 'area_name', name: 'area_name' },
             { data: 'min_delivery_time', name: 'min_delivery_time' },
             { data: 'max_delivery_time', name: 'max_delivery_time' },
-            { data: 'delivery_fee', name: 'delivery_fee' },
+            {
+                data: 'delivery_fee',
+                name: 'delivery_fee',
+                render: function(data) {
+                    const price = Number(data);
+                    if (isNaN(price)) return '';
+
+                    return currencyPosition === 'left'
+                        ? currencyIcon + price.toFixed(2)
+                        : price.toFixed(2) + currencyIcon;
+                }
+            },
 
             {
                 data: 'status',
