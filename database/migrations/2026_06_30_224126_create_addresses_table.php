@@ -8,11 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * users the name of the table
      */
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('delivery_area_id')->constrained('delivery_areas');
+            $table->string('first_name');
+            $table->string('last_name')->nullable();
+            $table->string('email');
+            $table->string('phone');
+            $table->text('address');
+            $table->string('type');
             $table->timestamps();
         });
     }
