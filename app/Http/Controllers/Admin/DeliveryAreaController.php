@@ -20,7 +20,7 @@ class DeliveryAreaController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.delivery-area.create');
     }
 
     /**
