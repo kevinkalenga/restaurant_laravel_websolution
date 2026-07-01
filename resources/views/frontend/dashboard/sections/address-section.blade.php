@@ -52,7 +52,8 @@
                                                 </div>
                                             </div>
                                             <div class="fp_dashboard_new_address ">
-                                                <form>
+                                                <form action="{{route('address.store')}}" method="POST">
+                                                    @csrf
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <h4>add new address</h4>
@@ -60,13 +61,11 @@
                                                         
                                                         <div class="col-md-12 col-lg-12 col-x-12">
                                                             <div class="fp__check_single_form">
-                                                                <select id="select_js3">
+                                                                <select id="select_js3" name="area">
                                                                     <option value="">Select Area</option>
-                                                                    <option value="">bangladesh</option>
-                                                                    <option value="">nepal</option>
-                                                                    <option value="">japan</option>
-                                                                    <option value="">korea</option>
-                                                                    <option value="">thailand</option>
+                                                                    @foreach($deliveryAreas as $area)
+                                                                      <option value="{{$area->id}}">{{$area->area_name}}</option>
+                                                                    @endforeach
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -74,22 +73,22 @@
                                                         
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="First Name">
+                                                                <input type="text" placeholder="First Name" name="first_name">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Last Name">
+                                                                <input type="text" placeholder="Last Name" name="last_name">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Phone">
+                                                                <input type="text" placeholder="Phone" name="phone">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Email">
+                                                                <input type="text" placeholder="Email" name="email">
                                                             </div>
                                                         </div>
                                                       
@@ -97,14 +96,14 @@
                                                         <div class="col-md-12 col-lg-12 col-xl-12">
                                                             <div class="fp__check_single_form">
                                                                 <textarea cols="3" rows="4"
-                                                                    placeholder="Address"></textarea>
+                                                                    placeholder="Address" name="address"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
                                                             <div class="fp__check_single_form check_area">
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="radio"
-                                                                        name="flexRadioDefault" id="flexRadioDefault1">
+                                                                        name="type" id="flexRadioDefault1" value="home">
                                                                     <label class="form-check-label"
                                                                         for="flexRadioDefault1">
                                                                         home
@@ -112,7 +111,7 @@
                                                                 </div>
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="radio"
-                                                                        name="flexRadioDefault" id="flexRadioDefault2">
+                                                                        name="type" id="flexRadioDefault2" value="office">
                                                                     <label class="form-check-label"
                                                                         for="flexRadioDefault2">
                                                                         office
