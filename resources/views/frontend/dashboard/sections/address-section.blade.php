@@ -61,7 +61,7 @@
                                                         
                                                         <div class="col-md-12 col-lg-12 col-x-12">
                                                             <div class="fp__check_single_form">
-                                                                <select id="select_js3" name="area">
+                                                                <select id="select_js3" name="delivery_area_id">
                                                                     <option value="">Select Area</option>
                                                                     @foreach($deliveryAreas as $area)
                                                                       <option value="{{$area->id}}">{{$area->area_name}}</option>
