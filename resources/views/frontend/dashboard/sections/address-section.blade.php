@@ -127,7 +127,7 @@
                                                                     <select id="select_js4" name="delivery_area_id">
                                                                         <option value="">Select Area</option>
                                                                         @foreach($deliveryAreas as $area)
-                                                                        <option value="{{$area->id}}">{{$area->area_name}}</option>
+                                                                        <option @selected($address->delivery_area_id === $area->id) value="{{$area->id}}">{{$area->area_name}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -136,22 +136,22 @@
                                                             
                                                             <div class="col-md-6 col-lg-12 col-xl-6">
                                                                 <div class="fp__check_single_form">
-                                                                    <input type="text" placeholder="First Name" name="first_name">
+                                                                    <input type="text" placeholder="First Name" name="first_name" value="{{$address->first_name}}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-lg-12 col-xl-6">
                                                                 <div class="fp__check_single_form">
-                                                                    <input type="text" placeholder="Last Name" name="last_name">
+                                                                    <input type="text" placeholder="Last Name" name="last_name" value="{{$address->last_name}}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-lg-12 col-xl-6">
                                                                 <div class="fp__check_single_form">
-                                                                    <input type="text" placeholder="Phone" name="phone">
+                                                                    <input type="text" placeholder="Phone" name="phone" value="{{$address->phone}}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-lg-12 col-xl-6">
                                                                 <div class="fp__check_single_form">
-                                                                    <input type="text" placeholder="Email" name="email">
+                                                                    <input type="text" placeholder="Email" name="email" value="{{$address->email}}">
                                                                 </div>
                                                             </div>
                                                         
@@ -159,13 +159,13 @@
                                                             <div class="col-md-12 col-lg-12 col-xl-12">
                                                                 <div class="fp__check_single_form">
                                                                     <textarea cols="3" rows="4"
-                                                                        placeholder="Address" name="address"></textarea>
+                                                                        placeholder="Address" name="address">{!! $address->address !!}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="col-12">
                                                                 <div class="fp__check_single_form check_area">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="radio"
+                                                                        <input @checked($address->type === 'home') class="form-check-input" type="radio"
                                                                             name="type" id="flexRadioDefault1" value="home">
                                                                         <label class="form-check-label"
                                                                             for="flexRadioDefault1">
@@ -173,7 +173,7 @@
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="radio"
+                                                                        <input @checked($address->type === 'office') class="form-check-input" type="radio"
                                                                             name="type" id="flexRadioDefault2" value="office">
                                                                         <label class="form-check-label"
                                                                             for="flexRadioDefault2">
@@ -205,8 +205,14 @@
                                 $('.show_edit_section').on('click', function(){
                                     let className = $(this).data('class');
                                     $('.fp_dashboard_edit_address').removeClass('d-block')
+                                    $('.fp_dashboard_edit_address').removeClass('d-none')
+                                    
                                     $('.fp_dashboard_existing_address').addClass('d-none')
                                     $('.'+className).addClass('d-block')
+                                })
+                                $('.cancel_edit_address').on('click', function(){
+                                   $('.fp_dashboard_edit_address').addClass('d-none')
+                                   $('.fp_dashboard_existing_address').removeClass('d-none')
                                 })
                              })
                           </script>
