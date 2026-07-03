@@ -12,8 +12,11 @@ class DashboardController extends Controller
 {
    public function index() 
    {
-    $deliveryAreas = DeliveryArea::where('status', 1)->get();
-     return view('frontend.dashboard.index', compact("deliveryAreas"));
+      // comparer le current user avec celui qui est en bd
+      $deliveryAreas = DeliveryArea::where('status', 1)->get();
+   
+      $userAddresses = Address::where('user_id', Auth()->user()->id)->get();
+      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses"));
    }
 
    public function createAddress(Request $request)
