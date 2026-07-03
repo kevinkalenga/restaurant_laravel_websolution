@@ -50,5 +50,36 @@ class DashboardController extends Controller
       return redirect()
             ->route('admin.dashboard')
             ->with('success', 'Address created successfully!');
-      }
+   }
+
+   public function updateAddress(Request $request, $id)
+   {
+      $address = Address::where('id', $id)
+         ->where('user_id', auth()->id())
+         ->firstOrFail();
+
+      $request->validate([
+         'delivery_area_id' => ['required', 'integer'],
+         'first_name'       => ['required', 'max:255'],
+         'last_name'        => ['nullable', 'max:255'],
+         'phone'            => ['required', 'max:255'],
+         'email'            => ['required', 'email', 'max:255'],
+         'address'          => ['required'],
+         'type'             => ['required', 'in:home,office'],
+      ]);
+
+      $address->delivery_area_id = $request->delivery_area_id;
+      $address->first_name = $request->first_name;
+      $address->last_name = $request->last_name;
+      $address->phone = $request->phone;
+      $address->email = $request->email;
+      $address->address = $request->address;
+      $address->type = $request->type;
+
+      $address->save();
+
+      return redirect()
+         ->route('dashboard')
+         ->with('success', 'Address updated successfully!');
+   }
 }
