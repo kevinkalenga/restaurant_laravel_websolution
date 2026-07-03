@@ -23,8 +23,10 @@
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/custom.css')}}">
     <!-- <link rel="stylesheet" href="css/rtl.css"> -->
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+      
+  
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"> -->
 
 </head>
 
@@ -147,6 +149,7 @@
 
 
 
+<script src="{{ asset('frontend/assets/izitoast/iziToast.min.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
 

@@ -82,4 +82,15 @@ class DashboardController extends Controller
          ->route('dashboard')
          ->with('success', 'Address updated successfully!');
    }
+
+   public function deleteAddress($id)
+   {
+    Address::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->delete();
+
+    return redirect()
+        ->route('admin.dashboard')
+        ->with('success', 'Address deleted successfully!');
+   }
 }
