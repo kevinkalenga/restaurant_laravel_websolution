@@ -19,6 +19,30 @@ class CheckoutController extends Controller
 
     public function calculationDeliveryCharge($id)
     {
-       return $id;
+        try{
+
+               $address = Address::findOrFail($id);
+               $deliveryFee = $address->deliveryArea?->delivery_fee ?? 0;
+                //dd($deliveryFee);
+                $subtotal = cartTotal();
+
+                $discount = session('coupon.discount', 0);
+
+                $total = round($subtotal - $discount + $deliveryFee, 2);
+
+                return response()->json([
+                    'delivery_fee' => $deliveryFee,
+                    'discount'     => $discount,
+                    'finalTotal'   => $total,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Delivery calculation error: '.$e->getMessage());
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Something went wrong'
+                ], 500);
+            }
+
+       
     }
 }

@@ -175,7 +175,7 @@
                     <div id="sticky_sidebar" class="fp__cart_list_footer_button">
                         <h6>total cart</h6>
                         <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
-                        <p>delivery: <span>$00.00</span></p>
+                        <p>delivery: <span id="delivery_fee">$00.00</span></p>
                         @if(session()->has('coupon'))
                            <p>discount: <span>{{currencyPosition(session()->get('coupon')['discount'])}}</span></p>
                         @else
@@ -185,7 +185,7 @@
                         <p class="total">
                             <span>total:</span> 
                              @if(session()->has('coupon'))
-                                <span>{{ currencyPosition(session()->get('coupon')['finalTotal']) }}</span>
+                                <span id="final_total">{{ currencyPosition(session()->get('coupon')['finalTotal']) }}</span>
                             @else
                                 <span>{{ currencyPosition(cartTotal()) }}</span>
                             @endif
@@ -211,18 +211,32 @@
       $(document).ready(function(){
         $('.v_address').on('click', function(){
             let addressId = $(this).val();
-
+            let deliveryFee = $('#delivery_fee');
+            let finalTotal = $('#final_total');
             $.ajax({
                 method: 'GET',
                 url: '{{route("checkout.delivery-cal", ":id")}}'.replace(":id", addressId),
                 beforeSend: function() {
-
+                   showLoader()
                 },
-                success: function() {
+                success: function(response) {
+                    deliveryFee.text(
+                       "{{ currencyPosition(':amount') }}".replace(':amount', Number(response.delivery_fee).toFixed(2))
+                    );
 
+                     finalTotal.text(
+                        "{{ currencyPosition(':amount') }}".replace(':amount', Number(response.finalTotal).toFixed(2))
+                    );
                 },
                 error: function(xhr, status, error){
-
+                     iziToast.error({
+                        title: 'Error',
+                        message: xhr.responseJSON.message,
+                        position: 'topRight'
+                    });
+                },
+                complete: function(){
+                    hideLoader()
                 }
             })
         })
