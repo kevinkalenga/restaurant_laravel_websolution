@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
 
       return redirect()
-            ->route('admin.dashboard')
+            ->back()
             ->with('success', 'Address created successfully!');
    }
 

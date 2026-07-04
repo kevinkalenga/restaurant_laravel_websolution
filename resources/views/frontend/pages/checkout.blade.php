@@ -53,16 +53,15 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{route('address.store')}}" method="POST">
-                                                      @csrf
+                                                <div class="fp_dashboard_new_address d-block">
+                                                 <form action="{{route('address.store')}}" method="POST">
+                                                    @csrf
                                                     <div class="row">
-                                                        <div class="col-12">
-                                                            <h4>add new address</h4>
-                                                        </div>
+                                                       
                                                         
                                                         <div class="col-md-12 col-lg-12 col-x-12">
                                                             <div class="fp__check_single_form">
-                                                                <select id="select_js3" name="delivery_area_id">
+                                                                <select class="nice-select" name="delivery_area_id">
                                                                     <option value="">Select Area</option>
                                                                     @foreach($deliveryAreas as $area)
                                                                       <option value="{{$area->id}}">{{$area->area_name}}</option>
@@ -120,14 +119,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12">
+                                                        <div style="display:flex;" >
                                                             <button type="button"
-                                                                class="common_btn cancel_new_address">cancel</button>
-                                                            <button type="submit" class="common_btn">save
+                                                                class="common_btn cancel_new_address mx-2"  style="width:200px;">cancel</button>
+                                                            <button type="submit" class="common_btn mx-2" style="width:200px;">save
                                                                 address</button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                 </form>
+                                               </div>
                                             </div>
                                         </div>
                                     </div>
@@ -139,7 +139,17 @@
                                     <div class="col-md-6">
                                         <div class="fp__checkout_single_address">
                                                <div class="form-check">
-                                                    <label class="form-check-label">
+                                                    
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="address_id"
+                                                        id="address{{ $address->id }}"
+                                                        value="{{ $address->id }}"
+                                                    >
+                                                    
+                                               
+                                                   <label class="form-check-label"  for="address{{ $address->id }}">
                                                         <span class="icon">
                                                             @if($address->type === 'home')
                                                                           <i class="fas fa-home"></i>
