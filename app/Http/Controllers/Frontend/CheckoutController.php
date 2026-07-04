@@ -16,4 +16,9 @@ class CheckoutController extends Controller
          $deliveryAreas = DeliveryArea::where('status', 1)->get();
         return view('frontend.pages.checkout', compact('addresses', 'deliveryAreas'));
     }
+
+    public function calculationDeliveryCharge($id)
+    {
+       return $id;
+    }
 }

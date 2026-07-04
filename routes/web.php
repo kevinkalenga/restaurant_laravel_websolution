@@ -36,6 +36,7 @@ Route::get('/distroy-coupon', [FrontendController::class, 'destroyCoupon'])->nam
 /** Checkout Routes  **/ 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+  Route::get('/checkout/{id}/delivery-cal/', [CheckoutController::class, 'calculationDeliveryCharge'])->name('checkout.delivery-cal');
 });
 
 

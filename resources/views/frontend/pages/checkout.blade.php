@@ -141,7 +141,7 @@
                                                <div class="form-check">
                                                     
                                                     <input
-                                                        class="form-check-input"
+                                                        class="form-check-input v_address"
                                                         type="radio"
                                                         name="address_id"
                                                         id="address{{ $address->id }}"
@@ -174,14 +174,24 @@
                 <div class="col-lg-4 wow fadeInUp" data-wow-duration="1s">
                     <div id="sticky_sidebar" class="fp__cart_list_footer_button">
                         <h6>total cart</h6>
-                        <p>subtotal: <span>$124.00</span></p>
+                        <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span>$10.00</span></p>
-                        <p class="total"><span>total:</span> <span>$134.00</span></p>
-                        <form>
-                            <input type="text" placeholder="Coupon Code">
-                            <button type="submit">apply</button>
-                        </form>
+                        @if(session()->has('coupon'))
+                           <p>discount: <span>{{currencyPosition(session()->get('coupon')['discount'])}}</span></p>
+                        @else
+                           <p>discount: <span>{{currencyPosition(0)}}</span></p>
+                        @endif
+                       
+                        <p class="total">
+                            <span>total:</span> 
+                             @if(session()->has('coupon'))
+                                <span>{{ currencyPosition(session()->get('coupon')['finalTotal']) }}</span>
+                            @else
+                                <span>{{ currencyPosition(cartTotal()) }}</span>
+                            @endif
+                        </p>
+                        
+                        
                         <a class="common_btn" href=" #">checkout</a>
                     </div>
                 </div>
@@ -193,9 +203,30 @@
     ==============================-->
 
 
+@endsection  
 
+@push('scripts') 
 
+   <script>
+      $(document).ready(function(){
+        $('.v_address').on('click', function(){
+            let addressId = $(this).val();
 
+            $.ajax({
+                method: 'GET',
+                url: '{{route("checkout.delivery-cal", ":id")}}'.replace(":id", addressId),
+                beforeSend: function() {
 
+                },
+                success: function() {
 
-@endsection 
+                },
+                error: function(xhr, status, error){
+
+                }
+            })
+        })
+      })
+   </script>
+
+@endpush
