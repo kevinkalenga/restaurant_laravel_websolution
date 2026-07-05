@@ -45,4 +45,9 @@ class CheckoutController extends Controller
 
        
     }
+
+    public function checkoutRedirect(Request $request)
+    {
+       dd($request->all());
+    }
 }

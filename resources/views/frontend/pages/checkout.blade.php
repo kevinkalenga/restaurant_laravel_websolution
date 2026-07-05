@@ -192,7 +192,7 @@
                         </p>
                         
                         
-                        <a class="common_btn" href=" #">checkout</a>
+                        <a class="common_btn" id="proceed_pmt_button" href=" #">Proceed To Payment</a>
                     </div>
                 </div>
             </div>
@@ -233,6 +233,40 @@
                         title: 'Error',
                         message: xhr.responseJSON.message,
                         position: 'topRight'
+                    });
+                },
+                complete: function(){
+                    hideLoader()
+                }
+            })
+        })
+        $('#proceed_pmt_button').on('click', function(e){
+            e.preventDefault()
+            
+            let address = $('.v_address:checked');
+            let id = address.val();
+            if(address.length === 0) {
+                
+                alert("Please select an address");
+                return;
+            }
+            
+            
+            $.ajax({
+                method: 'POST',
+                url: '{{route("checkout.redirect")}}',
+                data: {id:id},
+                beforeSend: function() {
+                    showLoader()
+                },
+                success: function(response) {
+                
+                },
+                error: function(xhr, status, error){
+                    iziToast.error({
+                    title: 'Error',
+                    message: xhr.responseJSON.message,
+                    position: 'topRight'
                     });
                 },
                 complete: function(){
