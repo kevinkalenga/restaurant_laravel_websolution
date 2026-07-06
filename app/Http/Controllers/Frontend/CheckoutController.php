@@ -48,6 +48,18 @@ class CheckoutController extends Controller
 
     public function checkoutRedirect(Request $request)
     {
-       dd($request->all());
+        $request->validate([
+            'id' => ['required', 'integer']
+        ]);
+
+        $address = Address::with('deliveryArea')->where('user_id', auth()->id())->findOrFail($request->id);
+
+        $selectedAddress = $address->address . ', Area: ' . ($address->deliveryArea?->area_name ?? '');
+
+        session(['address' => $selectedAddress]);
+
+        return response()->json([
+            'redirect_url' => route('payment.index')
+        ]);
     }
 }
