@@ -57,6 +57,7 @@ class CheckoutController extends Controller
         $selectedAddress = $address->address . ', Area: ' . ($address->deliveryArea?->area_name ?? '');
 
         session(['address' => $selectedAddress]);
+        session(['delivery_fee' => $address->deliveryArea->delivery_fee]);
 
         return response()->json([
             'redirect_url' => route('payment.index')

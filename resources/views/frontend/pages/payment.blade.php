@@ -50,15 +50,18 @@
                 <div class="col-lg-4 mt_25 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__cart_list_footer_button">
                         <h6>total cart</h6>
-                        <p>subtotal: <span>$124.00</span></p>
-                        <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span>$10.00</span></p>
-                        <p class="total"><span>total:</span> <span>$134.00</span></p>
-                        <form>
-                            <input type="text" placeholder="Coupon Code">
-                            <button type="submit">apply</button>
-                        </form>
-                        <a class=" common_btn" href=" #">checkout</a>
+                          
+                        <p>subtotal: <span>{{ currencyPosition(number_format($subTotal, 2, '.', '')) }}</span></p>
+
+                        <p>delivery: <span>{{ currencyPosition(number_format($delivery, 2, '.', '')) }}</span></p>
+
+                        <p>discount: <span>{{ currencyPosition(number_format($discount, 2, '.', '')) }}</span></p>
+
+                        <p class="total">
+                            <span>total:</span>
+                            <span>{{ currencyPosition(number_format($finalTotal, 2, '.', '')) }}</span>
+                        </p>
+                     
                     </div>
                 </div>
             </div>
