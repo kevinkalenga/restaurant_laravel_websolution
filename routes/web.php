@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::get('/checkout/{id}/delivery-cal/', [CheckoutController::class, 'calculationDeliveryCharge'])->name('checkout.delivery-cal');
   Route::post('/checkout', [CheckoutController::class, 'checkoutRedirect'])->name('checkout.redirect');
   Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+  Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make.payment');
 });
 
 

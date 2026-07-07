@@ -31,4 +31,15 @@ class PaymentController extends Controller
             'finalTotal'
         ));
     }
+
+    public function makePayment(Request $request)
+    {
+       $request->validate([
+         'payment_gateway' => ['required', 'string', 'in:paypal']
+       ]);
+
+        return response()->json([
+            'message' => 'Payment could not be processed. Please try again.'
+        ], 500);
+    }
 }
