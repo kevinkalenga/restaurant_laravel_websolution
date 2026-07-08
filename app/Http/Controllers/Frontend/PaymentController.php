@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\OrderService;
 
 class PaymentController extends Controller
 {
@@ -32,14 +33,30 @@ class PaymentController extends Controller
         ));
     }
 
-    public function makePayment(Request $request)
+    public function makePayment(Request $request, OrderService $orderService)
     {
        $request->validate([
          'payment_gateway' => ['required', 'string', 'in:paypal']
        ]);
 
-        return response()->json([
+       // Create Order   
+
+       
+
+       try {
+         
+           $orderService->createOrder();
+          
+           return response()->json([
+            'message' => 'Order created successfully.'
+           ]);
+       }catch(\Exception $e) {
+          
+          return response()->json([
             'message' => 'Payment could not be processed. Please try again.'
-        ], 500);
+          ], 500);
+       }
+
+     
     }
 }
