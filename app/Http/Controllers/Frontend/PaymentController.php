@@ -44,8 +44,14 @@ class PaymentController extends Controller
        
 
        try {
+
+          $order = $orderService->createOrder();
+
+              // redirect user to the payment host
+              // $paymentService->redirect($order);
+           
          
-           $orderService->createOrder();
+          
           
            return response()->json([
             'message' => 'Order created successfully.'
