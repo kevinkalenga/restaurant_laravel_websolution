@@ -66,6 +66,7 @@ Route::resource('/product-option', ProductOptionController::class);
 
 // Setting Payment Gateway Routes
 Route::get('/payment-gateway-setting', [PaymentGatewaySettingController::class, 'index'])->name('payment-setting.index');
+Route::put('/paypal-setting', [PaymentGatewaySettingController::class, 'paypalSettingUpdate'])->name('paypal-setting.update');
 
 // Setting Routes
 Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
