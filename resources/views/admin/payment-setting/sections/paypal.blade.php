@@ -63,7 +63,7 @@
                                  </div>
                                  <div class="form-group">
                                     <label for="">Paypal Logo</label>
-                                    <div di="image-preview" class="image-preview">
+                                    <div id="image-preview" class="image-preview">
                                        <label for="image-upload" id="image-label">Choose File</label>
                                       <input type="file" id="image-upload" name="paypal_logo">
                                     </div>
@@ -75,15 +75,3 @@
                             </form>
                           </div>
 
- @push('scripts') 
-  <script>
-     $(document).ready(function(){
-        $('.image-preview').css({
-          'background-image': 'url({{asset(auth()->user()->avatar)}})',
-          'background-size': 'cover',
-          'background-position': 'center center'
-        })
-     })
-  </script>
-
-@endpush
