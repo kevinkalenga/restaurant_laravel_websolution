@@ -14,7 +14,9 @@ class PaymentGatewaySettingController extends Controller
 
     public function index()
     {
-        return view('admin.payment-setting.index');
+        $paymentGateway = PaymentGatewaySetting::pluck('value', 'key');
+        //dd($paymentGateway);
+        return view('admin.payment-setting.index', compact('paymentGateway'));
     }
 
     public function paypalSettingUpdate(Request $request)
