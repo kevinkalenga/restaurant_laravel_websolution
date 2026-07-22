@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PaymentGatewaySetting;
 use App\Traits\FileUploadTrait;
+use App\Services\PaymentGatewaySettingService;
 
 class PaymentGatewaySettingController extends Controller
 {
