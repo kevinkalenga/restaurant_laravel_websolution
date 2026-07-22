@@ -97,17 +97,17 @@ class SliderController extends Controller
               'status' => 'required|boolean',
         ]);
 
-           // Utiliser le trait pour uploader l'image
-          $imagePath = $this->uploadImage($request, 'image', 'uploads');
+        // Utiliser le trait pour uploader l'image
+        $imagePath = $this->uploadImage($request, 'image', 'uploads');
 
         Slider::create([
-              'image' => $imagePath,
-              'offer' => $request->offer,
-              'title' => $request->title,
-              'sub_title' => $request->sub_title,
-              'short_description' => $request->short_description,
-              'button_link' => $request->button_link,
-              'status' => $request->status,
+            'image' => $imagePath,
+            'offer' => $request->offer,
+            'title' => $request->title,
+            'sub_title' => $request->sub_title,
+            'short_description' => $request->short_description,
+            'button_link' => $request->button_link,
+            'status' => $request->status,
         ]);
 
         return redirect()->route('admin.sliders.index')->with('success', 'Slider created successfully!');

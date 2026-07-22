@@ -56,7 +56,9 @@ class PaymentGatewaySettingController extends Controller
                 ['value' => $value]
             );
         }
-
+        
+        $settingsService = app(PaymentGatewaySettingService::class);
+        $settingsService->clearCachedSettings();
         
         return redirect()->back()->with('success', 'Paypal Gateway Setting successfully!');
     }
