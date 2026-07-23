@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 
 class PaymentController extends Controller
@@ -99,7 +100,7 @@ class PaymentController extends Controller
 
             'payment_action' => 'Sale',
             'currency'       => config('gatewaySettings.paypal_currency'),
-            'notify_url'     => route('paypal.notify'),
+            // 'notify_url'     => route('paypal.notify'),
             'locale'         => 'en_US',
             'validate_ssl'   => true,
         ];
@@ -108,8 +109,32 @@ class PaymentController extends Controller
     
     public function payWithPaypal()
     {
+        $provider = new PayPalClient();
 
-       
+       $token = $provider->getAccessToken();
+
+      
+
+        // calculate payable amount 
+        $grandTotal = session()->get('grand_total');
+        $payableAmount = round($grandTotal * config('gatewaySettings.paypal_rate'), 2);
+
+        $response = $provider->createOrder([
+            'intent' => "CAPTURE",
+            'application_context' => [
+               'return_url' => route('paypal.success'),
+               'cancel_url' => route('paypal.cancel')
+            ],
+            'purchase_units' => [
+                [
+                    'amount' => [
+                        'currency_code' => config('gatewaySettings.paypal_currency'),
+                        'value' => $payableAmount
+                    ]
+                ]
+            ]
+        ]);
+        dd($response);
     }
     public function paypalSuccess()
     {
