@@ -100,7 +100,7 @@ class PaymentController extends Controller
 
             'payment_action' => 'Sale',
             'currency'       => config('gatewaySettings.paypal_currency'),
-            // 'notify_url'     => route('paypal.notify'),
+            'notify_url'     =>  url('/paypal/notify'),
             'locale'         => 'en_US',
             'validate_ssl'   => true,
         ];
@@ -145,9 +145,17 @@ class PaymentController extends Controller
 
         return redirect($approvalUrl);
     }
-    public function paypalSuccess()
+    public function paypalSuccess(Request $request)
     {
+       $config = $this->setPaypalConfig();
+       $provider = new PayPalClient($config);
+       $provider->getAccessToken();
 
+       $response = $provider->capturePaymentOrder($request->token);
+
+       if(isset($response['status']) && $response['status'] === 'COMPLETED') {
+         dd('Payment Completed');
+       }
     }
     public function paypalCancel()
     {
