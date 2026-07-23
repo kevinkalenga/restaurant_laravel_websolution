@@ -45,17 +45,29 @@ class PaymentController extends Controller
 
        try {
 
-          $order = $orderService->createOrder();
+           $order = $orderService->createOrder();
 
-              // redirect user to the payment host
-              // $paymentService->redirect($order);
-           
+            // redirect user to the payment host
+            if (!$order) {
+                return response()->json([
+                    'message' => 'Failed to create order.'
+                ], 500);
+            }
+             
+            switch ($request->payment_gateway) {
+
+                case 'paypal':
+                    return response()->json([
+                        'redirect_url' => route('paypal.payment')
+                    ]);
+
+                default:
+                    return response()->json([
+                        'message' => 'Unsupported payment gateway.'
+                    ], 400);
+            }
          
           
-          
-           return response()->json([
-            'message' => 'Order created successfully.'
-           ]);
        }catch(\Exception $e) {
           
           return response()->json([
@@ -64,5 +76,18 @@ class PaymentController extends Controller
        }
 
      
+    }
+
+    public function payWithPaypal()
+    {
+        return 'Payment processing';
+    }
+    public function paypalSuccess()
+    {
+
+    }
+    public function paypalCancel()
+    {
+
     }
 }

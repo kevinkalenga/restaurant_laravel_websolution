@@ -91,7 +91,8 @@
                     showLoader()
                 },
                 success: function(response) {
-                    console.log('SUCCESS', response);
+                    // console.log('SUCCESS', response);
+                    window.location.href = response.redirect_url;
                 },
                 error: function(xhr, status, error){
                     console.log('Erreur AJAX');
