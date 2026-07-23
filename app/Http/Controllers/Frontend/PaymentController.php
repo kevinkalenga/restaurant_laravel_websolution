@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 
+
 class PaymentController extends Controller
 {
     public function index()
@@ -78,9 +79,37 @@ class PaymentController extends Controller
      
     }
 
+    public function setPaypalConfig()
+    {
+        $settings = \App\Models\Setting::first();
+
+        return [
+            // 'mode' => $settings->paypal_mode,
+            'mode' => config('gatewaySettings.paypal_account_mode'),
+
+            'live' => [
+                'client_id'     => config('gatewaySettings.paypal_api_key'),
+                'client_secret' => config('gatewaySettings.paypal_secret_key'),
+            ],
+
+            'sandbox' => [
+                'client_id'     => config('gatewaySettings.paypal_api_key'),
+                'client_secret' => config('gatewaySettings.paypal_secret_key'),
+            ],
+
+            'payment_action' => 'Sale',
+            'currency'       => config('gatewaySettings.paypal_currency'),
+            'notify_url'     => route('paypal.notify'),
+            'locale'         => 'en_US',
+            'validate_ssl'   => true,
+        ];
+    }
+    
+    
     public function payWithPaypal()
     {
-        return 'Payment processing';
+
+       
     }
     public function paypalSuccess()
     {
