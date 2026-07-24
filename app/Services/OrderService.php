@@ -44,9 +44,14 @@ class OrderService {
 
             $orderItem->save();
          }
+
+        // Putting the order in the session
+         session()->put('order_id', $order->id);
          
         // Putting the grand total amount in session
          session()->put('grand_total', $order->grand_total);
+       
+        
 
          return $order;
    

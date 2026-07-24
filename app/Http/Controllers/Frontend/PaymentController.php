@@ -154,7 +154,14 @@ class PaymentController extends Controller
        $response = $provider->capturePaymentOrder($request->token);
 
        if(isset($response['status']) && $response['status'] === 'COMPLETED') {
-         dd('Payment Completed');
+            //dd($response);
+           $orderId = session()->get('order_id');
+           $paymentInfo = [
+             'transaction_id' => $response['purchase_units'][0]['payments']['captures'][0]['id'],
+             'currency' => $response['purchase_units'][0]['payments']['captures'][0]['amount']['currency_code'],
+             'status' => $response['purchase_units'][0]['payments']['captures'][0]['status'],
+           ]
+        
        }
     }
     public function paypalCancel()
