@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\OrderService;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Events\OrderPaymentUpdateEvent;
+use App\Events\OrderPlacedNotificationEvent;
 
 
 class PaymentController extends Controller
@@ -165,6 +166,7 @@ class PaymentController extends Controller
            ];
 
            OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'PayPal');
+           OrderPlacedNotificationEvent::dispatch($orderId);
 
            dd('success');
         
