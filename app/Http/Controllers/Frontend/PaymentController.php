@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use App\Events\OrderPaymentUpdateEvent;
 
 
 class PaymentController extends Controller
@@ -154,13 +155,18 @@ class PaymentController extends Controller
        $response = $provider->capturePaymentOrder($request->token);
 
        if(isset($response['status']) && $response['status'] === 'COMPLETED') {
-            //dd($response);
+           //dd($response);
            $orderId = session()->get('order_id');
+           $capture = $response['purchase_units'][0]['payments']['captures'][0];
            $paymentInfo = [
-             'transaction_id' => $response['purchase_units'][0]['payments']['captures'][0]['id'],
-             'currency' => $response['purchase_units'][0]['payments']['captures'][0]['amount']['currency_code'],
-             'status' => $response['purchase_units'][0]['payments']['captures'][0]['status'],
-           ]
+             'transaction_id' => $capture['id'],
+             'currency' => $capture['amount']['currency_code'],
+             'status' => $capture['status'],
+           ];
+
+           OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'PayPal');
+
+           dd('success');
         
        }
     }
