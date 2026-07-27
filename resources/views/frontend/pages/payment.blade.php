@@ -106,7 +106,7 @@
                     });
                 },
                 complete: function(){
-                    hideLoader()
+                    // hideLoader()
                 }
            })
         })
