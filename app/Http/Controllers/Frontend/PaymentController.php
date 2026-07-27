@@ -145,6 +145,12 @@ class PaymentController extends Controller
             }
         }
 
+        if ($approvalUrl === null) {
+            return redirect()->route('payment.cancel')->withErrors([
+                'error' => $response['error']['message'] ?? 'An error occurred while creating your PayPal order. Please try again.'
+            ]);
+        }
+
         return redirect($approvalUrl);
     }
     public function paypalSuccess(Request $request)
@@ -168,12 +174,28 @@ class PaymentController extends Controller
            OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'PayPal');
            OrderPlacedNotificationEvent::dispatch($orderId);
 
-           dd('success');
+           return redirect()->route('payment.success');
+
+          //dd('success');
         
+       } else {
+           return redirect()->route('payment.cancel')->withErrors([
+                'error' => $response['error']['message'] ?? 'An error occurred while processing your PayPal payment. Please try again.'
+            ]);
        }
     }
     public function paypalCancel()
     {
-
+      //dd($request->all());
+      return redirect()->route('payment.cancel');
+    }
+    public function paymentSuccess()
+    {
+      return view('frontend.pages.payment-success');
+    }
+    public function paymentCancel()
+    {
+       
+       return view('frontend.pages.payment-cancel');
     }
 }

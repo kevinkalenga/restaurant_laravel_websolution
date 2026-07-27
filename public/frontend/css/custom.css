@@ -40,6 +40,18 @@
             animation: animloader 2s ease infinite;
         }
 
+        .order-success-style {
+            background: green;
+            font-size: 70px;
+            padding: 15px;
+            border-radius: 50%;
+            color:#fff;
+        }
+        .order-cancel-style {
+            font-size: 100px;
+            color:red;
+        }
+
         .loader::after,
         .loader::before {
             content: '';
