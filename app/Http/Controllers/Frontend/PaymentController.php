@@ -8,6 +8,7 @@ use App\Services\OrderService;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Events\OrderPaymentUpdateEvent;
 use App\Events\OrderPlacedNotificationEvent;
+use Stripe\StripeClient;
 
 
 class PaymentController extends Controller
@@ -40,7 +41,7 @@ class PaymentController extends Controller
     public function makePayment(Request $request, OrderService $orderService)
     {
        $request->validate([
-         'payment_gateway' => ['required', 'string', 'in:paypal']
+         'payment_gateway' => ['required', 'string', 'in:paypal,stripe']
        ]);
 
        // Create Order   
@@ -63,6 +64,10 @@ class PaymentController extends Controller
                 case 'paypal':
                     return response()->json([
                         'redirect_url' => route('paypal.payment')
+                    ]);
+                case 'stripe':
+                    return response()->json([
+                        'redirect_url' => route('stripe.payment')
                     ]);
 
                 default:
@@ -201,5 +206,32 @@ class PaymentController extends Controller
     {
        
        return view('frontend.pages.payment-cancel');
+    }
+
+    // Stripe Payment
+    public function payWithStripe()
+    {
+        $stripe = new StripeClient(config('gatewaySettings.stripe_secret_key'));
+
+        // Exemple : créer une session Checkout
+        $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Order',
+                    ],
+                    'unit_amount' => session('grand_total') * 100, // en centimes
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('stripe.cancel'),
+        ]);
+
+        return redirect($session->url);
+       
     }
 }
