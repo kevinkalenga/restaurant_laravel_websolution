@@ -211,18 +211,22 @@ class PaymentController extends Controller
     // Stripe Payment
     public function payWithStripe()
     {
+        
         $stripe = new StripeClient(config('gatewaySettings.stripe_secret_key'));
+
+        //  dd(session('email'));
 
         // Exemple : créer une session Checkout
         $session = $stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
+            'customer_email' => session('email'),
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => config('gatewaySettings.stripe_currency'),
                     'product_data' => [
                         'name' => 'Order',
                     ],
-                    'unit_amount' => session('grand_total') * 100, // en centimes
+                    'unit_amount' => (int) (session('grand_total') * 100), // en centimes
                 ],
                 'quantity' => 1,
             ]],
@@ -231,7 +235,44 @@ class PaymentController extends Controller
             'cancel_url' => route('stripe.cancel'),
         ]);
 
+        
+
         return redirect($session->url);
        
+    }
+
+    public function stripeSuccess(Request $request, OrderService $orderService)
+    {
+        $stripe = new StripeClient(config('gatewaySettings.stripe_secret_key'));
+
+        $session = $stripe->checkout->sessions->retrieve($request->session_id);
+
+        if ($session->payment_status === 'COMPLETED') {
+
+            $orderId = session()->get('order_id');
+
+            $paymentInfo = [
+                'transaction_id' => $session->payment_intent,
+                'currency' => $session->currency,
+                'status' => $session->payment_status,
+            ];
+
+            OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'Stripe');
+            OrderPlacedNotificationEvent::dispatch($orderId);
+
+            $orderService->clearSession();
+
+            return redirect()->route('payment.success');
+        }
+
+        // dd($request->session_id);
+
+        return redirect()->route('payment.cancel');
+    }
+
+
+    public function stripeCancel()
+    {
+        return redirect()->route('payment.cancel');
     }
 }
