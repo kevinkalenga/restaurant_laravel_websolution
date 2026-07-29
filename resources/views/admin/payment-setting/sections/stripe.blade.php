@@ -1,27 +1,27 @@
- <div class="tab-pane fade show active" id="paypal-setting" role="tabpanel" aria-labelledby="home-tab4">
+ <div class="tab-pane fade" id="stripe-setting" role="tabpanel" aria-labelledby="home-tab4">
                             <form action="{{route('admin.paypal-setting.update')}}" method="POST" enctype="multipart/form-data">
                               @csrf 
                               @method('PUT')
                               <div class="card-body border">
                                  
                                  <div class="form-group">
-                                    <label for="">Paypal Status</label>
+                                    <label for="">Stripe Status</label>
                                     <select name="paypal_status" id="" class="select2 form-control">
                                         <option @selected(@$paymentGateway["paypal_status"] === 1) value="1">Active</option>
                                         <option @selected(@$paymentGateway["paypal_status"] === 0) value="0">Inactive</option>
                                   
                                     </select>
                                  </div>
-                                 <div class="form-group">
-                                    <label for="">Paypal Account Mode</label>
+                                 {{-- <div class="form-group">
+                                    <label for="">Stripe Account Mode</label>
                                     <select name="paypal_account_mode" id="" class="select2 form-control">
                                         <option @selected(@$paymentGateway["paypal_account_mode"] === "sandbox") value="sandbox">Sandbox</option>
                                         <option @selected(@$paymentGateway["paypal_account_mode"] === "live") value="live">Live</option>
                                   
                                     </select>
-                                 </div>
+                                 </div> --}}
                                  <div class="form-group">
-                                    <label for="">Paypal Country Name</label>
+                                    <label for="">Stripe Country Name</label>
                                     <select name="paypal_country" id="" class="select2 form-control">
                                         <option value="">Select</option>
                                         @foreach(config('country_list') as $key => $country)
@@ -33,7 +33,7 @@
                                  
                                  
                                  <div class="form-group">
-                                    <label for="">Paypal Currency Name</label>
+                                    <label for="">Stripe Currency Name</label>
                                     <select name="paypal_currency" id="" class="select2 form-control">
                                         <option value="">Select</option>
                                         @foreach(config('currency.currency_list') as $currency) 
@@ -52,17 +52,17 @@
                                  </div>
                                  
                                  <div class="form-group">
-                                    <label for="">Paypal Client Id</label>
+                                    <label for="">Stripe Key</label>
                                     <input type="text" class="form-control" name="paypal_api_key" value="{{@$paymentGateway['paypal_api_key']}}">
                                  </div>
                                  
                               
                                  <div class="form-group">
-                                    <label for="">Paypal Secret Key</label>
+                                    <label for="">Stripe Secret Key</label>
                                     <input type="text" class="form-control" name="paypal_secret_key" value="{{@$paymentGateway['paypal_secret_key']}}">
                                  </div>
                                  <div class="form-group">
-                                    <label for="">Paypal Logo</label>
+                                    <label for="">Stripe Logo</label>
                                     <div id="image-preview" class="image-preview">
                                        <label for="image-upload" id="image-label">Choose File</label>
                                       <input type="file" id="image-upload" name="paypal_logo">
@@ -83,6 +83,7 @@
           'background-size': 'cover',
           'background-position': 'center center'
         })
+       
      })
   </script>
 

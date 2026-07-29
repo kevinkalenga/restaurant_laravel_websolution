@@ -111,7 +111,8 @@ class PaymentController extends Controller
     
     public function payWithPaypal()
     {
-        $provider = new PayPalClient();
+        $config = $this->setPaypalConfig();
+        $provider = new PayPalClient($config);
 
        $token = $provider->getAccessToken();
 
@@ -189,7 +190,7 @@ class PaymentController extends Controller
     }
     public function paypalCancel()
     {
-      //dd($request->all());
+     
       return redirect()->route('payment.cancel');
     }
     public function paymentSuccess()

@@ -22,11 +22,23 @@ class OrderPlacedNotificationListener
     /**
      * Handle the event.
      */
+    // public function handle(OrderPlacedNotificationEvent $event): void
+    // {
+    //     $orderId = $event->orderId;
+    //     // relationship(user)
+    //     $order = Order::with('user')->find($orderId);
+
+    //     Mail::send(new OrderPlacedMail($order));
+    // }
+
     public function handle(OrderPlacedNotificationEvent $event): void
     {
-        $orderId = $event->orderId;
-        // relationship(user)
-        $order = Order::with('user')->find($orderId);
+        $order = Order::with('user')->find($event->orderId);
+
+        \Log::info('Order mail debug', [
+            'order_id' => $order->id,
+            'user_email' => $order->user->email ?? 'NO EMAIL'
+        ]);
 
         Mail::send(new OrderPlacedMail($order));
     }
