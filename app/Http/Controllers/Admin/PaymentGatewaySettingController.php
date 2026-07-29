@@ -63,4 +63,46 @@ class PaymentGatewaySettingController extends Controller
         
         return redirect()->back()->with('success', 'Paypal Gateway Setting successfully!');
     }
+    public function stripeSettingUpdate(Request $request)
+    {
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'stripe_status' => ['required', 'boolean'],
+            'stripe_country' => ['required'],
+            'stripe_currency' => ['required'],
+            'stripe_rate' => ['required', 'numeric'],
+            'stripe_api_key' => ['required'],
+            'stripe_secret_key' => ['required'],
+            
+        ]);
+
+        if($request->hasFile('stripe_logo')) {
+             $request->validate([
+                'stripe_logo' => ["nullable", "image"]
+             ]);
+
+             $imgPath = $this->uploadImage($request, 'stripe_logo');
+
+            PaymentGatewaySetting::updateOrCreate(
+                ['key' => 'stripe_logo'],
+                ['value' => $imgPath]
+            );
+        }
+
+        
+        
+        
+        
+        foreach ($validatedData as $key => $value) {
+            PaymentGatewaySetting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+        
+        $settingsService = app(PaymentGatewaySettingService::class);
+        $settingsService->clearCachedSettings();
+        
+        return redirect()->back()->with('success', 'Stripe Gateway Setting successfully!');
+    }
 }
