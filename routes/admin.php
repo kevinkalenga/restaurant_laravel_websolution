@@ -63,6 +63,14 @@ Route::resource('/delivery-area', DeliveryAreaController::class);
 
 // Orders Routes 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('orders/{order}', [OrderController::class,'show'])
+    ->name('orders.show');
+
+Route::get('orders/{order}/edit', [OrderController::class,'edit'])
+    ->name('orders.edit');
+
+Route::delete('orders/{order}', [OrderController::class,'destroy'])
+    ->name('orders.destroy');
 
 
 // Product Option Routes

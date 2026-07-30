@@ -29,8 +29,19 @@ class OrderController extends Controller
 
                 ->addColumn('action', function($order){
                     return '
-                        <a href="#" class="btn btn-sm btn-primary">
-                            View
+                         <a href="'.route('admin.orders.show', $order->id).'" 
+                            class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                         </a>
+
+                        <a href="'.route('admin.orders.edit', $order->id).'" 
+                           class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
+
+                        <a href="'.route('admin.orders.destroy', $order->id).'" 
+                        class="btn btn-sm btn-danger delete-item">
+                            <i class="fas fa-trash"></i>
                         </a>
                     ';
                 })

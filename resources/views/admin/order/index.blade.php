@@ -36,6 +36,23 @@
         </div>
     </div>
 </section>
+
+<style>
+    #products-table th.action-column,
+    #products-table td.action-column {
+        width: 150px !important;
+        min-width: 150px !important;
+        max-width: 150px !important;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    #products-table td.action-column a,
+    #products-table td.action-column button {
+        display: inline-block;
+        margin-right: 5px;
+    }
+</style>
 @endsection
 
 @push('scripts') 
@@ -50,6 +67,7 @@
 
             processing: true,
             serverSide: true,
+            autoWidth: false,
 
             ajax: '{{ route("admin.orders.index") }}',
 
@@ -159,7 +177,7 @@
                             return '<span class="badge badge-success">Paid</span>';
                         }
 
-                        return '<span class="badge badge-warning">'
+                        return '<span class="badge badge-success">'
                             + data +
                         '</span>';
                     }
@@ -208,7 +226,9 @@
                     data:'action',
                     name:'action',
                     orderable:false,
-                    searchable:false
+                    searchable:false,
+                    className: 'action-column',
+                    width: '150px'
                 }
 
             ]
