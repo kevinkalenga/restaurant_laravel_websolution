@@ -241,13 +241,59 @@ class PaymentController extends Controller
        
     }
 
+
+
+
+
+
+    // public function stripeSuccess(Request $request, OrderService $orderService)
+    // {
+    //     $stripe = new StripeClient(config('gatewaySettings.stripe_secret_key'));
+
+    //     $session = $stripe->checkout->sessions->retrieve($request->session_id);
+
+    //     if ($session->payment_status === 'paid') {
+
+    //         try {
+
+    //             $orderId = session()->get('order_id');
+
+    //             $paymentInfo = [
+    //                 'transaction_id' => $session->payment_intent,
+    //                 'currency' => $session->currency,
+    //                 'status' => $session->payment_status,
+    //             ];
+
+    //             OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'Stripe');
+
+    //             OrderPlacedNotificationEvent::dispatch($orderId);
+
+    //             $orderService->clearSession();
+
+    //             return redirect()->route('payment.success');
+
+    //         } catch (\Exception $e) {
+
+    //             dd([
+    //                 'error' => $e->getMessage(),
+    //                 'line' => $e->getLine(),
+    //                 'file' => $e->getFile(),
+    //                 'order_id' => session()->get('order_id'),
+    //             ]);
+    //         }
+    //     }
+
+    //     return redirect()->route('payment.cancel');
+    // }
+
+
     public function stripeSuccess(Request $request, OrderService $orderService)
     {
         $stripe = new StripeClient(config('gatewaySettings.stripe_secret_key'));
 
         $session = $stripe->checkout->sessions->retrieve($request->session_id);
 
-        if ($session->payment_status === 'COMPLETED') {
+        if ($session->payment_status === 'paid') {
 
             $orderId = session()->get('order_id');
 
@@ -264,8 +310,6 @@ class PaymentController extends Controller
 
             return redirect()->route('payment.success');
         }
-
-        // dd($request->session_id);
 
         return redirect()->route('payment.cancel');
     }

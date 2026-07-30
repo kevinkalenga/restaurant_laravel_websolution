@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DeliveryAreaController;
 use App\Http\Controllers\Admin\PaymentGatewaySettingController;
+use App\Http\Controllers\Admin\OrderController;
 
 
 
@@ -58,6 +59,10 @@ Route::resource('/coupon', CouponController::class);
 
 // Delivery Area Routes
 Route::resource('/delivery-area', DeliveryAreaController::class);
+
+
+// Orders Routes 
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 
 
 // Product Option Routes
