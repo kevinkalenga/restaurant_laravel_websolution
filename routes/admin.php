@@ -71,6 +71,8 @@ Route::get('orders/{order}/edit', [OrderController::class,'edit'])
 
 Route::delete('orders/{order}', [OrderController::class,'destroy'])
     ->name('orders.destroy');
+Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
+    ->name('orders.update-status');
 
 
 // Product Option Routes

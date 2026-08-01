@@ -230,12 +230,12 @@
                                                     {{ $size['name'] ?? '' }}
 
                                                     @if(isset($size['price']))
-                                                        (+{{ $size['price'] }})
+                                                        (+{{ currencyPosition($size['price']) }})
                                                     @endif
 
                                                 @else
 
-                                                    {{ $size }}
+                                                    {{ currencyPosition($size) }}
 
                                                 @endif
                                              
@@ -275,12 +275,12 @@
                                                                 {{ $option['name'] ?? '' }}
 
                                                                 @if(isset($option['price']))
-                                                                    (+{{ $option['price'] }})
+                                                                    (+{{ currencyPosition($option['price']) }})
                                                                 @endif
 
                                                             @else
 
-                                                                {{ $option }}
+                                                                {{ currencyPosition($option) }}
 
                                                             @endif
 
@@ -328,7 +328,7 @@
 
                                     <td class="text-right">
 
-                                        {{ $item->unit_price * $item->qty }}
+                                        {{ currencyPosition($item->unit_price * $item->qty) }}
 
                                     </td>
 
@@ -383,7 +383,7 @@
                                     </div>
 
                                     <div class="invoice-detail-value">
-                                        {{ $order->subtotal }}
+                                        {{ currencyPosition($order->subtotal) }}
                                     </div>
 
                                 </div>
@@ -398,7 +398,7 @@
                                     </div>
 
                                     <div class="invoice-detail-value">
-                                        {{ $order->discount }}
+                                        {{  currencyPosition($order->discount) }}
                                     </div>
 
                                 </div>
@@ -414,7 +414,7 @@
                                     </div>
 
                                     <div class="invoice-detail-value">
-                                        {{ $order->delivery_charge }}
+                                        {{  currencyPosition($order->delivery_charge) }}
                                     </div>
 
                                 </div>
@@ -436,7 +436,7 @@
 
                                     <div class="invoice-detail-value invoice-detail-value-lg">
 
-                                        {{ $order->grand_total }}
+                                        {{ currencyPosition($order->grand_total) }}
 
                                     </div>
 
@@ -449,7 +449,54 @@
 
                         </div>
 
+                        <!-- je voulais mettre payment status ici pour que l'admin fasse l'update ici, est-ce que c'est bon ? -->
+                           <div class="row mt-4">
 
+                                <div class="col-md-6">
+                                    <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <div class="form-group">
+                                            <label><strong>Payment Status</strong></label>
+
+                                            <select name="payment_status" class="form-control">
+                                                <option value="pending" {{ $order->payment_status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                <option value="completed" {{ $order->payment_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Order Status</strong></label>
+
+                                            <select name="order_status" class="form-control">
+                                                <option value="pending" {{ $order->order_status == 'pending' ? 'selected' : '' }}>
+                                                    Pending
+                                                </option>
+
+                                                <option value="in_process" {{ $order->order_status == 'in_process' ? 'selected' : '' }}>
+                                                    In Process
+                                                </option>
+
+                                                <option value="delivered" {{ $order->order_status == 'delivered' ? 'selected' : '' }}>
+                                                    Delivered
+                                                </option>
+
+                                                <option value="declined" {{ $order->order_status == 'declined' ? 'selected' : '' }}>
+                                                    Declined
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">
+                                            Update Order
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        <!-- end comment -->
                     </div>
 
 
