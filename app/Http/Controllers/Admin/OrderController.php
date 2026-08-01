@@ -70,6 +70,6 @@ class OrderController extends Controller
         ]);
 
 
-        return redirect()->back()->with('success', 'Payment status updated successfully.');;
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
     }
 }

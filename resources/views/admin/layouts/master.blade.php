@@ -20,9 +20,9 @@
   
   <link rel="stylesheet" href="{{asset('admin/assets/css/components.css')}}">
   <link rel="stylesheet" href="{{ asset('admin/assets/izitoast/iziToast.min.css') }}">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 
    <link rel="stylesheet" href="{{asset('admin/assets/css/bootstrap-iconpicker.css')}}">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 
  
 <!-- Start GA -->
@@ -71,18 +71,20 @@
   <!-- Template JS File -->
   <script src="{{asset('admin/assets/js/scripts.js')}}"></script>
   <script src="{{asset('admin/assets/js/custom.js')}}"></script>
- <script src="{{ asset('admin/assets/izitoast/iziToast.min.js') }}"></script>
+ <!-- <script src="{{ asset('admin/assets/izitoast/iziToast.min.js') }}"></script>
 
  <script src="{{asset('admin/assets/modules/summernote/summernote-bs4.js')}}"></script>
 
  
-<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script> -->
 
 <!-- yajra -->
+ <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
  <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>  -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="{{asset('admin/assets/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
+
 
 @include('partials.toast')
 

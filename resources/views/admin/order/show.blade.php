@@ -5,7 +5,7 @@
 <section class="section">
 
     <div class="section-header">
-        <h1>Invoice</h1>
+        <h1>Order Preview</h1>
 
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active">
@@ -449,8 +449,20 @@
 
                         </div>
 
-                        <!-- je voulais mettre payment status ici pour que l'admin fasse l'update ici, est-ce que c'est bon ? -->
-                           <div class="row mt-4">
+                       
+                           
+
+                       
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+             <div class="row mt-4">
 
                                 <div class="col-md-6">
                                     <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST">
@@ -494,19 +506,7 @@
                                     </form>
                                 </div>
 
-                            </div>
-
-                        <!-- end comment -->
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-
+                           </div>
 
 
             <hr>
@@ -523,7 +523,7 @@
 
 
 
-                <button class="btn btn-warning btn-icon icon-left">
+                <button class="btn btn-warning btn-icon icon-left" id="print_btn">
 
                     <i class="fas fa-print"></i>
 
@@ -545,3 +545,75 @@
 
 
 @endsection
+
+@push('scripts') 
+<script>
+$(document).ready(function(){
+
+    $('#print_btn').on('click', function(){
+
+        let printContents = $('.invoice-print').html();
+
+        let printWindow = window.open('', '', 'width=900,height=700');
+
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Invoice</title>
+
+                <link rel="stylesheet" href="{{ asset('admin/assets/modules/bootstrap/css/bootstrap.min.css') }}">
+
+                <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
+
+                <link rel="stylesheet" href="{{ asset('admin/assets/css/components.css') }}">
+
+                <link rel="stylesheet" href="{{ asset('admin/assets/modules/fontawesome/css/all.min.css') }}">
+
+                <style>
+                    body {
+                        padding: 30px;
+                        background: white !important;
+                    }
+
+                    .invoice-print {
+                        width: 100%;
+                    }
+
+                    .table-responsive {
+                        overflow: visible !important;
+                    }
+
+                    @media print {
+                        .no-print {
+                            display:none;
+                        }
+                    }
+                </style>
+
+            </head>
+
+            <body>
+
+                <div class="invoice">
+                    ${printContents}
+                </div>
+
+            </body>
+
+            </html>
+        `);
+
+        printWindow.document.close();
+
+        setTimeout(function(){
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+
+    });
+
+});
+</script>
+
+
+@endpush
