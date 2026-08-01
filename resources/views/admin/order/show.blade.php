@@ -88,14 +88,14 @@
                                     <strong>Order Status:</strong>
                                     <br>
 
-                                    {{ ucfirst($order->order_status) }}
+                                    <span class="badge badge-warning">{{ ucfirst($order->order_status) }}</span>
 
                                     <br><br>
 
                                     <strong>Payment Status:</strong>
                                     <br>
 
-                                    {{ ucfirst($order->payment_status) }}
+                                    <span class="badge badge-success">{{ ucfirst($order->payment_status) }}</span>
 
                                 </address>
 
@@ -209,62 +209,98 @@
 
                                         @if($item->product_size)
 
-                                            <br>
+                                            @php
+                                                $size = $item->product_size;
 
-                                            <small>
+                                                if (is_string($size)) {
+                                                    $size = json_decode($size, true);
+                                                }
+                                            @endphp
+
+
+                                            @if(!empty($size))
+
+                                             <br>
+
+                                             <small>
 
                                                 <strong>Size:</strong>
+                                                @if(is_array($size))
 
-                                                @foreach($item->product_size as $key => $value)
+                                                    {{ $size['name'] ?? '' }}
 
-                                                    @if(is_array($value))
-
-                                                        {{ ucfirst($key) }}:
-                                                        {{ implode(', ', $value) }}
-
-                                                    @else
-
-                                                        {{ ucfirst($key) }}:
-                                                        {{ $value }}
-
+                                                    @if(isset($size['price']))
+                                                        (+{{ $size['price'] }})
                                                     @endif
 
-                                                @endforeach
+                                                @else
+
+                                                    {{ $size }}
+
+                                                @endif
+                                             
 
 
-                                            </small>
+                                             </small>
+                                            @endif
 
                                         @endif
 
 
 
 
-                                        @if($item->product_option)
+                                        @if($item->product_option )
 
-                                            <br>
+                                            @php
+                                                $options = $item->product_option;
 
-                                            <small>
+                                                if (is_string($options)) {
+                                                    $options = json_decode($options, true);
+                                                }
+                                            @endphp
+                                            @if(!empty($options))
 
-                                                <strong>Option:</strong>
+                                                <br>
 
-                                                @foreach($item->product_option as $key => $value)
+                                                <small>
 
-                                                    @if(is_array($value))
+                                                    <strong>Option:</strong>
 
-                                                        {{ ucfirst($key) }}:
-                                                        {{ implode(', ', $value) }}
+                                                    @if(is_array($options))
+
+                                                        @foreach($options as $option)
+
+                                                            @if(is_array($option))
+
+                                                                {{ $option['name'] ?? '' }}
+
+                                                                @if(isset($option['price']))
+                                                                    (+{{ $option['price'] }})
+                                                                @endif
+
+                                                            @else
+
+                                                                {{ $option }}
+
+                                                            @endif
+
+
+                                                            @if(!$loop->last)
+                                                                ,
+                                                            @endif
+
+                                                        @endforeach
 
                                                     @else
 
-                                                        {{ ucfirst($key) }}:
-                                                        {{ $value }}
+                                                        {{ $options }}
 
                                                     @endif
 
-                                                @endforeach
+                                                </small>
 
-
-                                            </small>
+                                            @endif
+                                            
 
                                         @endif
 
