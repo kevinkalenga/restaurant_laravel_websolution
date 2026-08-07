@@ -30,12 +30,12 @@ class OrderController extends Controller
                 ->addColumn('action', function($order){
                     return '
                          <a href="'.route('admin.orders.show', $order->id).'" 
-                            class="btn btn-sm btn-primary">
+                            class="btn btn-sm btn-primary order_status">
                                 <i class="fas fa-eye"></i>
                          </a>
 
                         <a href="'.route('admin.orders.edit', $order->id).'" 
-                           class="btn btn-sm btn-warning">
+                           class="btn btn-sm btn-warning" data-toggle="modal" data-target="#order_model" data-id="'.$order->id.'">
                             <i class="fas fa-edit"></i>
                         </a>
 

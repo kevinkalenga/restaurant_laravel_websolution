@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="{{asset('admin/assets/modules/summernote/summernote-bs4.css')}}">
   
   <link rel="stylesheet" href="{{asset('admin/assets/css/components.css')}}">
-  <link rel="stylesheet" href="{{ asset('admin/assets/izitoast/iziToast.min.css') }}">
+  <!-- <link rel="stylesheet" href="{{ asset('admin/assets/izitoast/iziToast.min.css') }}"> -->
 
    <link rel="stylesheet" href="{{asset('admin/assets/css/bootstrap-iconpicker.css')}}">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
