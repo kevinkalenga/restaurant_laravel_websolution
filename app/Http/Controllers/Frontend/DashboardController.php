@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DeliveryArea;
 use App\Models\Address;
+use App\Models\Order;
 use Auth;
 
 class DashboardController extends Controller
@@ -14,9 +15,9 @@ class DashboardController extends Controller
    {
       // comparer le current user avec celui qui est en bd
       $deliveryAreas = DeliveryArea::where('status', 1)->get();
-   
       $userAddresses = Address::where('user_id', Auth()->user()->id)->get();
-      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses"));
+      $orders = Order::where('user_id', Auth()->user()->id)->get();
+      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses", "orders"));
    }
 
    public function createAddress(Request $request)
