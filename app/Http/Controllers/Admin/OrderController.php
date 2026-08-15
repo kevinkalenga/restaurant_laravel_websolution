@@ -198,4 +198,85 @@ class OrderController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+    
+    public function deliveredOrdersIndex() 
+    {
+         return view('admin.order.delivered-order-index');
+    }
+
+    public function deliveredOrders()
+    {
+        $orders = Order::with('user')
+            ->where('order_status', 'delivered')
+            ->select('orders.*');
+
+        return DataTables::of($orders)
+
+            ->addColumn('user.name', function ($order) {
+                return $order->user->name ?? 'Guest';
+            })
+
+            ->addColumn('action', function ($order) {
+                return '
+                    <a href="'.route('admin.orders.show', $order->id).'" 
+                    class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye"></i>
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-sm btn-warning edit-order-status"
+                            data-id="'.$order->id.'">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <a href="'.route('admin.orders.destroy', $order->id).'" 
+                    class="btn btn-sm btn-danger delete-item">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                ';
+            })
+
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    public function declinedOrdersIndex() 
+    {
+         return view('admin.order.declined-order-index');
+    }
+
+    public function declinedOrders()
+    {
+        $orders = Order::with('user')
+            ->where('order_status', 'declined')
+            ->select('orders.*');
+
+        return DataTables::of($orders)
+
+            ->addColumn('user.name', function ($order) {
+                return $order->user->name ?? 'Guest';
+            })
+
+            ->addColumn('action', function ($order) {
+                return '
+                    <a href="'.route('admin.orders.show', $order->id).'" 
+                    class="btn btn-sm btn-primary">
+                        <i class="fas fa-eye"></i>
+                    </a>
+
+                    <button type="button"
+                            class="btn btn-sm btn-warning edit-order-status"
+                            data-id="'.$order->id.'">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <a href="'.route('admin.orders.destroy', $order->id).'" 
+                    class="btn btn-sm btn-danger delete-item">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                ';
+            })
+
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 }

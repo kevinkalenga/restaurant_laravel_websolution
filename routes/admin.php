@@ -67,6 +67,10 @@ Route::get('/pending-orders', [OrderController::class, 'pendingOrdersIndex'])->n
 Route::get('/pending-orders/data', [OrderController::class, 'pendingOrders'])->name('orders.pending.data');
 Route::get('/in-process-orders', [OrderController::class, 'inProcessOrdersIndex'])->name('in-process-orders');
 Route::get('/in-process-orders/data', [OrderController::class, 'inProcessOrders'])->name('orders.in-process.data');
+Route::get('/delivered-orders', [OrderController::class, 'deliveredOrdersIndex'])->name('delivered-orders');
+Route::get('/delivered-orders/data', [OrderController::class, 'deliveredOrders'])->name('orders.delivered.data');
+Route::get('/declined-orders', [OrderController::class, 'declinedOrdersIndex'])->name('declined-orders');
+Route::get('/declined-orders/data', [OrderController::class, 'declinedOrders'])->name('orders.declined.data');
 Route::get('orders/{order}', [OrderController::class,'show'])
     ->name('orders.show');
 
