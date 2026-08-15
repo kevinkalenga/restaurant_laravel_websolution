@@ -107,4 +107,14 @@ class OrderController extends Controller
         $order = Order::select(['order_status', 'payment_status'])->findOrFail($id);
         return response($order);
     }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order deleted successfully.',
+        ]);
+    }
 }

@@ -364,61 +364,7 @@
     // PUT : mettre à jour les statuts
     // =========================
 
-    // $(document).on('click', '#save-order-status', function () {
-
-    //     console.log('SAVE CLICK');
-    //     console.log('ORDER ID =', currentOrderId);
-
-    //     if (!currentOrderId) {
-    //         alert('ID de commande introuvable.');
-    //         return;
-    //     }
-
-    //     let url = '/admin/orders/' + currentOrderId + '/status';
-
-    //     let paymentStatus = $('.payment_status').val();
-    //     let orderStatus = $('.order_status').val();
-
-    //     console.log('PUT URL =', url);
-    //     console.log('PAYMENT STATUS =', paymentStatus);
-    //     console.log('ORDER STATUS =', orderStatus);
-
-    //     $.ajax({
-    //         method: 'PUT',
-    //         url: url,
-
-    //         data: {
-    //             _token: '{{ csrf_token() }}',
-    //             payment_status: paymentStatus,
-    //             order_status: orderStatus
-    //         },
-
-    //         success: function (response) {
-
-    //             console.log('UPDATE RESPONSE =', response);
-
-    //             $('#order_model').modal('hide');
-
-    //             $('#products-table')
-    //                 .DataTable()
-    //                 .ajax.reload(null, false);
-
-    //         },
-
-    //         error: function (xhr) {
-
-    //             console.log('UPDATE STATUS =', xhr.status);
-    //             console.log('UPDATE ERROR =', xhr.responseText);
-
-    //             alert(
-    //                 'Erreur HTTP ' +
-    //                 xhr.status +
-    //                 '\n\n' +
-    //                 xhr.responseText
-    //             );
-    //         }
-    //     });
-    // });
+   
 
      
      $(document).off('click', '#save-order-status').on('click', '#save-order-status', function (e) {
@@ -460,6 +406,47 @@
                 console.log('ERROR =', xhr.responseText);
             }
         });
+
+    });
+
+    // Delete order 
+    $(document).on('click', '.delete-item', function (e) {
+
+            e.preventDefault();
+
+            let url = $(this).attr('href');
+
+            console.log('DELETE URL =', url);
+
+            if (!confirm('Are you sure you want to delete this order?')) {
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+
+                success: function (response) {
+
+                    console.log('DELETE SUCCESS =', response);
+
+                    $('#products-table')
+                        .DataTable()
+                        .ajax.reload(null, false);
+                },
+
+                error: function (xhr) {
+
+                    console.log('DELETE ERROR =', xhr.status);
+                    console.log(xhr.responseText);
+
+                    alert('Error deleting order.');
+                }
+            });
 
     });
 
