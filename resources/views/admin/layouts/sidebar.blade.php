@@ -63,6 +63,8 @@
                  <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Orders</span></a>
                   <ul class="dropdown-menu">
                    <li><a class="nav-link" href="{{route('admin.orders.index')}}">All Orders</a></li>
+                   <li><a class="nav-link" href="{{route('admin.pending-orders')}}">Pending Orders</a></li>
+                   <li><a class="nav-link" href="{{route('admin.in-process-orders')}}">In Process Orders</a></li>
                   
                    
                   </ul>

@@ -63,6 +63,10 @@ Route::resource('/delivery-area', DeliveryAreaController::class);
 
 // Orders Routes 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/pending-orders', [OrderController::class, 'pendingOrdersIndex'])->name('pending-orders');
+Route::get('/pending-orders/data', [OrderController::class, 'pendingOrders'])->name('orders.pending.data');
+Route::get('/in-process-orders', [OrderController::class, 'inProcessOrdersIndex'])->name('in-process-orders');
+Route::get('/in-process-orders/data', [OrderController::class, 'inProcessOrders'])->name('orders.in-process.data');
 Route::get('orders/{order}', [OrderController::class,'show'])
     ->name('orders.show');
 
