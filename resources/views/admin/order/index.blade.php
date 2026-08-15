@@ -50,55 +50,40 @@
         </button>
       </div>
       <div class="modal-body">
-          <form action="" method="POST">
-                                        @csrf
-                                       
-
-                                        <div class="form-group">
-                                            <label><strong>Payment Status</strong></label>
-
-                                            <select name="payment_status" class="form-control">
-                                                <option value="pending">Pending</option>
-                                                <option value="completed">Completed</option>
-                                                
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Order Status</strong></label>
-
-                                            <select name="order_status" class="form-control">
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-
-                                                <option value="in_process">
-                                                    In Process
-                                                </option>
-
-                                                <option value="delivered">
-                                                    Delivered
-                                                </option>
-
-                                                <option value="declined">
-                                                    Declined
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        
-                                    </form>
-
-      
+          
     
-    
-    
+             <div class="form-group">
+                <label><strong>Payment Status</strong></label>
+
+                <select name="payment_status" class="form-control payment_status">
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Order Status</strong></label>
+
+                <select name="order_status" class="form-control order_status">
+                    <option value="pending">Pending</option>
+                    <option value="in_process">In Process</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="declined">Declined</option>
+                </select>
+            </div>
     
     
     
        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button"
+                class="btn btn-primary"
+                id="save-order-status"
+                data-url="">
+            Save changes
+        </button>
+        <!-- <button type="button" class="btn btn-primary" id="save-order-status">Save changes</button> -->
       </div>
     </div>
   </div>
@@ -321,23 +306,165 @@
 </script>
 
 <script>
+    let currentOrderId = null;
 
-   $(document).ready(function(){
-     $(document).on('click', '.order_status', function(){
+    // =========================
+    // GET : récupérer les statuts
+    // =========================
+
+    $(document).on('click', '.edit-order-status', function () {
+
+        let id = $(this).data('id');
+
+        console.log('ORDER ID =', id);
+
+        if (!id) {
+            alert('ID de commande introuvable.');
+            return;
+        }
+
+        currentOrderId = id;
+
+        let url = '{{ route("admin.orders.status", ":id") }}'
+            .replace(':id', id);
+
+        console.log('GET URL =', url);
+
         $.ajax({
             method: 'GET',
-            url: '',
-            success: function(response) {
+            url: url,
 
+            success: function (response) {
+
+                console.log('RESPONSE =', response);
+
+                $('.payment_status').val(response.payment_status);
+                $('.order_status').val(response.order_status);
+
+                $('#order_model').modal('show');
             },
-            error: function(xhr, status, error) {
-                
+
+            error: function (xhr) {
+
+                console.log('STATUS =', xhr.status);
+                console.log('ERROR =', xhr.responseText);
+
+                alert(
+                    'Erreur HTTP ' +
+                    xhr.status +
+                    '\n\n' +
+                    xhr.responseText
+                );
             }
-        })
-     })
-   })
+        });
+    });
+
+
+    // =========================
+    // PUT : mettre à jour les statuts
+    // =========================
+
+    // $(document).on('click', '#save-order-status', function () {
+
+    //     console.log('SAVE CLICK');
+    //     console.log('ORDER ID =', currentOrderId);
+
+    //     if (!currentOrderId) {
+    //         alert('ID de commande introuvable.');
+    //         return;
+    //     }
+
+    //     let url = '/admin/orders/' + currentOrderId + '/status';
+
+    //     let paymentStatus = $('.payment_status').val();
+    //     let orderStatus = $('.order_status').val();
+
+    //     console.log('PUT URL =', url);
+    //     console.log('PAYMENT STATUS =', paymentStatus);
+    //     console.log('ORDER STATUS =', orderStatus);
+
+    //     $.ajax({
+    //         method: 'PUT',
+    //         url: url,
+
+    //         data: {
+    //             _token: '{{ csrf_token() }}',
+    //             payment_status: paymentStatus,
+    //             order_status: orderStatus
+    //         },
+
+    //         success: function (response) {
+
+    //             console.log('UPDATE RESPONSE =', response);
+
+    //             $('#order_model').modal('hide');
+
+    //             $('#products-table')
+    //                 .DataTable()
+    //                 .ajax.reload(null, false);
+
+    //         },
+
+    //         error: function (xhr) {
+
+    //             console.log('UPDATE STATUS =', xhr.status);
+    //             console.log('UPDATE ERROR =', xhr.responseText);
+
+    //             alert(
+    //                 'Erreur HTTP ' +
+    //                 xhr.status +
+    //                 '\n\n' +
+    //                 xhr.responseText
+    //             );
+    //         }
+    //     });
+    // });
+
+     
+     $(document).off('click', '#save-order-status').on('click', '#save-order-status', function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        let url = '/admin/orders/' + currentOrderId + '/status';
+
+        console.log('SAVE URL =', url);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+
+            data: {
+                _token: '{{ csrf_token() }}',
+                _method: 'PUT',
+                payment_status: $('.payment_status').val(),
+                order_status: $('.order_status').val()
+            },
+
+            success: function (response) {
+
+                console.log('SUCCESS =', response);
+
+                $('#order_model').modal('hide');
+
+                $('#products-table')
+                    .DataTable()
+                    .ajax.reload(null, false);
+            },
+
+            error: function (xhr) {
+
+                console.log('ERROR STATUS =', xhr.status);
+                console.log('ERROR URL =', xhr.responseURL);
+                console.log('ERROR =', xhr.responseText);
+            }
+        });
+
+    });
 
 </script>
+
 
 @endpush
 

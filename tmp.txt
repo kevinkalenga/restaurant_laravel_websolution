@@ -1,120 +1,158 @@
-@extends('admin.layouts.master')  
-
-@section('content')
-<section class="section">
-    <div class="section-header">
-        <h1>Orders</h1>
-    </div>
-
-    <div class="card card-primary">
-        <div class="card-header">
-            <h4>All Orders</h4>
-           
-        </div>
-
-        <div class="card-body">
-            <table class="table table-bordered" id="products-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Thumb Image</th>
-                        <th>Price</th>
-                        <th>Offer Price</th>
-                        <th>Show at Home</th>
-                        <th>Status</th>
-                        <th>Created At</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-</section>
-@endsection
-
-@push('scripts')
 <script>
-    const currencyIcon = "{{ config('settings.site_currency_icon') }}";
-    const currencyPosition = "{{ config('settings.site_currency_icon_position') }}";
-$(function () {
-    $('#products-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{{ route("admin.product.index") }}',
-        columns: [
-            { data: 'id', name: 'id' },
+    let currentOrderId = null;
 
-            { data: 'name', name: 'name' },
+    // Ouvrir le modal
+    $(document).on('click', '.edit-order-status', function () {
 
-            { data: 'thumb_image', name: 'thumb_image',
-              orderable: false, searchable: false,
-              render: function(data) {
-                  return data ? '<img src="'+data+'" width="50">' : '';
-              }
+        let id = $(this).data('id');
+
+        currentOrderId = id;
+
+        console.log('ORDER ID =', id);
+
+        let url = '{{ route("admin.orders.status", ":id") }}'
+            .replace(':id', id);
+
+        console.log('GET URL =', url);
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+
+            success: function (response) {
+
+                console.log('RESPONSE =', response);
+
+                $('.payment_status').val(response.payment_status);
+                $('.order_status').val(response.order_status);
+
+                $('#order_model').modal('show');
             },
 
-            { 
-                data: 'price', 
-                name: 'price',
-                render: function(data) {
-                    //  return '$' + parseFloat(data).toFixed(2);
-                    //   return currencyPosition + parseFloat(data).toFixed(2);
-                    const price = Number(data);
-                    if (isNaN(price)) return '';
+            error: function (xhr) {
 
-                    return currencyPosition === 'left'
-                        ? currencyIcon + price.toFixed(2)
-                    : price.toFixed(2) + currencyIcon;
-                }
-            },
+                console.log('STATUS =', xhr.status);
+                console.log('ERROR =', xhr.responseText);
 
-            { 
-                data: 'offer_price', 
-                name: 'offer_price',
-                render: function(data) {
-                    //  return '$' + parseFloat(data).toFixed(2);
-                    //  return currencyPosition + parseFloat(data).toFixed(2);
-                     const price = Number(data);
-                     if (isNaN(price)) return '';
-
-                     return currencyPosition === 'left'
-                         ? currencyIcon + price.toFixed(2)
-                         : price.toFixed(2) + currencyIcon;
-                }
-            },
-
-            { data: 'show_at_home', name: 'show_at_home',
-              render: function(data) {
-                  return data == 1 
-                  ? '<span class="badge badge-success">Yes</span>'
-                  : '<span class="badge badge-danger">No</span>';
-              }
-            },
-
-            { data: 'status', name: 'status',
-              render: function(data) {
-                  return data == 1 
-                  ? '<span class="badge badge-success">Active</span>'
-                  : '<span class="badge badge-danger">Inactive</span>';
-              }
-            },
-
-            { data: 'created_at', name: 'created_at',
-              render: function(data) {
-                  return new Date(data).toLocaleString('fr-FR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                  });
-              }
-            },
-
-            { data: 'action', name: 'action', orderable: false, searchable: false }
-        ]
+                alert(
+                    'Erreur HTTP ' + xhr.status +
+                    '\n\n' + xhr.responseText
+                );
+            }
+        });
     });
-});
+
+
+    // Sauvegarder les statuts
+    $(document).on('click', '#save-order-status', function () {
+
+        if (!currentOrderId) {
+            alert('ID de commande introuvable.');
+            return;
+        }
+
+        let paymentStatus = $('.payment_status').val();
+        let orderStatus = $('.order_status').val();
+
+        let url = '{{ route("admin.orders.status", ":id") }}'
+            .replace(':id', currentOrderId);
+
+        console.log('PUT URL =', url);
+        console.log('Payment Status =', paymentStatus);
+        console.log('Order Status =', orderStatus);
+
+        let button = $(this);
+
+        button.prop('disabled', true);
+        button.text('Saving...');
+
+        $.ajax({
+            method: 'PUT',
+            url: url,
+
+            data: {
+                _token: '{{ csrf_token() }}',
+                payment_status: paymentStatus,
+                order_status: orderStatus
+            },
+
+            success: function (response) {
+
+                console.log('UPDATE RESPONSE =', response);
+
+                $('#order_model').modal('hide');
+
+                // Recharge le DataTable
+                $('#products-table')
+                    .DataTable()
+                    .ajax.reload(null, false);
+
+                alert(response.message || 'Order status updated successfully.');
+            },
+
+            error: function (xhr) {
+
+                console.log('UPDATE ERROR STATUS =', xhr.status);
+                console.log('UPDATE ERROR =', xhr.responseText);
+
+                alert(
+                    'Erreur lors de la mise à jour.\n\n' +
+                    'HTTP ' + xhr.status +
+                    '\n' + xhr.responseText
+                );
+            },
+
+            complete: function () {
+
+                button.prop('disabled', false);
+                button.text('Save changes');
+            }
+        });
+    });
 </script>
-@endpush
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+<form action="" method="POST" id="order-status-form">
+                                        @csrf
+                                       @method('PUT')
+
+                                        <div class="form-group">
+                                            <label><strong>Payment Status</strong></label>
+
+                                            <select name="payment_status" class="form-control payment_status">
+                                                <option value="pending">Pending</option>
+                                                <option value="completed">Completed</option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Order Status</strong></label>
+
+                                            <select name="order_status" class="form-control order_status">
+                                                <option value="pending">
+                                                    Pending
+                                                </option>
+
+                                                <option value="in_process">
+                                                    In Process
+                                                </option>
+
+                                                <option value="delivered">
+                                                    Delivered
+                                                </option>
+
+                                                <option value="declined">
+                                                    Declined
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        
+                                    </form>
+
+      
+    
+
+
