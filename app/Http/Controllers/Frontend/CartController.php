@@ -12,6 +12,7 @@ class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+        \Log::info('========== ADD TO CART APPELE ==========');
         // 1. Récupérer le produit avec relations
         $product = Product::with(['productSizes', 'productOptions'])
             ->findOrFail($request->product_id);
@@ -64,7 +65,12 @@ class CartController extends Controller
             ];
         }
 
-      
+        \Log::info('ADD TO CART DEBUG', [
+            'product_id' => $request->product_id,
+            'product_size_request' => $request->product_size,
+            'product_option_request' => $request->product_option,
+            'options_before_cart' => $options,
+        ]);
 
        // 6. Ajouter au panier
        Cart::add([

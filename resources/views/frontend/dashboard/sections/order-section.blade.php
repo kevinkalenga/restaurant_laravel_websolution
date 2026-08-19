@@ -62,14 +62,23 @@
                                                 <div class="fp__invoice_header">
                                                     <div class="header_address">
                                                         <h4>invoice to</h4>
-                                                        <p>7232 Broadway Suite 308, Jackson Heights, 11372, NY, United
-                                                            States</p>
-                                                        <p>+1347-430-9510</p>
+                                                        @php
+                                                            $address = $order->user->addresses
+                                                                ->where('delivery_area_id', $order->delivery_area_id)
+                                                                ->first();
+                                                        @endphp
+                                                          <p>Adresse : {{ $order->address }}</p>
+                                                          <p>Phone : {{ $address->phone ?? '' }}</p>
+                                                          <p>Email : {{ $address->email ?? '' }}</p>
+                                                        
+                                                         
                                                     </div>
-                                                    <div class="header_address">
-                                                        <p><b>invoice no: </b><span>4574</span></p>
-                                                        <p><b>Order ID:</b> <span> #4789546458</span></p>
-                                                        <p><b>date:</b> <span>10-11-2022</span></p>
+                                                    <div class="header_address" style="width:50%">
+                                                        <p><b style="width:140px">invoice no: </b><span>{{$order->invoice_id}}</span></p>
+                                                        <p><b style="width:140px">Payment Status: </b><span>{{$order->payment_status}}</span></p>
+                                                        <p><b style="width:140px">Payment Method: </b><span>{{$order->payment_method}}</span></p>
+                                                        <p><b style="width:140px">Transaction Id: </b><span>{{$order->transaction_id}}</span></p>
+                                                        <p><b style="width:140px">date:</b> <span>{{date('d-m-Y', strtotime($order->created_at))}}</span></p>
                                                     </div>
                                                 </div>
                                                 <div class="fp__invoice_body">
@@ -83,128 +92,122 @@
                                                                     <th class="qnty">Quantity</th>
                                                                     <th class="total">Total</th>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">01</td>
-                                                                    <td class="package">
-                                                                        <p>Hyderabadi Biryani</p>
-                                                                        <span class="size">small</span>
-                                                                        <span class="coca_cola">coca-cola</span>
-                                                                        <span class="coca_cola2">7up</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">02</td>
-                                                                    <td class="package">
-                                                                        <p>Daria Shevtsova</p>
-                                                                        <span class="size">medium</span>
-                                                                        <span class="coca_cola">coca-cola</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">03</td>
-                                                                    <td class="package">
-                                                                        <p>Hyderabadi Biryani</p>
-                                                                        <span class="size">large</span>
-                                                                        <span class="coca_cola2">7up</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">04</td>
-                                                                    <td class="package">
-                                                                        <p>Hyderabadi Biryani</p>
-                                                                        <span class="size">medium</span>
-                                                                        <span class="coca_cola">coca-cola</span>
-                                                                        <span class="coca_cola2">7up</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">05</td>
-                                                                    <td class="package">
-                                                                        <p>Daria Shevtsova</p>
-                                                                        <span class="size">large</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">04</td>
-                                                                    <td class="package">
-                                                                        <p>Hyderabadi Biryani</p>
-                                                                        <span class="size">medium</span>
-                                                                        <span class="coca_cola">coca-cola</span>
-                                                                        <span class="coca_cola2">7up</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="sl_no">04</td>
-                                                                    <td class="package">
-                                                                        <p>Hyderabadi Biryani</p>
-                                                                        <span class="size">medium</span>
-                                                                        <span class="coca_cola">coca-cola</span>
-                                                                        <span class="coca_cola2">7up</span>
-                                                                    </td>
-                                                                    <td class="price">
-                                                                        <b>$120</b>
-                                                                    </td>
-                                                                    <td class="qnty">
-                                                                        <b>2</b>
-                                                                    </td>
-                                                                    <td class="total">
-                                                                        <b>$240</b>
-                                                                    </td>
-                                                                </tr>
+                                                                @foreach($order->orderItems as $item)
+                                                                   
+                                                                  @php  
+                                                                  $size = $item->product_size;
+                                                                  $options = $item->product_option;
+
+                                                                  @endphp
+                                                                    <tr>
+                                                                        <td class="sl_no">{{++$loop->index}}</td>
+                                                                       
+                                                                        
+                                                                          <td class="package">
+
+                                                                            <p>{{ $item->product_name }}</p>
+
+                                                                            {{-- SIZE --}}
+                                                                            @if($item->product_size)
+
+                                                                                @php
+                                                                                    $size = $item->product_size;
+
+                                                                                    if (is_string($size)) {
+                                                                                        $size = json_decode($size, true);
+                                                                                    }
+                                                                                @endphp
+
+                                                                                @if(!empty($size))
+
+                                                                                    <span class="size">
+                                                                                        <strong>Size:</strong>
+
+                                                                                        @if(is_array($size))
+
+                                                                                            {{ $size['name'] ?? '' }}
+
+                                                                                            @if(isset($size['price']))
+                                                                                                (+{{ currencyPosition($size['price']) }})
+                                                                                            @endif
+
+                                                                                        @else
+
+                                                                                            {{ currencyPosition($size) }}
+
+                                                                                        @endif
+                                                                                    </span>
+
+                                                                                @endif
+
+                                                                            @endif
+
+
+                                                                            {{-- OPTIONS --}}
+                                                                            @if($item->product_option)
+
+                                                                                @php
+                                                                                    $options = $item->product_option;
+
+                                                                                    if (is_string($options)) {
+                                                                                        $options = json_decode($options, true);
+                                                                                    }
+                                                                                @endphp
+
+                                                                                @if(!empty($options))
+
+                                                                                    <span class="coca_cola">
+                                                                                        <strong>Option:</strong>
+
+                                                                                        @if(is_array($options))
+
+                                                                                            @foreach($options as $option)
+
+                                                                                                @if(is_array($option))
+
+                                                                                                    {{ $option['name'] ?? '' }}
+
+                                                                                                    @if(isset($option['price']))
+                                                                                                        (+{{ currencyPosition($option['price']) }})
+                                                                                                    @endif
+
+                                                                                                @else
+
+                                                                                                    {{ currencyPosition($option) }}
+
+                                                                                                @endif
+
+                                                                                                @if(!$loop->last)
+                                                                                                    ,
+                                                                                                @endif
+
+                                                                                            @endforeach
+
+                                                                                        @else
+
+                                                                                            {{ $options }}
+
+                                                                                        @endif
+
+                                                                                    </span>
+
+                                                                                @endif
+
+                                                                            @endif
+
+                                                                        </td>
+                                                                                                                                                
+                                                                        <td class="price">
+                                                                            <b>{{currencyPosition($item->unit_price)}}</b>
+                                                                        </td>
+                                                                        <td class="qnty">
+                                                                            <b>{{$item->qty}}</b>
+                                                                        </td>
+                                                                        <td class="total">
+                                                                            <b>{{ currencyPosition($item->unit_price * $item->qty) }}</b>
+                                                                        </td>
+                                                                    </tr> 
+                                                                @endforeach
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr>
@@ -212,10 +215,10 @@
                                                                         <b>sub total</b>
                                                                     </td>
                                                                     <td class="qnty">
-                                                                        <b>12</b>
+                                                                        <b>-</b>
                                                                     </td>
                                                                     <td class="total">
-                                                                        <b>$755</b>
+                                                                        <b>{{currencyPosition($order->subtotal)}}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -226,7 +229,7 @@
                                                                         <b></b>
                                                                     </td>
                                                                     <td class="total coupon">
-                                                                        <b>$0.00</b>
+                                                                        <b>{{currencyPosition($order->discount)}}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -237,7 +240,7 @@
                                                                         <b></b>
                                                                     </td>
                                                                     <td class="total coast">
-                                                                        <b>$10.00</b>
+                                                                        <b>{{currencyPosition($order->delivery_charge)}}</b>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -248,7 +251,7 @@
                                                                         <b></b>
                                                                     </td>
                                                                     <td class="total">
-                                                                        <b>$765</b>
+                                                                        <b>{{currencyPosition($order->grand_total)}}</b>
                                                                     </td>
                                                                 </tr>
                                                             </tfoot>

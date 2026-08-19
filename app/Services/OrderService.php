@@ -5,6 +5,7 @@ use Auth;
 use Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Address;
 
 
 
@@ -12,6 +13,7 @@ class OrderService {
     // Store Order In Database
     function createOrder()
     {
+        
       
          $order = new Order();
          $order->invoice_id = generateInvoiceId();
