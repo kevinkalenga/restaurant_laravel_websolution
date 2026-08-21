@@ -15,24 +15,45 @@ class SettingController extends Controller
     }
     
     public function updateGeneralSetting(Request $request)
-   {
-    $data = $request->validate([
-        'site_name' => 'required|string|max:255',
-        'site_default_currency' => 'required|string|size:3',
-        'site_currency_icon' => 'required|string|max:10',
-        'site_currency_icon_position' => 'required|in:left,right',
-    ]);
+    {
+        $data = $request->validate([
+            'site_name' => 'required|string|max:255',
+            'site_default_currency' => 'required|string|size:3',
+            'site_currency_icon' => 'required|string|max:10',
+            'site_currency_icon_position' => 'required|in:left,right',
+        ]);
 
-    foreach ($data as $key => $value) {
-        Setting::updateOrCreate(
-            ['key' => $key],
-            ['value' => $value]
-        );
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        $settingsService = app(SettingsService::class);
+        $settingsService->clearCachedSettings();
+
+        return back()->with('success', 'Settings updated successfully.');
     }
 
-    $settingsService = app(SettingsService::class);
-    $settingsService->clearCachedSettings();
+    public function UpdatePusherSetting(Request $request) {
+        $data = $request->validate([
+            'pusher_app_id' => ['required'],
+            'pusher_key' => ['required'],
+            'pusher_secret' => ['required'],
+            'pusher_cluster' => ['required'],
+        ]);
 
-    return back()->with('success', 'Settings updated successfully.');
-   }
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        $settingsService = app(SettingsService::class);
+        $settingsService->clearCachedSettings();
+
+        return back()->with('success', 'Settings updated successfully.');
+    }
 }

@@ -43,7 +43,7 @@
                                             </div>
                                         </div>
                                         @foreach($orders as $order)
-                                            <div class="fp__invoice invoice_details_{{$order->id}}">
+                                            <div class="fp__invoice invoice_details_{{$order->id}}" id="invoice_{{$order->id}}">
                                                 <a class="go_back"><i class="fas fa-long-arrow-alt-left"></i> go back</a>
                                                 <div class="fp__track_order">
                                                     <ul>
@@ -67,6 +67,7 @@
                                                                 ->where('delivery_area_id', $order->delivery_area_id)
                                                                 ->first();
                                                         @endphp
+                                                          <p>{{ $order->user->name }}</p>
                                                           <p>Adresse : {{ $order->address }}</p>
                                                           <p>Phone : {{ $address->phone ?? '' }}</p>
                                                           <p>Email : {{ $address->email ?? '' }}</p>
@@ -258,7 +259,7 @@
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <a class="print_btn common_btn" href="#"><i class="far fa-print"></i> print
+                                                <a class="print_btn common_btn" href="javascript:;" onclick="printInvoice('{{$order->id}}')"><i class="far fa-print"></i> print
                                                     PDF</a>
 
                                             </div>
@@ -266,18 +267,132 @@
                                     </div>
                                 </div>
 
+
 @push('scripts')
 
-  <script>
+<script>
 
-   
-        function viewInvoice(id) {
-         $(".fp_dashboard_order").fadeOut();
-         $(".invoice_details_"+id).fadeIn();
+    function viewInvoice(id) {
+        $(".fp_dashboard_order").fadeOut();
+        $(".invoice_details_" + id).fadeIn();
+    }
+
+
+    function printInvoice(id) {
+
+        let invoice = document.getElementById('invoice_' + id);
+
+        if (!invoice) {
+            console.error('Invoice introuvable : ' + id);
+            return;
         }
-   
-  
-  </script>
 
+        let printContents = invoice.innerHTML;
+
+        let printWindow = window.open(
+            '',
+            '_blank',
+            'width=1000,height=800'
+        );
+
+        printWindow.document.write(`
+            <!DOCTYPE html>
+
+            <html lang="en">
+
+            <head>
+
+                <meta charset="UTF-8">
+
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+
+                <title>Invoice #${id}</title>
+
+                <link rel="stylesheet"
+                    href="{{ asset('frontend/css/bootstrap.min.css') }}">
+
+                <link rel="stylesheet"
+                    href="{{ asset('frontend/css/spacing.css') }}">
+
+                <link rel="stylesheet"
+                    href="{{ asset('frontend/css/style.css') }}">
+
+                <link rel="stylesheet"
+                    href="{{ asset('frontend/css/custom.css') }}">
+
+                <style>
+
+                    body {
+                        background: #fff !important;
+                        padding: 30px;
+                    }
+
+                    .fp__invoice {
+                        display: block !important;
+                        width: 100%;
+                        max-width: 100%;
+                        background: #fff;
+                    }
+
+                    .go_back,
+                    .print_btn {
+                        display: none !important;
+                    }
+
+                    .table-responsive {
+                        overflow: visible !important;
+                    }
+
+                    table {
+                        width: 100%;
+                    }
+
+                    @media print {
+
+                        body {
+                            padding: 20px;
+                        }
+
+                        .go_back,
+                        .print_btn {
+                            display: none !important;
+                        }
+
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+                <div class="fp__invoice">
+                    ${printContents}
+                </div>
+
+            </body>
+
+            </html>
+        `);
+
+        printWindow.document.close();
+
+        printWindow.onload = function () {
+
+            setTimeout(function () {
+
+                printWindow.focus();
+
+                printWindow.print();
+
+                printWindow.close();
+
+            }, 500);
+
+        };
+
+    }
+
+</script>
 
 @endpush
