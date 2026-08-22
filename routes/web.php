@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PaymentController;
+use App\Events\RTOrderPlacedNotificationEvent;
 
 
 /**  Show Home Page  **/ 
@@ -54,6 +55,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/stripe/payment', [PaymentController::class, 'payWithStripe'])->name('stripe.payment');
     Route::get('/stripe/success', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
     Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+
+    // Route::get('test', function(){
+    //   RTOrderPlacedNotificationEvent::dispatch();
+    // });
 
 });
 
