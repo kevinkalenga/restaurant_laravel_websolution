@@ -14,16 +14,24 @@ class RTOrderPlacedNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $order;
+
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($order)
     {
         $this->setConfig();
+
+        $this->order = $order;
     }
 
     public function setConfig()
     {
+        config(['broadcasting.connections.pusher.key' => config('settings.pusher_key')]);
+        config(['broadcasting.connections.pusher.secret' => config('settings.pusher_secret')]);
+        config(['broadcasting.connections.pusher.app_id' => config('settings.pusher_app_id')]);
+        config(['broadcasting.connections.pusher.options.cluster' => config('settings.pusher_cluster')]);
         // dd(config('broadcasting'));
     }
 
@@ -35,7 +43,7 @@ class RTOrderPlacedNotificationEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new Channel('order-placed'),
         ];
     }
 }
