@@ -34,7 +34,14 @@
 
   gtag('config', 'UA-94034622-3');
 </script>
- @vite(['resources/js/app.js'])
+ <script>
+    window.pusherConfig = {
+        key: @json(\App\Models\Setting::where('key', 'pusher_key')->value('value')),
+        cluster: @json(\App\Models\Setting::where('key', 'pusher_cluster')->value('value')),
+    };
+</script>
+
+@vite(['resources/js/app.js'])
 <!-- /END GA --></head>
 
 <body>
