@@ -429,7 +429,7 @@
                         `);
                 },
                 success: function(response){
-                    updateSiderbarCart();
+                    updateSidebarCart();
                     iziToast.success({
                         title: 'Success',
                         message: response.message,
