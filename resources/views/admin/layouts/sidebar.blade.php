@@ -86,9 +86,9 @@
                   <a href="#">Mark All As Read</a>
                 </div>
               </div>
-              <div class="dropdown-list-content dropdown-list-icons">
+              <div class="dropdown-list-content dropdown-list-icons rt_notification">
                   @foreach($notifications as $notification)
-                    <a href="{{route('admin.orders.show', $notification->order_id)}}" class="dropdown-item">
+                     <a href="{{route('admin.orders.show', $notification->order_id)}}" class="dropdown-item">
                       <div class="dropdown-item-icon bg-info text-white">
                         <i class="fas fa-bell"></i>
                       </div>
@@ -96,7 +96,7 @@
                         {{$notification->message}}
                         <div class="time">Yesterday</div>
                       </div>
-                    </a>
+                    </a> 
                   @endforeach
               </div>
               <div class="dropdown-footer text-center">

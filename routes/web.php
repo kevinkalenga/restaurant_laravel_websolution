@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Events\RTOrderPlacedNotificationEvent;
+use App\Models\Order;
 
 
 /**  Show Home Page  **/ 
@@ -59,7 +60,13 @@ Route::group(['middleware' => 'auth'], function(){
    
 
     Route::get('test', function(){
-      RTOrderPlacedNotificationEvent::dispatch("hello there!");
+
+      $order = Order::first();
+      if (!$order) {
+        return 'Aucune commande trouvée';
+      }
+      RTOrderPlacedNotificationEvent::dispatch($order);
+       return 'Event envoyé pour la commande #' . $order->id;
     });
 
 });

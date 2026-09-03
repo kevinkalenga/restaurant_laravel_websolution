@@ -18,4 +18,20 @@ window.Echo = new Echo({
 window.Echo.channel('order-placed')
     .listen('RTOrderPlacedNotificationEvent', (e) => {
         console.log('PUSHER EVENT RECEIVED:', e);
+        
+
+        let html = `
+                <a href="/admin/orders/${e.orderId}" class="dropdown-item">
+                      <div class="dropdown-item-icon bg-info text-white">
+                        <i class="fas fa-bell"></i>
+                      </div>
+                      <div class="dropdown-item-desc">
+                        ${e.message}
+                        <div class="time">Yesterday</div>
+                      </div>
+                </a>
+        
+        `;
+
+        $('.rt_notification').prepend(html)
     });
