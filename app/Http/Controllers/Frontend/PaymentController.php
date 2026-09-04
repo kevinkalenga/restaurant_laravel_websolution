@@ -8,7 +8,9 @@ use App\Services\OrderService;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Events\OrderPaymentUpdateEvent;
 use App\Events\OrderPlacedNotificationEvent;
+use App\Events\RTOrderPlacedNotificationEvent;
 use Stripe\StripeClient;
+use App\Models\Order;
 
 
 class PaymentController extends Controller
@@ -179,6 +181,7 @@ class PaymentController extends Controller
 
            OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'PayPal');
            OrderPlacedNotificationEvent::dispatch($orderId);
+           RTOrderPlacedNotificationEvent::dispatch(Order::find($orderId));
 
           // Clear session data 
           $orderService->clearSession();
@@ -305,6 +308,7 @@ class PaymentController extends Controller
 
             OrderPaymentUpdateEvent::dispatch($orderId, $paymentInfo, 'Stripe');
             OrderPlacedNotificationEvent::dispatch($orderId);
+            RTOrderPlacedNotificationEvent::dispatch(Order::find($orderId));
 
             $orderService->clearSession();
 

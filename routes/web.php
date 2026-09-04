@@ -59,15 +59,15 @@ Route::group(['middleware' => 'auth'], function(){
 
    
 
-    Route::get('test', function(){
+    // Route::get('test', function(){
 
-      $order = Order::first();
-      if (!$order) {
-        return 'Aucune commande trouvée';
-      }
-      RTOrderPlacedNotificationEvent::dispatch($order);
-       return 'Event envoyé pour la commande #' . $order->id;
-    });
+    //   $order = Order::first();
+    //   if (!$order) {
+    //     return 'Aucune commande trouvée';
+    //   }
+    //   RTOrderPlacedNotificationEvent::dispatch($order);
+    //    return 'Event envoyé pour la commande #' . $order->id;
+    // });
 
 });
 
