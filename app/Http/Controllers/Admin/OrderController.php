@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\OrderPlacedNotification;
 use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
@@ -76,7 +77,8 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-      return view('admin.order.show', compact('order'));
+        $notification = OrderPlacedNotification::where('order_id', $order->id)->update(['seen' => 1]);
+       return view('admin.order.show', compact('order', 'notification'));
     }
 
    

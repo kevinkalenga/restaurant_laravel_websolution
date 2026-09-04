@@ -85,6 +85,9 @@ Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
 Route::get('/orders/status/{id}', [OrderController::class, 'getOrderStatus'])
     ->name('orders.status');
 
+// Order Notification Routes
+Route::get('clear-notification', [AdminDashboardController::class, 'clearNotification'])->name('clear-notification');
+
 // Product Option Routes
 
 Route::resource('/product-option', ProductOptionController::class);

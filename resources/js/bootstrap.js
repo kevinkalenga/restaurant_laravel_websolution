@@ -33,5 +33,6 @@ window.Echo.channel('order-placed')
         
         `;
 
-        $('.rt_notification').prepend(html)
+        $('.rt_notification').prepend(html);
+        $('. notification_beep').addClass('beep');
     });
