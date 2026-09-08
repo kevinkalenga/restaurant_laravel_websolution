@@ -108,13 +108,13 @@
                         <div class="fp__dashboard_content">
                             <div class="tab-content" id="v-pills-tabContent">
 
-                                @include('frontend.dashboard.sections.personal-info-section');
+                                @include('frontend.dashboard.sections.personal-info-section')
 
-                                @include('frontend.dashboard.sections.address-section');
+                                @include('frontend.dashboard.sections.address-section')
 
-                                @include('frontend.dashboard.sections.order-section');
+                                @include('frontend.dashboard.sections.order-section')
                                 
-                                @include('frontend.dashboard.sections.message-section');
+                                @include('frontend.dashboard.sections.message-section')
 
                                 <div class="tab-pane fade " id="v-pills-messages2" role="tabpanel"
                                     aria-labelledby="v-pills-messages-tab2">

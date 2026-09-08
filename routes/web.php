@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\ChatController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Models\Order;
 
@@ -81,6 +82,9 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('/address', [DashboardController::class, 'createAddress'])->name('address.store');
   Route::put('/address/{id}/edit', [DashboardController::class, 'updateAddress'])->name('address.update');
   Route::get('/address/{id}/', [DashboardController::class, 'deleteAddress'])->name('address.delete');
+
+  // Chat Routes 
+  Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
 });
 
 
