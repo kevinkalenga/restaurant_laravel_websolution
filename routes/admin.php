@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DeliveryAreaController;
 use App\Http\Controllers\Admin\PaymentGatewaySettingController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ChatController;
 
 
 
@@ -87,6 +88,7 @@ Route::get('/orders/status/{id}', [OrderController::class, 'getOrderStatus'])
 
 // Order Notification Routes
 Route::get('clear-notification', [AdminDashboardController::class, 'clearNotification'])->name('clear-notification');
+Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
 
 // Product Option Routes
 
