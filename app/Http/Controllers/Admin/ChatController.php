@@ -33,4 +33,9 @@ class ChatController extends Controller
       //dd($chatUsers);
       return view('admin.chat.index', compact('chatUsers'));
     }
+
+    public function getConversation($senderId)
+    {
+
+    }
 }

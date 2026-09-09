@@ -88,7 +88,10 @@ Route::get('/orders/status/{id}', [OrderController::class, 'getOrderStatus'])
 
 // Order Notification Routes
 Route::get('clear-notification', [AdminDashboardController::class, 'clearNotification'])->name('clear-notification');
+
+// Chat routes
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
 
 // Product Option Routes
 
