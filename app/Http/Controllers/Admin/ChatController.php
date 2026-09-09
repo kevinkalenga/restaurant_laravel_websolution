@@ -53,6 +53,6 @@ class ChatController extends Controller
              ->whereIn('receiver_id', [$senderId, $receiverId])
              ->orderBy('created_at', 'asc')->get();
 
-          // dd($messages);
+          return response()->json($messages);
     }
 }
