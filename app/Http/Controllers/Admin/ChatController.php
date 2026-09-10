@@ -55,4 +55,23 @@ class ChatController extends Controller
 
           return response()->json($messages);
     }
+
+
+    public function sendMessage(Request $request)
+    {
+       $request->validate([
+          'message' => ['required', 'max:1000'],
+          'receiver_id' => ['required', 'integer']
+       ]);
+
+       $chat = new Chat();
+       $chat->sender_id = Auth()->user()->id;
+       $chat->receiver_id = $request->receiver_id;
+       $chat->message = $request->message;
+       $chat->save();
+
+        return response(['status' => 'success', 'message' => "The message has been sent Successfully!"], 200);
+
+       
+    }
 }
