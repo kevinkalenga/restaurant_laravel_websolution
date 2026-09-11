@@ -121,7 +121,7 @@
                 let message = $('.fp_send_message').val();
                 let html =   `
                        <div class="chat-item chat-right" style="">
-                                    <img src="../dist/img/avatar/avatar-1.png">
+                                    <img src="{{ asset(auth()->user()->avatar ?? 'uploads/avatar.png') }}">
                                     <div class="chat-details">
                                         <div class="chat-text">${message}</div>
                                         <div class="chat-time">sending...</div>
