@@ -21,6 +21,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/custom.css')}}">
+
+    <script>
+        window.pusherConfig = {
+            key: @json(\App\Models\Setting::where('key', 'pusher_key')->value('value')),
+            cluster: @json(\App\Models\Setting::where('key', 'pusher_cluster')->value('value')),
+        };
+
+        var loggedInUserId = "{{ auth()->user()->id }}";
+    </script>
+
+    @vite(['/resources/js/app.js'])
     <!-- <link rel="stylesheet" href="css/rtl.css"> -->
  
 

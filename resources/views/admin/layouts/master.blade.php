@@ -39,6 +39,7 @@
         key: @json(\App\Models\Setting::where('key', 'pusher_key')->value('value')),
         cluster: @json(\App\Models\Setting::where('key', 'pusher_cluster')->value('value')),
     };
+    var loggedInUserId = "{{auth()->user()->id}}"
 </script>
 
 @vite(['resources/js/app.js'])

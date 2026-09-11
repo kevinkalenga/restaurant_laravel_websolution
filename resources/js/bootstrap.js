@@ -36,3 +36,7 @@ window.Echo.channel('order-placed')
         $('.rt_notification').prepend(html);
         $('. notification_beep').addClass('beep');
     });
+window.Echo.private('chat.'+loggedInUserId)
+    .listen('ChatEvent', (e) => {
+       console.log(e)
+    });
