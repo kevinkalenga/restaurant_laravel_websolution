@@ -52,6 +52,10 @@
  <script>
     $(document).ready(function(){
       var userId = "{{auth()->user()->id}}"
+        function scrollToBottom() {
+            let chatContent = $('.chat-content')
+            chatContent.scrollTop(chatContent.prop("scrollHeight"));
+        }
       $('.fp_chat_message').on('click', function(){
 
       

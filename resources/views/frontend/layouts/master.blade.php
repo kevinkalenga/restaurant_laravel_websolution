@@ -28,7 +28,7 @@
             cluster: @json(\App\Models\Setting::where('key', 'pusher_cluster')->value('value')),
         };
 
-        var loggedInUserId = "{{ auth()->user()->id }}";
+        var loggedInUserId = @json(auth()->id());;
     </script>
 
     @vite(['/resources/js/app.js'])
