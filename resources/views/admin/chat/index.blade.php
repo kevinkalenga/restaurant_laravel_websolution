@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
                                 @foreach($chatUsers as $chatUser)
-                                    <li class="media fp_chat_user cursor-pointer" data-user="{{$chatUser->id}}">
+                                    <li class="media fp_chat_user cursor-pointer" data-name="{{$chatUser->name}}" data-user="{{$chatUser->id}}">
                                         <img alt="image" class="mr-3 rounded-circle" width="50" src="{{asset($chatUser->avatar)}}" style="object-fit:cover;">
                                         <div class="media-body">
                                             <div class="mt-0 mb-1 font-weight-bold">{{$chatUser->name}}</div>
@@ -35,9 +35,9 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-9">
-                    <div class="card chat-box" id="mychatbox" style="height: 100vh">
+                    <div class="card chat-box" id="mychatbox" data-inbox="" style="height: 100vh">
                         <div class="card-header">
-                            <h4>Chat with Rizal</h4>
+                            <h4 id="chat_header"></h4>
                         </div>
                         <div class="card-body chat-content">
                           
@@ -74,12 +74,15 @@
         //fecth conversation
         $('.fp_chat_user').on('click', function(){
             let senderId = $(this).data('user');
+            let senderName = $(this).data('name');
+            $('#mychatbox').attr('data-inbox', senderId);
             $('#receiver_id').val(senderId)
             $.ajax({
                 method: 'GET',
                 url: '{{route("admin.chat.get-conversation", ":senderId")}}'.replace(":senderId", senderId),
                 beforeSend: function() {
-
+                    $('.chat-content').empty();
+                   $('#chat_header').text("Chat With "+senderName);
                 },
                 success: function(response) {
                     console.log(response)

@@ -9,18 +9,23 @@ if (loggedInUserId) {
 
             console.log('CHAT REÇU ADMIN:', e);
 
-            let html = `
-                <div class="chat-item chat-left">
-                    <img src="${e.avatar}" alt="avatar">
-                    <div class="chat-details">
-                        <div class="chat-text">${e.message}</div>
-                        <div class="chat-time">sending...</div>
-                    </div>
-                </div>
-            `;
+            if(e.senderId == $('#mychatbox').attr('data-inbox')) {
 
-            $('.chat-content').append(html);
-            scrollToBottom();
+            
+
+                let html = `
+                    <div class="chat-item chat-left">
+                        <img src="${e.avatar}" alt="avatar">
+                        <div class="chat-details">
+                            <div class="chat-text">${e.message}</div>
+                            <div class="chat-time">sending...</div>
+                        </div>
+                    </div>
+                `;
+
+                $('.chat-content').append(html);
+                scrollToBottom();
+            }
            
         });
 }
