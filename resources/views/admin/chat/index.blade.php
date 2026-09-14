@@ -67,10 +67,10 @@
         var userId = "{{auth()->user()->id}}"
         $('#receiver_id').val("")
         
-        function scrollToBottom() {
-            let chatContent = $('.chat-content')
-            chatContent.scrollTop(chatContent.prop("scrollHeight"));
-        }
+        // function scrollToBottom() {
+        //     let chatContent = $('.chat-content')
+        //     chatContent.scrollTop(chatContent.prop("scrollHeight"));
+        // }
         
         $('.fp_chat_user').on('click', function(){
             let senderId = $(this).data('user');
@@ -101,7 +101,7 @@
                             $('.chat-content').append(html)
                     })
 
-                    scrollToBottom()
+                    // scrollToBottom()
                           
                 },
                 error: function(xhr, status, error) {

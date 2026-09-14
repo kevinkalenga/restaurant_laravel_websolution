@@ -1,6 +1,12 @@
 
 import './bootstrap';
 
+
+ function scrollToBottom() {
+            let chatContent = $('.fp__chat_body')
+            chatContent.scrollTop(chatContent.prop("scrollHeight"));
+        }
+
 console.log('USER ID:', loggedInUserId);
 if (loggedInUserId) {
     window.Echo.private('chat.' + loggedInUserId)
@@ -20,5 +26,6 @@ if (loggedInUserId) {
             `;
 
             $('.fp__chat_body').append(html);
+            scrollToBottom();
         });
 }
