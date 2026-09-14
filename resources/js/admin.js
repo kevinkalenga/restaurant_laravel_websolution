@@ -26,6 +26,17 @@ if (loggedInUserId) {
                 $('.chat-content').append(html);
                 scrollToBottom();
             }
+
+            // Show message notification 
+            $(".fp_chat_user").each(function(){
+                let senderId = $(this).data('user');
+                if(e.senderId == senderId){
+                   let html = `<i class="beep"></i>new message`;
+
+                   $(this).find(".got_new_message").html(html)
+                   
+                }
+            })
            
         });
 }

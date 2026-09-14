@@ -2811,3 +2811,8 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 .cursor-pointer {
   cursor: pointer;
 }
+
+.beep::after {
+  width: 12px;
+  height: 12px;
+}
