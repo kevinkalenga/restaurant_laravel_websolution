@@ -1,3 +1,4 @@
+console.log('🔥 BOOTSTRAP CHARGÉ');
 import axios from 'axios';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
@@ -36,9 +37,3 @@ window.Echo.channel('order-placed')
         $('.rt_notification').prepend(html);
         $('. notification_beep').addClass('beep');
     });
-if (loggedInUserId) {
-    window.Echo.private('chat.' + loggedInUserId)
-        .listen('ChatEvent', (e) => {
-            console.log(e);
-        });
-}

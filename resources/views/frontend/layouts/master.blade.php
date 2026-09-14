@@ -31,7 +31,7 @@
         var loggedInUserId = @json(auth()->id());;
     </script>
 
-    @vite(['/resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/js/frontend.js'])
     <!-- <link rel="stylesheet" href="css/rtl.css"> -->
  
 

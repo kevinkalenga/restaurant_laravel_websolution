@@ -53,12 +53,12 @@
     $(document).ready(function(){
       var userId = "{{auth()->user()->id}}"
         function scrollToBottom() {
-            let chatContent = $('.chat-content')
+            let chatContent = $('.fp__chat_body');
             chatContent.scrollTop(chatContent.prop("scrollHeight"));
         }
       $('.fp_chat_message').on('click', function(){
 
-      
+        console.log('RECHARGEMENT CONVERSATION');
         let senderId = 1;
           
             $.ajax({
@@ -131,11 +131,7 @@
                 $('.fp_send_message').val("")
             },
             success: function(response) {
-                //    iziToast.success({
-                //         title: 'Success',
-                //         message: response.message,
-                //         position: 'topRight'
-                //     });
+                
             },
             error: function(xhr, status, error){
                

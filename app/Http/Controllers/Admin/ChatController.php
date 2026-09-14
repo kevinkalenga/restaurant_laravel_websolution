@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Chat;
+use App\Events\ChatEvent;
 
 class ChatController extends Controller
 {
@@ -71,7 +72,11 @@ class ChatController extends Controller
        $chat->message = $request->message;
        $chat->save();
 
-        return response(['status' => 'success', 'message' => "The message has been sent Successfully!"], 200);
+       $avatar = asset(auth()->user()->avatar);
+
+        broadcast(new ChatEvent($request->message, $avatar, $request->receiver_id))->toOthers();
+
+        return response(['status' => 'success', 'message' => "The message has been sent Successfully!", 'chat' => $chat->load('sender')], 200);
 
        
     }

@@ -14,16 +14,20 @@ class ChatEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+     public $connection = 'sync';
+
     public $message;
+    public $avatar;
     public $receiverId;
     
 
     /**
      * Create a new event instance.
      */
-    public function __construct($message, $receiverId)
+    public function __construct($message, $avatar, $receiverId)
     {
         $this->message = $message;
+        $this->avatar = $avatar;
         $this->receiverId = $receiverId;
     }
 
@@ -36,6 +40,20 @@ class ChatEvent implements ShouldBroadcast
     {
         return [
             new PrivateChannel('chat.'.$this->receiverId),
+        ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'ChatEvent';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message,
+            'avatar' => $this->avatar,
+            'receiverId' => $this->receiverId,
         ];
     }
 }
