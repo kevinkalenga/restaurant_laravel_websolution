@@ -56,6 +56,7 @@
             let chatContent = $('.fp__chat_body');
             chatContent.scrollTop(chatContent.prop("scrollHeight"));
         }
+      // fetch conversations
       $('.fp_chat_message').on('click', function(){
 
         console.log('RECHARGEMENT CONVERSATION');
@@ -85,7 +86,7 @@
                                         <p>
                                            ${message.message}
                                         </p>
-                                        <span>sending...</span>
+                                        
                                     </div>
                                 </div> 
                                
@@ -103,6 +104,8 @@
     
     
       })
+
+      // Send Message
     
       $('.chat_input').on('submit', function(e){
         e.preventDefault();
@@ -129,6 +132,7 @@
                 `
                 $('.fp__chat_body').append(html)
                 $('.fp_send_message').val("")
+                scrollToBottom()
             },
             success: function(response) {
                 

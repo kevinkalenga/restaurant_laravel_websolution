@@ -67,11 +67,11 @@
         var userId = "{{auth()->user()->id}}"
         $('#receiver_id').val("")
         
-        // function scrollToBottom() {
-        //     let chatContent = $('.chat-content')
-        //     chatContent.scrollTop(chatContent.prop("scrollHeight"));
-        // }
-        
+        function scrollToBottom() {
+            let chatContent = $('.chat-content')
+            chatContent.scrollTop(chatContent.prop("scrollHeight"));
+        }
+        //fecth conversation
         $('.fp_chat_user').on('click', function(){
             let senderId = $(this).data('user');
             $('#receiver_id').val(senderId)
@@ -94,14 +94,14 @@
                                     <img src="${avatar}">
                                     <div class="chat-details">
                                         <div class="chat-text">${message.message}</div>
-                                        <div class="chat-time">sending...</div>
+                                        
                                     </div>
                                 </div>
                             `
                             $('.chat-content').append(html)
                     })
 
-                    // scrollToBottom()
+                    scrollToBottom()
                           
                 },
                 error: function(xhr, status, error) {
@@ -109,7 +109,7 @@
                 }
             })
         })
-
+        // Send message
         $('#chat-form').on('submit', function(e){
             e.preventDefault();
             let formData = $(this).serialize();
@@ -130,6 +130,7 @@
                     `
                     $('.chat-content').append(html)
                     $('.fp_send_message').val("")
+                     scrollToBottom()
                 },
                 success: function(response) {
                     
