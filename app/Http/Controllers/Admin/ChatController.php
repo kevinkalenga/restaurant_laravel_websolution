@@ -25,15 +25,24 @@ class ChatController extends Controller
     {
       //dd(auth()->user()->chats);
       $userId = auth()->user()->id;
-      // chats is the relation
-      $chatUsers = User::where('id', '!=', $userId)->whereHas('chats', function($query) use ($userId){
-        $query->where(function($subQuery) use ($userId){
-          $subQuery->where('sender_id', $userId)->orWhere('receiver_id', $userId);
-        });
-      })->orderByDesc('created_at')->distinct()->get();
+      // // chats is the relation
+      // $chatUsers = User::where('id', '!=', $userId)->whereHas('chats', function($query) use ($userId){
+      //   $query->where(function($subQuery) use ($userId){
+      //     $subQuery->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+      //   });
+      // })->orderByDesc('created_at')->distinct()->get();
+
+      $senders = Chat::select('sender_id')
+           ->where('receiver_id', $userId)
+           ->where('sender_id', '!=', $userId)
+           ->selectRaw('MAX(created_at) as latest_message_sent')
+           ->groupBy('sender_id')
+           ->orderByDesc('latest_message_sent')
+           ->get();
+        
 
       //dd($chatUsers);
-      return view('admin.chat.index', compact('chatUsers'));
+      return view('admin.chat.index', compact('senders'));
     }
 
     public function getConversation($senderId)
