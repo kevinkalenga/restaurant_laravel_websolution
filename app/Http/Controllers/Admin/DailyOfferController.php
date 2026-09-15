@@ -20,7 +20,12 @@ class DailyOfferController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.daily-offer.create');
+    }
+
+    public function productSearch(Request $request)
+    {
+          return $request->all();
     }
 
     /**

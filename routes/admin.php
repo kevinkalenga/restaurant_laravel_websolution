@@ -96,7 +96,8 @@ Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConve
 Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
 
 // Daily Offer routes
-Route::resource('/dayly-offer', DailyOfferController::class);
+Route::get('dayly-offer/search-product', [DailyOfferController::class, 'productSearch'])->name('dayly-offer.search-product');
+Route::resource('dayly-offer', DailyOfferController::class);
 
 
 
