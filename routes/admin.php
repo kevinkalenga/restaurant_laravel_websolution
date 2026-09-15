@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\DeliveryAreaController;
 use App\Http\Controllers\Admin\PaymentGatewaySettingController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ChatController;
+use App\Http\Controllers\Admin\DailyOfferController;
 
 
 
@@ -93,6 +94,12 @@ Route::get('clear-notification', [AdminDashboardController::class, 'clearNotific
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
 Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
 Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
+
+// Daily Offer routes
+Route::resource('/dayly-offer', DailyOfferController::class);
+
+
+
 
 // Product Option Routes
 
