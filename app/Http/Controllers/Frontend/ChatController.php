@@ -31,7 +31,7 @@ class ChatController extends Controller
 
      
 
-        return response(['status' => 'success', 'message' => "The message has been sent Successfully!", 'chat' => $chat->load('sender')], 200);
+        return response(['status' => 'success', 'msgId' => $request->msg_temp_id, 'message' => "The message has been sent Successfully!", 'chat' => $chat->load('sender')], 200);
 
        
     }

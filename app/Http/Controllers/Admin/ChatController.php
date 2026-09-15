@@ -82,7 +82,7 @@ class ChatController extends Controller
         $senderId = auth()->user()->id;
         broadcast(new ChatEvent($request->message, $avatar, $request->receiver_id, $senderId))->toOthers();
 
-        return response(['status' => 'success', 'message' => "The message has been sent Successfully!", 'chat' => $chat->load('sender')], 200);
+        return response(['status' => 'success', 'msgId' => $request->msg_temp_id, 'message' => "The message has been sent Successfully!", 'chat' => $chat->load('sender')], 200);
 
        
     }

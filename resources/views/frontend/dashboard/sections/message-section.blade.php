@@ -34,9 +34,8 @@
                 </div>
                 <form class="fp__single_chat_bottom chat_input" action="chat.send-message" method="POST" >
                     @csrf
-                    <label for="select_file"><i class="far fa-file-medical"
-                            aria-hidden="true"></i></label>
-                    <input id="select_file" type="file" hidden="">
+                    
+                    <input type="hidden" name="msg_temp_id" class="msg_temp_id" value="">
                     <input type="text" placeholder="Type a message..." name="message" class="fp_send_message">
                     <input type="hidden" name="receiver_id" value="1">
                     <button class="fp__massage_btn" type="submit"><i class="fas fa-paper-plane"
@@ -110,6 +109,10 @@
     
       $('.chat_input').on('submit', function(e){
         e.preventDefault();
+        var msgId = Math.floor(Math.random() * (1 - 10000 + 1)) + 10000
+        $('.msg_temp_id').val(msgId)
+        
+        
         let formData = $(this).serialize();
         $.ajax({
             method: 'POST',
@@ -127,7 +130,7 @@
                             <p>
                               ${message}
                             </p>
-                            <span>sending...</span>
+                            <span class="msg_sending ${msgId}">sending...</span>
                         </div>
                     </div>
                 `
@@ -136,7 +139,9 @@
                 scrollToBottom()
             },
             success: function(response) {
-                
+                if($('.msg_temp_id').val() == response.msgId) {
+                   $('.'+msgId).remove();
+                }
             },
             error: function(xhr, status, error){
                
