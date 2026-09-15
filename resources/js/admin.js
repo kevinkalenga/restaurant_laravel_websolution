@@ -37,6 +37,8 @@ if (loggedInUserId) {
                    
                 }
             })
+
+            $('.message-envelope').addClass('beep')
            
         });
 }

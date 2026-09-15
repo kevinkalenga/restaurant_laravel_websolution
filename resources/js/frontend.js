@@ -27,5 +27,6 @@ if (loggedInUserId) {
 
             $('.fp__chat_body').append(html);
             scrollToBottom();
+            $('.sunseen-message-count').text(1);
         });
 }
