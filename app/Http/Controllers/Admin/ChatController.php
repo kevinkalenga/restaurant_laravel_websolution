@@ -25,12 +25,7 @@ class ChatController extends Controller
     {
       //dd(auth()->user()->chats);
       $userId = auth()->user()->id;
-      // // chats is the relation
-      // $chatUsers = User::where('id', '!=', $userId)->whereHas('chats', function($query) use ($userId){
-      //   $query->where(function($subQuery) use ($userId){
-      //     $subQuery->where('sender_id', $userId)->orWhere('receiver_id', $userId);
-      //   });
-      // })->orderByDesc('created_at')->distinct()->get();
+     
 
       $senders = Chat::select('sender_id')
            ->where('receiver_id', $userId)
@@ -58,6 +53,8 @@ class ChatController extends Controller
        * au plus récent, afin de respecter l'ordre chronologique de la conversation.
        */
         $receiverId = auth()->user()->id;
+
+        Chat::where('sender_id', $senderId)->where('receiver_id', $receiverId)->where('seen', 0)->update(['seen' => 1]);
 
         $messages = Chat::whereIn('sender_id', [$senderId, $receiverId])
              ->whereIn('receiver_id', [$senderId, $receiverId])
