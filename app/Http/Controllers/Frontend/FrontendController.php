@@ -29,7 +29,14 @@ class FrontendController extends Controller
 
     public function getSectionTitles() 
     {
-        $keys = ['why_choose_top_title', 'why_choose_main_title', 'why_choose_sub_title'];
+        $keys = [
+            'why_choose_top_title', 
+            'why_choose_main_title', 
+            'why_choose_sub_title',
+            'daily_offer_top_title',
+            'daily_offer_main_title', 
+            'daily_offer_sub_title',
+        ];
         return SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
     }
 

@@ -98,6 +98,8 @@ Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('
 // Daily Offer routes
 Route::get('dayly-offer/search-product', [DailyOfferController::class, 'productSearch'])->name('dayly-offer.search-product');
 Route::resource('dayly-offer', DailyOfferController::class);
+Route::put('/daily-offer-title-update', [DailyOfferController::class, 'updateTitle'])->name('daily-offer-title.update');
+
 
 
 
