@@ -16,11 +16,11 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.delivery-area.store') }}" method="POST" novalidate>
+            <form action="{{ route('admin.dayly-offer.store') }}" method="POST" novalidate>
                 @csrf
 
                 <div class="form-group">
-                    <label for="offer">Area Name</label>
+                    <label for="offer">Product</label>
                     <select name="product" class="form-control" id="product_search">
                         <option value="">Select</option>
                         

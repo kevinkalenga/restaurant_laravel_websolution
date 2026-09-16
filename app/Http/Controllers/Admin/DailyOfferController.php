@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\DailyOffer;
 
 class DailyOfferController extends Controller
 {
@@ -41,7 +42,19 @@ class DailyOfferController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product' => ['required', 'integer'],
+            'status' => ['required', 'boolean']
+        ]);
+
+        $offer = new DailyOffer();
+        $offer->product_id = $request->product;
+        $offer->status = $request->status;
+        $offer->save();
+
+        return redirect()
+        ->route('admin.dayly-offer.index')
+        ->with('success', 'Dayly Offer created successfully!');
     }
 
     /**
