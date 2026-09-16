@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class DailyOfferController extends Controller
 {
@@ -25,7 +26,14 @@ class DailyOfferController extends Controller
 
     public function productSearch(Request $request)
     {
-          return $request->all();
+        $product = Product::select('id', 'name', 'thumb_image')->where('name', 'LIKE', '%'.$request->search.'%')->get();
+         
+        $product->transform(function ($item) {
+            $item->thumb_image = asset($item->thumb_image);
+            return $item;
+        });
+
+         return response($product);
     }
 
     /**

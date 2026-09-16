@@ -53,17 +53,41 @@
     $(document).ready(function(){
         $('#product_search').select2({
            ajax: {
-             url: '{{route("admin.dayly-offer.search-product")}}',
-             data: function(params) {
-                var query = {
-                    search: params.term,
-                    type: 'public'
-                }
+                url: '{{route("admin.dayly-offer.search-product")}}',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
 
-                return query;
-             }
-           }
+                  return query;
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(product){
+                            return {
+                                text: product.name,
+                                id: product.id,
+                                image_url: product.thumb_image
+                            }
+                        })
+                    }
+                }
+            },
+            minimumInputLength: 3,
+            templateResult: formatProduct,
+            escapeMarkup: function(m) {
+                return m;
+            }
+           
+
         })
+
+        function formatProduct(product) {
+            var product = $('<span><img src="'+product.image_url+'" class="img-thumbnail" width="50" >'+product.text+'</span>')
+
+            return product;
+        }
     })
    
  </script>
