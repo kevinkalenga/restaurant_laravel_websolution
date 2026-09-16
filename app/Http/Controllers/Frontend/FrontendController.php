@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\SectionTitle;
 use App\Models\Product;
 use App\Models\Coupon;
+use App\Models\DailyOffer;
 use Cart;
 
 class FrontendController extends Controller
@@ -21,7 +22,8 @@ class FrontendController extends Controller
         $whyChooseUs = WhyChooseUs::where('status', 1)->get();
         // dd($sectionTitles);
         $categories = Category::where(['show_at_home' => 1, 'status' => 1])->get();
-        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories'));
+        $dailyOffers = DailyOffer::with('product')->where('status', 1)->take(8)->get();
+        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers'));
        
     }
 
