@@ -137,20 +137,15 @@ public function index()
         ->with('success', 'Dayly Offer created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $dailyOffer = DailyOffer::with('product')->findOrFail($id);
+        return view('admin.daily-offer.edit', compact('dailyOffer'));
     }
 
     /**
@@ -158,7 +153,20 @@ public function index()
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dailyOffer = DailyOffer::findOrFail($id);
+        $request->validate([
+            'product' => ['required', 'integer'],
+            'status' => ['required', 'boolean']
+        ]);
+
+       
+        $dailyOffer->product_id = $request->product;
+        $dailyOffer->status = $request->status;
+        $dailyOffer->save();
+
+        return redirect()
+        ->route('admin.dayly-offer.index')
+        ->with('success', 'Dayly Offer updated successfully!');
     }
 
     /**
@@ -166,6 +174,14 @@ public function index()
      */
     public function destroy(string $id)
     {
-        //
+        $dailyOffer = DailyOffer::findOrFail($id);
+
+      
+
+        $dailyOffer->delete();
+
+        return redirect()
+            ->route('admin.dayly-offer.index')
+            ->with('success', 'Dayly Offer deleted successfully!');
     }
 }
