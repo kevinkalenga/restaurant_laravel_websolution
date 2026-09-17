@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\PaymentGatewaySettingController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DailyOfferController;
+use App\Http\Controllers\Admin\BannerSliderController;
 
 
 
@@ -100,7 +101,9 @@ Route::get('dayly-offer/search-product', [DailyOfferController::class, 'productS
 Route::resource('dayly-offer', DailyOfferController::class);
 Route::put('/daily-offer-title-update', [DailyOfferController::class, 'updateTitle'])->name('daily-offer-title.update');
 
+// Banner Slider routes
 
+Route::resource('/banner-slider', BannerSliderController::class);
 
 
 
