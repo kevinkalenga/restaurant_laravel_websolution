@@ -31,14 +31,25 @@ class OrderPlacedNotificationListener
     //     Mail::send(new OrderPlacedMail($order));
     // }
 
+    // public function handle(OrderPlacedNotificationEvent $event): void
+    // {
+    //     $order = Order::with('user')->find($event->orderId);
+
+    //     \Log::info('Order mail debug', [
+    //         'order_id' => $order->id,
+    //         'user_email' => $order->user->email ?? 'NO EMAIL'
+    //     ]);
+
+    //     Mail::send(new OrderPlacedMail($order));
+    // }
+
     public function handle(OrderPlacedNotificationEvent $event): void
     {
         $order = Order::with('user')->find($event->orderId);
 
-        \Log::info('Order mail debug', [
-            'order_id' => $order->id,
-            'user_email' => $order->user->email ?? 'NO EMAIL'
-        ]);
+        if (!$order || !$order->user || !$order->user->email) {
+            return;
+        }
 
         Mail::send(new OrderPlacedMail($order));
     }
