@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Traits\FileUploadTrait;
 use App\Models\BannerSlider;
+use Yajra\DataTables\Facades\DataTables;
 
 class BannerSliderController extends Controller
 {
@@ -16,9 +17,51 @@ class BannerSliderController extends Controller
      /**
      * Display a listing of the resource.
      */
-    public function index()
+   
+     public function index()
     {
-        return view('admin.banner-slider.index');
+            if (request()->ajax()) {
+
+                $banners = BannerSlider::query();
+
+                return DataTables::of($banners)
+
+                    ->addColumn('banner', function ($banner) {
+                        return asset($banner->banner);
+                    })
+
+                    ->addColumn('action', function ($banner) {
+
+                        return '
+                            <a href="' . route('admin.banner-slider.edit', $banner->id) . '"
+                            class="text-primary fw-bold">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            |
+                            <a href="' . route('admin.banner-slider.destroy', $banner->id) . '"
+                            class="text-danger fw-bold"
+                            onclick="event.preventDefault();
+                            if(confirm(\'Are you sure you want to delete?\')) {
+                                document.getElementById(\'delete-form-' . $banner->id . '\').submit();
+                            }">
+                                 <i class="fas fa-trash"></i>
+                            </a>
+
+                            <form id="delete-form-' . $banner->id . '"
+                                action="' . route('admin.banner-slider.destroy', $banner->id) . '"
+                                method="POST"
+                                style="display:none;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                            </form>
+                        ';
+                    })
+
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+
+            return view('admin.banner-slider.index');
     }
 
     /**
