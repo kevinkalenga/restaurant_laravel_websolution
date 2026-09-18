@@ -33,7 +33,6 @@
                         <th>Sub Title</th>
                         <th>Status</th>
                         <th>Created At</th>
-                        <th>Updated At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -100,13 +99,19 @@ $(function () {
 
             {
                 data: 'created_at',
-                name: 'created_at'
+                name: 'created_at',
+                render: function(data) {
+                    return new Date(data).toLocaleString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
             },
 
-            {
-                data: 'updated_at',
-                name: 'updated_at'
-            },
+            
 
             {
                 data: 'action',

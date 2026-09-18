@@ -11,6 +11,7 @@ class BannerSlider extends Model
         'banner',
         'title',
         'sub_title',
+        'url',
         'status',
     ];
 }

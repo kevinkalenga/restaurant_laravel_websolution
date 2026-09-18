@@ -81,6 +81,7 @@ class BannerSliderController extends Controller
               'banner' => 'required|image|max:2048',
               'title' => 'required|string|max:255',
               'sub_title' => 'required|string|max:255',
+              'url' => 'required',
               'status' => 'required|boolean',
         ]);
 
@@ -91,34 +92,60 @@ class BannerSliderController extends Controller
             'banner' => $imagePath,
             'title' => $request->title,
             'sub_title' => $request->sub_title,
+            'url' => $request->url,
             'status' => $request->status,
         ]);
 
         return redirect()->route('admin.banner-slider.index')->with('success', 'Banner Slider created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $bannerSlider = BannerSlider::findOrFail($id);
+
+       return view('admin.banner-slider.edit', compact('bannerSlider'));
     }
 
     /**
      * Update the specified resource in storage.
      */
+    
     public function update(Request $request, string $id)
     {
-        //
+        $bannerSlider = BannerSlider::findOrFail($id);
+
+        $request->validate([
+            'banner' => 'nullable|image|max:2048',
+            'title' => 'required|string|max:255',
+            'sub_title' => 'required|string|max:255',
+            'url' => 'required',
+            'status' => 'required|boolean',
+        ]);
+
+        if ($request->hasFile('banner')) {
+
+            if ($bannerSlider->banner && file_exists(public_path($bannerSlider->banner))) {
+                unlink(public_path($bannerSlider->banner));
+            }
+
+            $bannerSlider->banner = $this->uploadImage($request, 'banner', 'uploads');
+        }
+
+        $bannerSlider->update([
+            'title' => $request->title,
+            'sub_title' => $request->sub_title,
+            'url' => $request->url,
+            'status' => $request->status,
+        ]);
+
+        return redirect()
+            ->route('admin.banner-slider.index')
+            ->with('status', 'Banner Slider updated successfully!');
     }
 
     /**
@@ -126,6 +153,14 @@ class BannerSliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+         $coupon = BannerSlider::findOrFail($id);
+
+      
+
+        $coupon->delete();
+
+        return redirect()
+            ->route('admin.banner-slider.index')
+            ->with('success', 'Banner Slider deleted successfully!');
     }
 }
