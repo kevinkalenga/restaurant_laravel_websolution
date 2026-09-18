@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Traits\FileUploadTrait;
+use App\Models\BannerSlider;
 
 class BannerSliderController extends Controller
 {
-    /**
+
+     use FileUploadTrait;
+    
+
+     /**
      * Display a listing of the resource.
      */
     public function index()
@@ -20,7 +26,7 @@ class BannerSliderController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.banner-slider.create');
     }
 
     /**
@@ -28,7 +34,24 @@ class BannerSliderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+              'banner' => 'required|image|max:2048',
+              'title' => 'required|string|max:255',
+              'sub_title' => 'required|string|max:255',
+              'status' => 'required|boolean',
+        ]);
+
+        // Utiliser le trait pour uploader l'image
+        $imagePath = $this->uploadImage($request, 'banner', 'uploads');
+
+        BannerSlider::create([
+            'banner' => $imagePath,
+            'title' => $request->title,
+            'sub_title' => $request->sub_title,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('admin.banner-slider.index')->with('success', 'Banner Slider created successfully!');
     }
 
     /**
