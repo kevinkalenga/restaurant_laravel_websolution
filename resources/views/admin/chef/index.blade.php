@@ -23,16 +23,16 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered" id="banner-sliders-table">
+            <table class="table table-bordered" id="chefs-table">
 
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Banner</th>
+                        <th>Image</th>
+                        <th>Name</th>
                         <th>Title</th>
-                        <th>Sub Title</th>
+                        <th>Show At Home</th>
                         <th>Status</th>
-                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -45,5 +45,72 @@
 </section>
 @endsection
 
+@push('scripts')
 
+<script>
+$(function () {
 
+    $('#chefs-table').DataTable({
+
+        processing: true,
+        serverSide: true,
+
+        ajax: "{{ route('admin.chefs.index') }}",
+
+        columns: [
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'image',
+                name: 'image',
+                orderable: false,
+                searchable: false,
+                render: function (data) {
+
+                    if (!data) {
+                        return 'N/A';
+                    }
+
+                    return `
+                        <img src="${data}"
+                             width="80"
+                             height="50"
+                             style="object-fit: cover;">
+                    `;
+                }
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'title',
+                name: 'title'
+            },
+            {
+                data: 'show_at_home',
+                name: 'show_at_home',
+                orderable: false
+            },
+            {
+                data: 'status',
+                name: 'status',
+                orderable: false
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+        ]
+
+    });
+
+});
+</script>
+
+@endpush
+```
