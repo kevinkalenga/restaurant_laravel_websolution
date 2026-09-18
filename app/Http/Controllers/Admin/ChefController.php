@@ -173,22 +173,64 @@ class ChefController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $chef = Chef::findOrFail($id); 
+        return view('admin.chef.edit', compact('chef'));
     }
 
+     
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $chef = Chef::findOrFail($id);
+
+        $request->validate([
+            'image' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'fb' => 'nullable|string|url|max:255',
+            'in' => 'nullable|string|url|max:255',
+            'x' => 'nullable|string|url|max:255',
+            'web' => 'nullable|string|url|max:255',
+            'show_at_home' => 'required|boolean',
+            'status' => 'required|boolean',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $this->uploadImage($request, 'image', 'uploads');
+            $chef->image = $imagePath;
+        }
+
+        $chef->name = $request->name;
+        $chef->title = $request->title;
+        $chef->fb = $request->fb;
+        $chef->in = $request->in;
+        $chef->x = $request->x;
+        $chef->web = $request->web;
+        $chef->show_at_home = $request->show_at_home;
+        $chef->status = $request->status;
+
+        $chef->save();
+
+        return redirect()
+            ->route('admin.chefs.index')
+            ->with('success', 'Chef updated successfully!');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+         $chef = Chef::findOrFail($id);
+
+         $chef->delete();
+
+         return redirect()
+            ->route('admin.chefs.index')
+            ->with('success', 'Chef deleted successfully!');
     }
 }
