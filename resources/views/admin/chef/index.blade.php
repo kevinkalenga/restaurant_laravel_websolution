@@ -14,7 +14,7 @@
             <h4>All Chefs</h4>
 
             <div class="card-header-action">
-                <a href="{{ route('admin.banner-slider.create') }}"
+                <a href="{{ route('admin.chefs.create') }}"
                    class="btn btn-primary">
                     Create New
                 </a>
@@ -45,86 +45,5 @@
 </section>
 @endsection
 
-@push('scripts')
-<script>
-$(function () {
 
-    $('#banner-sliders-table').DataTable({
-
-        processing: true,
-        serverSide: true,
-
-        ajax: '{{ route("admin.banner-slider.index") }}',
-
-        columns: [
-
-            {
-                data: 'id',
-                name: 'id'
-            },
-
-            {
-                data: 'banner',
-                name: 'banner',
-                orderable: false,
-                searchable: false,
-
-                render: function(data, type, row) {
-                    return '<img src="' + data + '" width="100">';
-                }
-            },
-
-            {
-                data: 'title',
-                name: 'title'
-            },
-
-            {
-                data: 'sub_title',
-                name: 'sub_title'
-            },
-
-            {
-                data: 'status',
-                name: 'status',
-
-                render: function(data) {
-
-                    return data
-                        ? '<span class="badge badge-success">Active</span>'
-                        : '<span class="badge badge-danger">Inactive</span>';
-
-                }
-            },
-
-            {
-                data: 'created_at',
-                name: 'created_at',
-                render: function(data) {
-                    return new Date(data).toLocaleString('fr-FR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                }
-            },
-
-            
-
-            {
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            }
-
-        ]
-
-    });
-
-});
-</script>
-@endpush
 

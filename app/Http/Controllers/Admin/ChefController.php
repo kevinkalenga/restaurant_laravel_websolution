@@ -20,21 +20,13 @@ class ChefController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.chef.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
     {
         //
     }
