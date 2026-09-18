@@ -11,6 +11,7 @@ use App\Models\SectionTitle;
 use App\Models\Product;
 use App\Models\Coupon;
 use App\Models\DailyOffer;
+use App\Models\BannerSlider;
 use Cart;
 
 class FrontendController extends Controller
@@ -23,7 +24,8 @@ class FrontendController extends Controller
         // dd($sectionTitles);
         $categories = Category::where(['show_at_home' => 1, 'status' => 1])->get();
         $dailyOffers = DailyOffer::with('product')->where('status', 1)->take(8)->get();
-        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers'));
+        $bannerSliders = BannerSlider::where('status', 1)->latest()->take(4)->get();
+        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders'));
        
     }
 
