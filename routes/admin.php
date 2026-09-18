@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DailyOfferController;
 use App\Http\Controllers\Admin\BannerSliderController;
+use App\Http\Controllers\Admin\ChefController;
 
 
 
@@ -102,8 +103,11 @@ Route::resource('dayly-offer', DailyOfferController::class);
 Route::put('/daily-offer-title-update', [DailyOfferController::class, 'updateTitle'])->name('daily-offer-title.update');
 
 // Banner Slider routes
-
 Route::resource('/banner-slider', BannerSliderController::class);
+
+
+//Chef routes
+Route::resource('/chefs', ChefController::class);
 
 
 
