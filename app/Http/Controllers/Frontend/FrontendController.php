@@ -19,8 +19,11 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', 1)->get();
+       
         $sectionTitles = $this->getSectionTitles();
+
+
+        $sliders = Slider::where('status', 1)->get();
         $whyChooseUs = WhyChooseUs::where('status', 1)->get();
         // dd($sectionTitles);
         $categories = Category::where(['show_at_home' => 1, 'status' => 1])->get();
@@ -40,6 +43,9 @@ class FrontendController extends Controller
             'daily_offer_top_title',
             'daily_offer_main_title', 
             'daily_offer_sub_title',
+            'chef_top_title',
+            'chef_main_title', 
+            'chef_sub_title',
         ];
         return SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
     }

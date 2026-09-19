@@ -6,13 +6,7 @@
         <h1>Why Choose Us</h1>
     </div>
 
-    <!-- <div class="card card-primary">
-        <div class="card-header">
-            <h4>All Items</h4>
-           
-        </div>
-
-    </div> -->
+   
    
       <div class="card">
         

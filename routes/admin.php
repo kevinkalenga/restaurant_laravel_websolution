@@ -107,6 +107,7 @@ Route::resource('/banner-slider', BannerSliderController::class);
 
 
 //Chef routes
+Route::put('/chefs-title-update', [ChefController::class, 'updateTitle'])->name('chefs-title.update');
 Route::resource('/chefs', ChefController::class);
 
 
