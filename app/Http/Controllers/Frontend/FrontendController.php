@@ -131,7 +131,7 @@ class FrontendController extends Controller
 
     public function chef()
     {
-        $chefs = Chef::where(['status' => 1])->paginate(4);
+        $chefs = Chef::where(['status' => 1])->paginate(8);
         return view('frontend.pages.chefs', compact('chefs'));
     }
 
