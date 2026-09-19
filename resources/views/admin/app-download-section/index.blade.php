@@ -16,7 +16,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.banner-slider.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.app-download.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
 
                 <div class="form-group">
@@ -26,6 +26,7 @@
                           Choose File
                       </label>
                       <input type="file" name="image" id="image-upload" class="form-control" accept="image/*">
+                      <input type="hidden" name="old_image" class="form-control" value="">
                     </div>
                  
                 </div>
@@ -42,6 +43,7 @@
                             id="image-upload-2"
                             class="form-control"
                             accept="image/*">
+                         <input type="hidden" name="old_background" class="form-control" value="">
                     </div>
                 </div>
 

@@ -1,7 +1,6 @@
 
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -114,6 +113,7 @@ Route::resource('/chefs', ChefController::class);
 
 //App Download Routes
 Route::get('app-download', [AppDownloadSectionController::class, 'index'])->name('app-download.index');
+Route::post('app-download', [AppDownloadSectionController::class, 'store'])->name('app-download.store');
 
 
 
