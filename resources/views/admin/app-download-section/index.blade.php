@@ -21,19 +21,19 @@
 
                 <div class="form-group">
                    <label>Image</label>
-                    <div id="image-preview" class="image-preview">
+                    <div id="image-preview" class="image-preview image-preview-1">
                       <label for="image-upload" id="image-label">
                           Choose File
                       </label>
                       <input type="file" name="image" id="image-upload" class="form-control" accept="image/*">
-                      <input type="hidden" name="old_image" class="form-control" value="">
+                      <input type="hidden" name="old_image" class="form-control" value="{{$appSection->image}}">
                     </div>
                  
                 </div>
                 <div class="form-group">
                     <label>Background</label>
 
-                    <div id="image-preview-2" class="image-preview">
+                    <div id="image-preview-2" class="image-preview image-preview-2">
                         <label for="image-upload-2" id="image-label-2">
                             Choose File
                         </label>
@@ -43,32 +43,34 @@
                             id="image-upload-2"
                             class="form-control"
                             accept="image/*">
-                         <input type="hidden" name="old_background" class="form-control" value="">
+                         <input type="hidden" name="old_background" class="form-control" value="{{$appSection->background}}">
                     </div>
                 </div>
 
                    
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" name="title" class="form-control">
+                    <input type="text" name="title" class="form-control" value="{{$appSection->title}}">
                    
                 </div>
                 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="short_description" id="" class="form-control"></textarea>
+                    <textarea name="short_description" id="" class="form-control">
+                        {!! $appSection->short_description !!}
+                    </textarea>
                    
                 </div>
 
                 <div class="form-group">
                     <label>Play Store Link <code>(Leave empty for to hide)</code></label>
-                    <input type="text" name="play_store_link" class="form-control">
+                    <input type="text" name="play_store_link" class="form-control" value="{{$appSection->play_store_link}}">
                    
                 </div>
                 
                 <div class="form-group">
                     <label>Apple Store Link <code>(Leave empty for to hide)</code></label>
-                    <input type="text" name="apple_store_link" class="form-control">
+                    <input type="text" name="apple_store_link" class="form-control" value="{{$appSection->apple_store_link}}">
                    
                 </div>
                 
@@ -132,6 +134,19 @@
      no_label: false,                // Default: false
      success_callback: null          // Default: null
   });
+   
+    $(document).ready(function(){
+        $('.image-preview-1').css({
+          'background-image': 'url({{asset($appSection->image)}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+        $('.image-preview-2').css({
+          'background-image': 'url({{asset($appSection->background)}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
 </script>
 
 
