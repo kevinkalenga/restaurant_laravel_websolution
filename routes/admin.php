@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DailyOfferController;
 use App\Http\Controllers\Admin\BannerSliderController;
 use App\Http\Controllers\Admin\ChefController;
+use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
 
@@ -109,6 +110,10 @@ Route::resource('/banner-slider', BannerSliderController::class);
 //Chef routes
 Route::put('/chefs-title-update', [ChefController::class, 'updateTitle'])->name('chefs-title.update');
 Route::resource('/chefs', ChefController::class);
+
+
+//App Download Routes
+Route::get('app-download', [AppDownloadSectionController::class, 'index'])->name('app-download.index');
 
 
 
