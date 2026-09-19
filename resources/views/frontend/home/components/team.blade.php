@@ -36,7 +36,7 @@
                                       <li><a href="{{$chef->x}}"><i class="fab fa-twitter"></i></a></li>
                                     @endif
                                     @if($chef->web)
-                                     <li><a href="{{$chef->web}}"><i class="fab fa-behance"></i></a></li>
+                                     <li><a href="{{$chef->web}}"><i class="fas fa-link"></i></a></li>
                                     @endif
                                 </ul>
                             </div>

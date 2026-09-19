@@ -26,7 +26,7 @@ class FrontendController extends Controller
         $categories = Category::where(['show_at_home' => 1, 'status' => 1])->get();
         $dailyOffers = DailyOffer::with('product')->where('status', 1)->take(8)->get();
         $bannerSliders = BannerSlider::where('status', 1)->latest()->take(4)->get();
-        $chefs = Chef::where(['show_at_home' => 1, 'status'=> 1])->take(8)->get();
+        $chefs = Chef::where(['show_at_home' => 1, 'status'=> 1])->get();
         return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders', 'chefs'));
        
     }
@@ -127,6 +127,12 @@ class FrontendController extends Controller
             'discount' => 0,
             'finalTotal' => cartTotal()
         ]);
+    }
+
+    public function chef()
+    {
+        $chefs = Chef::where(['status' => 1])->paginate(4);
+        return view('frontend.pages.chefs', compact('chefs'));
     }
 
   
