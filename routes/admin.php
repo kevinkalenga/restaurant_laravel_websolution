@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DailyOfferController;
 use App\Http\Controllers\Admin\BannerSliderController;
 use App\Http\Controllers\Admin\ChefController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -114,6 +115,9 @@ Route::resource('/chefs', ChefController::class);
 //App Download Routes
 Route::get('app-download', [AppDownloadSectionController::class, 'index'])->name('app-download.index');
 Route::post('app-download', [AppDownloadSectionController::class, 'store'])->name('app-download.store');
+
+//Testimonial Routes 
+Route::resource('testimonial', TestimonialController::class);
 
 
 
