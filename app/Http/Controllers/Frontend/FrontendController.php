@@ -14,6 +14,7 @@ use App\Models\DailyOffer;
 use App\Models\BannerSlider;
 use App\Models\Chef;
 use Cart;
+use App\Models\AppDownloadSection;
 
 class FrontendController extends Controller
 {
@@ -30,7 +31,8 @@ class FrontendController extends Controller
         $dailyOffers = DailyOffer::with('product')->where('status', 1)->take(8)->get();
         $bannerSliders = BannerSlider::where('status', 1)->latest()->take(4)->get();
         $chefs = Chef::where(['show_at_home' => 1, 'status'=> 1])->get();
-        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders', 'chefs'));
+        $appSection = AppDownloadSection::first();
+        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders', 'chefs', 'appSection'));
        
     }
 
