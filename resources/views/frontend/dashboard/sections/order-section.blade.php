@@ -30,12 +30,26 @@
                                                                        <span class="complete">Delivered</span>
                                                                     @elseif($order->order_status === 'declined')
                                                                        <span class="cancel">Declined</span>
+                                                                    @elseif($order->order_status === 'cancelled') 
+                                                                       <span class="cancel">Cancelled</span>
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     <h5>{{currencyPosition($order->grand_total)}}</h5>
                                                                 </td>
-                                                                <td><a class="view_invoice" onclick="viewInvoice('{{$order->id}}')">View Details</a></td>
+                                                                <td>
+                                                                    <a class="view_invoice" onclick="viewInvoice('{{$order->id}}')">View</a>
+                                                                    @if($order->order_status === 'pending') 
+                                                                       <form action="{{ route('order.cancel', $order->id) }}" 
+                                                                         method="POST" 
+                                                                         style="display: inline-block; margin-left: 10px;" 
+                                                                         onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                                                          @csrf 
+                                                                          @method('PUT') 
+                                                                          <button type="submit" class="btn btn-danger btn-sm"> Cancel</button> 
+                                                                        </form>
+                                                                     @endif
+                                                                </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -50,6 +64,8 @@
 
                                                         @if($order->order_status === 'declined')
                                                             <li class="declined_status {{in_array($order->order_status, ['declined']) ? 'active' : '' }}">order declined</li>
+                                                        @elseif($order->order_status === 'cancelled') 
+                                                           <li class="declined_status active"> order cancelled </li>
                                                         @else
                                                             <li class="{{in_array($order->order_status, ['pending', 'in_process', 'delivered', 'declined']) ? 'active' : '' }}">order pending</li>
                                                             <li class="{{in_array($order->order_status, ['in_process', 'delivered', 'declined']) ? 'active' : '' }}">order in process</li>

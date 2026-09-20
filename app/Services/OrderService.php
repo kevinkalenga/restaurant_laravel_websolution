@@ -74,4 +74,26 @@ class OrderService {
     }
 
     
+   public function cancelOrder($orderId)
+   {
+      $order = Order::where('id', $orderId)
+         ->where('user_id', Auth::id())
+         ->firstOrFail();
+
+      // L'utilisateur peut annuler uniquement si
+      // l'admin n'a pas encore accepté la commande.
+      if ($order->order_status !== 'pending') {
+         return false;
+      }
+
+      $order->update([
+        'order_status' => 'cancelled',
+      ]);
+
+      return true;
+   }
+
+
+
+    
 }

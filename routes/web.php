@@ -10,6 +10,7 @@ use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ChatController;
+use App\Http\Controllers\Frontend\OrderController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Models\Order;
 
@@ -87,6 +88,10 @@ Route::group(['middleware' => 'auth'], function(){
   // Chat Routes 
   Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
   Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
+
+    // Cancel Order
+      Route::put('/order/{id}/cancel', [OrderController::class, 'cancelOrder'])
+        ->name('order.cancel');
 });
 
 
@@ -96,6 +101,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('admin/login', [AdminAuthController::class, 'index'])->name('admin.login');
     Route::get('admin/forget-password', [AdminAuthController::class, 'forgetPassword'])->name('admin.forget-password');
 });
+
+
 
 
 
