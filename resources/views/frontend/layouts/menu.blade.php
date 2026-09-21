@@ -32,7 +32,7 @@
                             <li><a href="cart_view.html">cart view</a></li>
                             <li><a href="check_out.html">checkout</a></li>
                             <li><a href="payment.html">payment</a></li>
-                            <li><a href="testimonial.html">testimonial</a></li>
+                            <li><a href="{{route('testimonial')}}">testimonial</a></li>
                             <li><a href="search_menu.html">search result</a></li>
                             <li><a href="404.html">404/Error</a></li>
                             <li><a href="faq.html">FAQs</a></li>

@@ -17,6 +17,9 @@ use App\Models\Order;
 
 /**  Show Home Page  **/ 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+/**  Testimonial Page  **/ 
+Route::get('/testimonial', [FrontendController::class, 'testimonial'])->name('testimonial');
+/**  Chef Page  **/ 
 Route::get('/chef', [FrontendController::class, 'chef'])->name('chef');
 
 /**  Show Product Detail Page  **/ 
