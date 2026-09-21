@@ -465,9 +465,11 @@
              <div class="row mt-4">
 
                                 <div class="col-md-6">
-                                    <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST">
+                                    <form id="update-order-form"
+                                        action="{{ route('admin.orders.update-status', $order->id) }}"
+                                        method="POST">
                                         @csrf
-                                        @method('PUT')
+                                       
 
                                         <div class="form-group">
                                             <label><strong>Payment Status</strong></label>
@@ -609,6 +611,35 @@ $(document).ready(function(){
             printWindow.print();
             printWindow.close();
         }, 500);
+
+    });
+
+
+    $('#update-order-form').on('submit', function(e) {
+
+        e.preventDefault();
+
+        let form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: form.serialize(),
+
+            success: function(response) {
+
+                alert(response.message);
+
+                location.reload();
+            },
+
+            error: function(xhr) {
+
+                console.log(xhr.responseText);
+
+                alert('Erreur lors de la mise à jour.');
+            }
+        });
 
     });
 

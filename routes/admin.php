@@ -83,13 +83,16 @@ Route::get('orders/{order}', [OrderController::class,'show'])
 Route::get('orders/{order}/edit', [OrderController::class,'edit'])
     ->name('orders.edit');
 
-Route::delete('orders/{order}', [OrderController::class,'destroy'])
+Route::delete('orders/{order}', [OrderController::class, 'destroy'])
     ->name('orders.destroy');
-Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
-    ->name('orders.update-status');
 
+// Récupérer le statut de la commande
 Route::get('/orders/status/{id}', [OrderController::class, 'getOrderStatus'])
     ->name('orders.status');
+
+// Modifier le statut de la commande
+Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])
+    ->name('orders.update-status');
 
 // Order Notification Routes
 Route::get('clear-notification', [AdminDashboardController::class, 'clearNotification'])->name('clear-notification');

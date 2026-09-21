@@ -383,7 +383,7 @@
 
             data: {
                 _token: '{{ csrf_token() }}',
-                _method: 'PUT',
+                
                 payment_status: $('.payment_status').val(),
                 order_status: $('.order_status').val()
             },

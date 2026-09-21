@@ -373,17 +373,21 @@
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        let url = '/admin/orders/' + currentOrderId + '/status';
+        // let url = '/admin/orders/' + currentOrderId + '/status';
+
+         let url = '{{ route("admin.orders.update-status", ":id") }}'
+        .replace(':id', currentOrderId);
 
         console.log('SAVE URL =', url);
+        console.log('### POST VERSION ###');
 
         $.ajax({
             url: url,
             type: 'POST',
+            dataType:'json',
 
             data: {
                 _token: '{{ csrf_token() }}',
-                _method: 'PUT',
                 payment_status: $('.payment_status').val(),
                 order_status: $('.order_status').val()
             },
@@ -397,6 +401,9 @@
                 $('#products-table')
                     .DataTable()
                     .ajax.reload(null, false);
+
+                    // Message de confirmation
+                    alert(response.message);
             },
 
             error: function (xhr) {
@@ -404,6 +411,7 @@
                 console.log('ERROR STATUS =', xhr.status);
                 console.log('ERROR URL =', xhr.responseURL);
                 console.log('ERROR =', xhr.responseText);
+                 alert('Erreur lors de la mise à jour du statut.');
             }
         });
 
