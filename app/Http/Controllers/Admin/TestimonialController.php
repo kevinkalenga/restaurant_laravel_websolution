@@ -142,14 +142,10 @@ class TestimonialController extends Controller
             ->make(true);
         }
 
-        $keys = [
-            'why_choose_top_title',
-            'why_choose_main_title',
-            'why_choose_sub_title'
-        ];
-
-        $titles = SectionTitle::whereIn('key', $keys)
-            ->pluck('value', 'key');
+    
+        
+        $keys = ['testimonial_top_title', 'testimonial_main_title', 'testimonial_sub_title'];
+       $titles = SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
 
         return view('admin.testimonial.index', compact('titles'));
 }
@@ -271,5 +267,27 @@ class TestimonialController extends Controller
         return redirect()
             ->route('admin.testimonial.index')
             ->with('success', 'Testimonial deleted successfully!');
+    }
+
+
+    
+    public function updateTitle(Request $request)
+    {
+        $validatedData = $request->validate([
+                'testimonial_top_title' => ['max:100'],
+                'testimonial_main_title' => ['max:200'],
+                'testimonial_sub_title' => ['max:500'],
+            ]);
+        foreach($validatedData as $key => $value){
+            SectionTitle::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value],
+            
+            );
+        }
+            
+        
+
+      return redirect()->back()->with('status', 'Updated Titles Successfully!');
     }
 }

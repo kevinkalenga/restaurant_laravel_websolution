@@ -117,6 +117,7 @@ Route::get('app-download', [AppDownloadSectionController::class, 'index'])->name
 Route::post('app-download', [AppDownloadSectionController::class, 'store'])->name('app-download.store');
 
 //Testimonial Routes 
+Route::put('/testimonial-title-update', [TestimonialController::class, 'updateTitle'])->name('testimonial-title.update');
 Route::resource('testimonial', TestimonialController::class);
 
 
