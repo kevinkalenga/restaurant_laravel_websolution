@@ -193,35 +193,83 @@ class TestimonialController extends Controller
         return redirect()->route('admin.testimonial.index')->with('success', 'Testimonial created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+         $testimonial = Testimonial::findOrFail($id);
+         return view('admin.testimonial.edit', compact('testimonial'));
     }
 
     /**
-     * Update the specified resource in storage.
-     */
+ * Update the specified resource in storage.
+ */
     public function update(Request $request, string $id)
     {
-        //
+        $testimonial = Testimonial::findOrFail($id);
+
+        $request->validate([
+            'image' => 'nullable|image|max:2048',
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|max:1000',
+            'show_at_home' => 'required|boolean',
+            'status' => 'required|boolean',
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'title' => $request->title,
+            'rating' => $request->rating,
+            'review' => $request->review,
+            'show_at_home' => $request->show_at_home,
+            'status' => $request->status,
+        ];
+
+        // Si une nouvelle image est envoyée
+        if ($request->hasFile('image')) {
+
+            // Supprimer l'ancienne image
+            if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+                unlink(public_path($testimonial->image));
+            }
+
+            // Upload de la nouvelle image
+            $data['image'] = $this->uploadImage(
+                $request,
+                'image',
+                'uploads'
+            );
+        }
+
+        $testimonial->update($data);
+
+        return redirect()
+            ->route('admin.testimonial.index')
+            ->with('success', 'Testimonial updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   /**
+    * Remove the specified resource from storage.
+   */
     public function destroy(string $id)
     {
-        //
+        $testimonial = Testimonial::findOrFail($id);
+
+        // Supprimer l'image
+        if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+            unlink(public_path($testimonial->image));
+        }
+
+        // Supprimer le testimonial
+        $testimonial->delete();
+
+        return redirect()
+            ->route('admin.testimonial.index')
+            ->with('success', 'Testimonial deleted successfully!');
     }
 }
