@@ -11,4 +11,8 @@ class CounterController extends Controller
     {
         return view('admin.counter.index');
     }
+    public function update(Request $request)
+    {
+      dd($request->all());
+    }
 }
