@@ -14,6 +14,7 @@ use App\Models\DailyOffer;
 use App\Models\BannerSlider;
 use App\Models\Chef;
 use App\Models\Testimonial;
+use App\Models\Counter;
 use Cart;
 use App\Models\AppDownloadSection;
 
@@ -34,7 +35,8 @@ class FrontendController extends Controller
         $chefs = Chef::where(['show_at_home' => 1, 'status'=> 1])->get();
         $appSection = AppDownloadSection::first();
         $testimonials = Testimonial::where(['show_at_home' => 1, 'status' => 1])->get();
-        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders', 'chefs', 'appSection', 'testimonials'));
+        $counter= Counter::first();
+        return view('frontend.home.index', compact('sliders', 'sectionTitles', 'whyChooseUs', 'categories', 'dailyOffers', 'bannerSliders', 'chefs', 'appSection', 'testimonials', 'counter'));
        
     }
 
