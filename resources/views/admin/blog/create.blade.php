@@ -3,20 +3,20 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Product</h1>
+        <h1>Blog</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item"><a href="{{ route('admin.product.index') }}">Products</a></div>
+            <div class="breadcrumb-item"><a href="{{ route('admin.blogs.index') }}">Blogs</a></div>
             <div class="breadcrumb-item active">Create</div>
         </div>
     </div>
 
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Create Product</h4>
+            <h4>Create Blog</h4>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.blogs.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
 
                 @if(session('success'))
@@ -27,8 +27,8 @@
 
                 <!-- Name -->
                 <div class="form-group">
-                    <label for="name">Title</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('title') }}" required>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                 </div>
 
                 <!-- Category -->
@@ -47,7 +47,7 @@
                 <!-- Thumbnail Image -->
                 <div class="form-group">
                     <label for="thumb_image">Thumbnail Image</label>
-                    <input type="file" name="thumb_image" id="image-upload" class="form-control">
+                    <input type="file" name="image" id="image-upload" class="form-control">
                     <div id="image-preview" style="margin-top:10px; width:200px; height:200px; border:1px solid #ccc;"></div>
                 </div>
 
