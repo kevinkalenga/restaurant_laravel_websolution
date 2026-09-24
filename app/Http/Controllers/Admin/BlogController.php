@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\BlogCategory;
 
 class BlogController extends Controller
 {
@@ -20,7 +21,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        $categories = BlogCategory::all();
+         return view('admin.blog.create', compact('categories'));
     }
 
     /**

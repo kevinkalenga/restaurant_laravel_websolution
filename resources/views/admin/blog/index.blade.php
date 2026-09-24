@@ -15,7 +15,7 @@
         <h4>All Blogs</h4>
 
         <div class="card-header-action">
-            <a href="{{ route('admin.blog-category.create') }}"
+            <a href="{{ route('admin.blogs.create') }}"
                class="btn btn-primary">
                 Create New
             </a>
