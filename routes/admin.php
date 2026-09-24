@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ChefController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -131,8 +132,12 @@ Route::resource('testimonial', TestimonialController::class);
 Route::get('counter', [CounterController::class, 'index'])->name('counter.index');
 Route::put('counter', [CounterController::class, 'update'])->name('counter.update');
 
-//Blogs Routes 
+//Blogs category Routes 
 Route::resource('blog-category', BlogCategoryController::class);
+
+
+//Blogs Routes 
+Route::resource('blogs', BlogController::class);
 
 
 
