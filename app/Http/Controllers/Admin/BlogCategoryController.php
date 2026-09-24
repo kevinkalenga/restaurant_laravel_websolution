@@ -88,20 +88,18 @@ class BlogCategoryController extends Controller
         return redirect()->route('admin.blog-category.index')->with('success', 'Blog category created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $category = BlogCategory::findOrFail($id);
+
+        return view(
+        'admin.blog.blog-category.edit',
+        compact('category')
+        );
     }
 
     /**
@@ -109,7 +107,27 @@ class BlogCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = BlogCategory::findOrFail($id);
+
+        $request->validate([
+        'name' => [
+        'required',
+        'string',
+        'max:255',
+        'unique:blog_categories,name,' . $category->id
+        ],
+        'status' => ['required', 'boolean'],
+        ]);
+
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $category->status = $request->status;
+
+        $category->save();
+
+        return redirect()
+        ->route('admin.blog-category.index')
+        ->with('success', 'Blog category updated successfully!');
     }
 
     /**
@@ -117,6 +135,12 @@ class BlogCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = BlogCategory::findOrFail($id);
+
+        $category->delete();
+
+        return redirect()
+        ->route('admin.blog-category.index')
+        ->with('success', 'Blog category deleted successfully!');
     }
 }
