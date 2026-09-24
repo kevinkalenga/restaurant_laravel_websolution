@@ -9,6 +9,7 @@ use App\Traits\FileUploadTrait;
 use App\Models\Blog;
 use Illuminate\Support\Str;
 use Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class BlogController extends Controller
 {
@@ -16,9 +17,58 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
+     
     public function index()
     {
-         return view('admin.blog.index');
+        if (request()->ajax()) {
+
+            $blogs = Blog::with(['category'])->select('blogs.*');
+
+            return DataTables::of($blogs)
+
+                ->addColumn('category_name', function ($blog) {
+                    return $blog->category
+                        ? $blog->category->name
+                        : '-';
+                })
+
+                ->addColumn('user_name', function ($blog) {
+                    return $blog->user
+                        ? $blog->user->name
+                        : '-';
+                })
+
+                ->addColumn('action', function ($blog) {
+                    return '
+                        <a href="' . route('admin.blogs.edit', $blog->id) . '"
+                        class="text-primary fw-bold">
+                            Edit
+                        </a>
+                        |
+                        <a href="' . route('admin.blogs.destroy', $blog->id) . '"
+                        class="text-danger fw-bold"
+                        onclick="event.preventDefault();
+                        if(confirm(\'Are you sure you want to delete?\')) {
+                            document.getElementById(\'delete-form-' . $blog->id . '\').submit();
+                        }">
+                            Delete
+                        </a>
+
+                        <form id="delete-form-' . $blog->id . '"
+                            action="' . route('admin.blogs.destroy', $blog->id) . '"
+                            method="POST"
+                            style="display:none;">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                        </form>
+                    ';
+                })
+
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.blog.index');
     }
 
     /**
