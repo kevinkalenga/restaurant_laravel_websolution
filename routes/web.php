@@ -19,6 +19,10 @@ use App\Models\Order;
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 /**  Testimonial Page  **/ 
 Route::get('/testimonial', [FrontendController::class, 'testimonial'])->name('testimonial');
+
+/**  Testimonial Page  **/ 
+Route::get('/blogs', [FrontendController::class, 'blog'])->name('blogs');
+
 /**  Chef Page  **/ 
 Route::get('/chef', [FrontendController::class, 'chef'])->name('chef');
 

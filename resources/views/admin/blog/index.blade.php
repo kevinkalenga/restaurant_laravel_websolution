@@ -34,7 +34,6 @@
                     <th>Image</th>
                     <th>Title</th>
                     <th>Slug</th>
-                    <th>Description</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Action</th>
@@ -107,12 +106,6 @@ $(function () {
                 data: 'slug',
                 name: 'slug'
             },
-
-            {
-                data: 'description',
-                name: 'description'
-            },
-
 
             {
                 data: 'status',

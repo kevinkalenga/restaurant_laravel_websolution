@@ -44,7 +44,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="blogs.html">blog</a>
+                        <a class="nav-link" href="{{route('blogs')}}">blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">contact</a>

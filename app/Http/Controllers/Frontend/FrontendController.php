@@ -155,5 +155,10 @@ class FrontendController extends Controller
         return view('frontend.pages.testimonial', compact('testimonials'));
     }
 
+    public function blog()
+    {
+        return view('frontend.pages.blog');
+    }
+
   
 }
