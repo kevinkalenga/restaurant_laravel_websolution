@@ -49,10 +49,10 @@
                                 <div class="share d-flex flex-wrap align-items-center">
                                     <span>share:</span>
                                     <ul class="d-flex flex-wrap">
-                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-pinterest-p"></i></a></li>
+                                        <li><a href="https://www.facebook.com/sharer/sharer.php?u={{url()->current()}}"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="https://www.linkedin.com/shareArticle?mini=true&url={{url()->current()}}&title={{$blog->title}}"><i class="fab fa-linkedin-in"></i></a></li>
+                                        <li><a href="http://twitter.com/share?text={{$blog->title}}&url={{url()->current()}}"><i class="fab fa-twitter"></i></a></li>
+                                        
                                     </ul>
                                 </div>
                             </div>
