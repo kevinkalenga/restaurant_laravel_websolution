@@ -1,5 +1,16 @@
 @extends('frontend.layouts.master')
 
+@section('og_metatag_section') 
+
+    <meta property="og:title" content="{{$blog->seo_title}}">
+    <meta property="og:description" content="{{($blog->seo_description)}}">
+    <meta property="og:url" content="{{url()->current()}}">
+    <meta property="og:image" content="{{asset($blog->image)}}">
+    <meta property="og:site_name" content="{{config('settings.site_name')}}">
+    <meta property="og:type" content="website">
+
+@endsection
+
 
 @section('content') 
 
