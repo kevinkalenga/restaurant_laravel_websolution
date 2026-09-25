@@ -15,6 +15,7 @@ use App\Models\BannerSlider;
 use App\Models\Chef;
 use App\Models\Testimonial;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Counter;
 use Cart;
 use App\Models\AppDownloadSection;
@@ -164,7 +165,16 @@ class FrontendController extends Controller
     public function blogDetails($slug)
     {
         $blog = Blog::with(['user'])->where('slug', $slug)->where('status', 1)->firstOrFail();
-        return view('frontend.pages.blog-details', compact('blog'));
+        // we are ignoring the recent post or blog
+        $latestBlogs = Blog::select('id', 'title', 'slug', 'created_at', 'image')
+                       ->where('status', 1)
+                       ->where('id', '!=', $blog->id)
+                       ->latest()->take(5)->get();
+        $categories = BlogCategory::withCount(['blogs' => function($query){
+            $query->where('status', 1);
+        }])->where('status', 1)->get();
+        //dd($categories)
+        return view('frontend.pages.blog-details', compact('blog', 'latestBlogs', 'categories'));
     }
 
   
