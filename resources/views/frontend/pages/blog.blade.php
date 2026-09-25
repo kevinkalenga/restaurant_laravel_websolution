@@ -55,17 +55,17 @@
                 @foreach($blogs as $blog)
                     <div class="col-xl-4 col-sm-6 col-lg-4 wow fadeInUp" data-wow-duration="1s">
                         <div class="fp__single_blog">
-                            <a href="#" class="fp__single_blog_img">
-                                <img src="{{asset($blog->image)}}" alt="blog" class="img-fluid w-100">
+                            <a href="{{route('blogs.details', $blog->slug)}}" class="fp__single_blog_img">
+                                <img src="{{asset($blog->image)}}" alt="{{$blog->title}}" class="img-fluid w-100">
                             </a>
                             <div class="fp__single_blog_text">
-                                <a class="category" href="#">{{$blog->category->name}}</a>
+                                <a class="category" href="{{route('blogs.details', $blog->slug)}}">{{$blog->category->name}}</a>
                                 <ul class="d-flex flex-wrap mt_15">
                                     <li><i class="fas fa-user"></i>{{$blog->user->name}}</li>
                                     <li><i class="fas fa-calendar-alt"></i> {{date('d m Y', strtotime($blog->created_at))}}</li>
                                     <li><i class="fas fa-comments"></i> 25 comment</li>
                                 </ul>
-                                <a class="title" href="blog_details.html">{{truncate($blog->title)}}</a>
+                                <a class="title" href="{{route('blogs.details', $blog->slug)}}">{!! truncate($blog->title, 30) !!}</a>
                             </div>
                         </div>
                     </div>

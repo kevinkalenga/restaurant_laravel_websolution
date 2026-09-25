@@ -161,6 +161,11 @@ class FrontendController extends Controller
         $blogs = Blog::with(['category', 'user'])->where('status', 1)->paginate(6);
         return view('frontend.pages.blog', compact('blogs'));
     }
+    public function blogDetails($slug)
+    {
+        $blog = Blog::with(['user'])->where('slug', $slug)->where('status', 1)->firstOrFail();
+        return view('frontend.pages.blog-details', compact('blog'));
+    }
 
   
 }

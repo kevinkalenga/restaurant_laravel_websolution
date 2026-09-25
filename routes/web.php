@@ -20,8 +20,9 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 /**  Testimonial Page  **/ 
 Route::get('/testimonial', [FrontendController::class, 'testimonial'])->name('testimonial');
 
-/**  Testimonial Page  **/ 
+/**  Blogs Routes  **/ 
 Route::get('/blogs', [FrontendController::class, 'blog'])->name('blogs');
+Route::get('/blogs/{slug}', [FrontendController::class, 'blogDetails'])->name('blogs.details');
 
 /**  Chef Page  **/ 
 Route::get('/chef', [FrontendController::class, 'chef'])->name('chef');
