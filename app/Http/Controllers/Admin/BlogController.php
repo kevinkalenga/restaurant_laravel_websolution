@@ -115,20 +115,17 @@ class BlogController extends Controller
             ->with('success', 'Blog created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+        $categories = BlogCategory::all();
+
+       return view('admin.blog.edit', compact('blog', 'categories'));
     }
 
     /**
@@ -136,7 +133,37 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         $blog = Blog::findOrFail($id);
+
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'title' => 'required|string|max:255|unique:blogs,title,' . $blog->id,
+            'category_id' => 'required|exists:blog_categories,id',
+            'description' => 'required|string',
+            'seo_title' => 'nullable|string|max:255',
+            'seo_description' => 'nullable|string',
+            'status' => 'required|boolean',
+        ]);
+
+        $data = [
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'seo_title' => $request->seo_title,
+            'seo_description' => $request->seo_description,
+            'status' => $request->status,
+        ];
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $this->uploadImage($request, 'image', 'uploads');
+        }
+
+        $blog->update($data);
+
+        return redirect()
+            ->route('admin.blogs.index')
+            ->with('success', 'Blog updated successfully!');
     }
 
     /**
@@ -144,6 +171,23 @@ class BlogController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        // Supprimer l'image
+        if ($blog->image) {
+
+            $imagePath = public_path($blog->image);
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        // Supprimer le blog
+        $blog->delete();
+
+        return redirect()
+            ->route('admin.blogs.index')
+            ->with('success', 'Blog deleted successfully!');
     }
 }

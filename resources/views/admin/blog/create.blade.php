@@ -80,7 +80,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create Product</button>
+                <button type="submit" class="btn btn-primary">Create Blog</button>
             </form>
         </div>
     </div>
