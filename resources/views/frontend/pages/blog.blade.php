@@ -52,43 +52,35 @@
         
         
             <div class="row">
-                <div class="col-xl-4 col-sm-6 col-lg-4 wow fadeInUp" data-wow-duration="1s">
-                    <div class="fp__single_blog">
-                        <a href="#" class="fp__single_blog_img">
-                            <img src="images/menu2_img_1.jpg" alt="blog" class="img-fluid w-100">
-                        </a>
-                        <div class="fp__single_blog_text">
-                            <a class="category" href="#">chicken</a>
-                            <ul class="d-flex flex-wrap mt_15">
-                                <li><i class="fas fa-user"></i>admin</li>
-                                <li><i class="fas fa-calendar-alt"></i> 25 oct 2022</li>
-                                <li><i class="fas fa-comments"></i> 25 comment</li>
-                            </ul>
-                            <a class="title" href="blog_details.html">Competently supply customized initiatives</a>
+                @foreach($blogs as $blog)
+                    <div class="col-xl-4 col-sm-6 col-lg-4 wow fadeInUp" data-wow-duration="1s">
+                        <div class="fp__single_blog">
+                            <a href="#" class="fp__single_blog_img">
+                                <img src="{{asset($blog->image)}}" alt="blog" class="img-fluid w-100">
+                            </a>
+                            <div class="fp__single_blog_text">
+                                <a class="category" href="#">{{$blog->category->name}}</a>
+                                <ul class="d-flex flex-wrap mt_15">
+                                    <li><i class="fas fa-user"></i>{{$blog->user->name}}</li>
+                                    <li><i class="fas fa-calendar-alt"></i> {{date('d m Y', strtotime($blog->created_at))}}</li>
+                                    <li><i class="fas fa-comments"></i> 25 comment</li>
+                                </ul>
+                                <a class="title" href="blog_details.html">{{truncate($blog->title)}}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-               
+                @endforeach
             </div>
-            <div class="fp__pagination mt_35">
-                <div class="row">
-                    <div class="col-12">
-                        <nav aria-label="...">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fas fa-long-arrow-alt-left"></i></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fas fa-long-arrow-alt-right"></i></a>
-                                </li>
-                            </ul>
-                        </nav>
+            @if($blogs->hasPages())
+                    <div class="fp__pagination mt_60">
+                        <div class="row">
+                            <div class="col-12">
+                                {{$blogs->links()}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    
+            @endif
         </div>
     </section>
    

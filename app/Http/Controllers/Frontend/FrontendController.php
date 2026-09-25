@@ -14,6 +14,7 @@ use App\Models\DailyOffer;
 use App\Models\BannerSlider;
 use App\Models\Chef;
 use App\Models\Testimonial;
+use App\Models\Blog;
 use App\Models\Counter;
 use Cart;
 use App\Models\AppDownloadSection;
@@ -157,7 +158,8 @@ class FrontendController extends Controller
 
     public function blog()
     {
-        return view('frontend.pages.blog');
+        $blogs = Blog::with(['category', 'user'])->where('status', 1)->paginate(6);
+        return view('frontend.pages.blog', compact('blogs'));
     }
 
   
