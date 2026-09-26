@@ -174,7 +174,12 @@ class FrontendController extends Controller
             $query->where('status', 1);
         }])->where('status', 1)->get();
         //dd($categories)
-        return view('frontend.pages.blog-details', compact('blog', 'latestBlogs', 'categories'));
+        
+        // tous les blogs ou post dont l'id est superieur à l'id de post recent(juste un)
+        $nextBlog = Blog::select('id', 'title', 'slug', 'image')->where('id', '>', $blog->id)->orderBy('id', 'ASC')->first();
+        //
+        $previousBlog = Blog::select('id', 'title', 'slug', 'image')->where('id', '<', $blog->id)->orderBy('id', 'DESC')->first();
+        return view('frontend.pages.blog-details', compact('blog', 'latestBlogs', 'categories', 'nextBlog', 'previousBlog'));
     }
 
   

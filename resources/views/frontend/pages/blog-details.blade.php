@@ -71,22 +71,26 @@
                     </div>
 
                     <ul class="blog_det_button mt_100 xs_mt_70 wow fadeInUp" data-wow-duration="1s">
+                      @if($nextBlog)
                         <li>
-                            <a href="#">
-                                <img src="images/det_btn_img_1.jpg" alt="button img" class="img-fluid w-100">
-                                <p>Spray spray tires washing car
+                            <a href="{{route('blogs.details', $nextBlog->slug)}}">
+                                <img src="{{asset($nextBlog->image)}}" alt="button img" class="img-fluid w-100">
+                                <p>{{truncate($nextBlog->title)}}
                                     <span> <i class="far fa-long-arrow-left"></i> Previous</span>
                                 </p>
                             </a>
                         </li>
+                       @endif
+                       @if($previousBlog)
                         <li>
-                            <a href="#">
-                                <p>25 Years of Expert Cleaning Services
+                            <a href="{{route('blogs.details', $previousBlog->slug)}}">
+                                <p>{{truncate($previousBlog->title)}}
                                     <span>next <i class="far fa-long-arrow-right"></i></span>
                                 </p>
-                                <img src="images/det_btn_img_2.jpg" alt="button img" class="img-fluid w-100">
+                                <img src="{{asset($previousBlog->image)}}" alt="button img" class="img-fluid w-100">
                             </a>
                         </li>
+                       @endif
                     </ul>
 
                     <div class="fp__comment mt_100 xs_mt_70 wow fadeInUp" data-wow-duration="1s">
