@@ -31,13 +31,13 @@
             <form class="fp__search_menu_form mb-4" action="{{route('blogs')}}" method="GET">
                 <div class="row">
                     <div class="col-xl-6 col-md-5">
-                        <input type="text" placeholder="Search..." name="search">
+                        <input type="text" placeholder="Search..." name="search" value="{{ @request()->search }}">
                     </div>
                     <div class="col-xl-4 col-md-4">
                         <select class="nice-select" name="category">
                             <option value="">All</option>
                             @foreach($categories as $category)
-                               <option value="{{$category->id}}">{{$category->name}}</option>
+                               <option @selected(@request()->category == $category->id) value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach  
                         </select>
                     </div>
@@ -61,13 +61,16 @@
                                 <ul class="d-flex flex-wrap mt_15">
                                     <li><i class="fas fa-user"></i>{{$blog->user->name}}</li>
                                     <li><i class="fas fa-calendar-alt"></i> {{date('d m Y', strtotime($blog->created_at))}}</li>
-                                    <li><i class="fas fa-comments"></i> 25 comment</li>
+                                    <li><i class="fas fa-comments"></i> {{$blog->comments_count}} comment</li>
                                 </ul>
                                 <a class="title" href="{{route('blogs.details', $blog->slug)}}">{!! truncate($blog->title, 30) !!}</a>
                             </div>
                         </div>
                     </div>
                 @endforeach
+                @if($blogs->isEmpty()) 
+                    <h5 class="text-center text-danger">No Blog Found</h5>
+                @endif
             </div>
             @if($blogs->hasPages())
                     <div class="fp__pagination mt_60">
