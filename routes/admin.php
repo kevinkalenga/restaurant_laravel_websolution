@@ -137,6 +137,7 @@ Route::resource('blog-category', BlogCategoryController::class);
 
 
 //Blogs Routes 
+Route::get('blogs/comments', [BlogController::class, 'blogComment'])->name('blogs.comments.index');
 Route::resource('blogs', BlogController::class);
 
 

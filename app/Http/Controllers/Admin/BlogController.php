@@ -9,6 +9,7 @@ use App\Traits\FileUploadTrait;
 use App\Models\Blog;
 use Illuminate\Support\Str;
 use Auth;
+use App\Models\BlogComment;
 use Yajra\DataTables\Facades\DataTables;
 
 class BlogController extends Controller
@@ -190,4 +191,51 @@ class BlogController extends Controller
             ->route('admin.blogs.index')
             ->with('success', 'Blog deleted successfully!');
     }
+
+
+    public function blogComment()
+    {
+        if (request()->ajax()) {
+
+            $comments = BlogComment::with(['user', 'blog'])
+                ->select('blog_comments.*');
+
+            return DataTables::of($comments)
+
+                ->addColumn('user_name', function ($comment) {
+                    return $comment->user
+                        ? $comment->user->name
+                        : '-';
+                })
+
+                ->addColumn('blog_title', function ($comment) {
+                    return $comment->blog
+                        ? $comment->blog->title
+                        : '-';
+                })
+
+                ->addColumn('action', function ($comment) {
+                    return '
+                     <div class="d-inline-flex align-items-center">
+                        <a href="#" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+
+                        <button type="button"
+                            class="btn btn-sm btn-danger delete-comment ml-1"
+                            data-id="' . $comment->id . '">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                     </div>
+                    ';
+                })
+
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.blog.blog-comment.index');
+    }
+    
+
 }
