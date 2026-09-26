@@ -158,10 +158,29 @@ class FrontendController extends Controller
         return view('frontend.pages.testimonial', compact('testimonials'));
     }
 
-    public function blog()
+    public function blog(Request $request)
     {
-        $blogs = Blog::with(['category', 'user'])->where('status', 1)->paginate(6);
-        return view('frontend.pages.blog', compact('blogs'));
+        // $blogs = Blog::with(['category', 'user'])->where('status', 1)->latest()->paginate(6);
+        $blogs = Blog::with(['category', 'user'])->where('status', 1);
+
+        // Search keyword
+        if ($request->filled('search')) {
+            $blogs->where(function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Search category
+        if ($request->filled('category')) {
+            $blogs->where('category_id', $request->category);
+        }
+
+        $blogs = $blogs->latest()->paginate(6);
+
+
+        $categories = BlogCategory::where('status', 1)->get();
+        return view('frontend.pages.blog', compact('blogs', 'categories'));
     }
     public function blogDetails($slug)
     {
