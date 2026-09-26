@@ -23,6 +23,7 @@ Route::get('/testimonial', [FrontendController::class, 'testimonial'])->name('te
 /**  Blogs Routes  **/ 
 Route::get('/blogs', [FrontendController::class, 'blog'])->name('blogs');
 Route::get('/blogs/{slug}', [FrontendController::class, 'blogDetails'])->name('blogs.details');
+Route::post('/blogs/comment/{blog_id}', [FrontendController::class, 'blogCommentStore'])->name('blogs.comment.store');
 
 /**  Chef Page  **/ 
 Route::get('/chef', [FrontendController::class, 'chef'])->name('chef');

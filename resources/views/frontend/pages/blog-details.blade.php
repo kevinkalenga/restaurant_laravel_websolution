@@ -50,12 +50,7 @@
                              
                             <div class="blog_tags_share d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="tags d-flex flex-wrap align-items-center">
-                                    <span>tags:</span>
-                                    <ul class="d-flex flex-wrap">
-                                        <li><a href="#">Cleaning</a></li>
-                                        <li><a href="#">AC Repair</a></li>
-                                        <li><a href="#">Home Move</a></li>
-                                    </ul>
+                                    
                                 </div>
                                 <div class="share d-flex flex-wrap align-items-center">
                                     <span>share:</span>
@@ -140,28 +135,16 @@
 
                     <div class="comment_input mt_100 xs_mt_70 wow fadeInUp" data-wow-duration="1s">
                         <h4>Leave A Comment</h4>
-                        <p>Your email address will not be published. Required fields are marked *</p>
-                        <form>
+                        <p>Required fields are marked *</p>
+                        <form action="{{route('blogs.comment.store', $blog->id)}}" method="POST">
+                            @csrf
                             <div class="row">
-                                <div class="col-xl-6 col-md-6">
-                                    <label>name</label>
-                                    <div class="fp__contact_form_input">
-                                        <span><i class="fal fa-user-alt"></i></span>
-                                        <input type="text" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-md-6">
-                                    <label>email</label>
-                                    <div class="fp__contact_form_input">
-                                        <span><i class="fal fa-user-alt"></i></span>
-                                        <input type="email" placeholder="Mail">
-                                    </div>
-                                </div>
+                                
                                 <div class="col-xl-12">
-                                    <label>comment</label>
+                                    <label>comment *</label>
                                     <div class="fp__contact_form_input textarea">
                                         <span><i class="fal fa-user-alt"></i></span>
-                                        <textarea rows="5" placeholder="Your Comment"></textarea>
+                                        <textarea rows="5" placeholder="Your Comment" name="comment"></textarea>
                                     </div>
                                     <button type="submit" class="common_btn mt_20">Submit comment</button>
                                 </div>

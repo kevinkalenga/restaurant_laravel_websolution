@@ -17,6 +17,7 @@ use App\Models\Testimonial;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Counter;
+use App\Models\BlogComment;
 use Cart;
 use App\Models\AppDownloadSection;
 
@@ -180,6 +181,23 @@ class FrontendController extends Controller
         //
         $previousBlog = Blog::select('id', 'title', 'slug', 'image')->where('id', '<', $blog->id)->orderBy('id', 'DESC')->first();
         return view('frontend.pages.blog-details', compact('blog', 'latestBlogs', 'categories', 'nextBlog', 'previousBlog'));
+    }
+    public function blogCommentStore(Request $request, $blog_id)
+    {
+       $request->validate([
+         'comment' => ['required', 'max:500']
+       ]);
+
+       Blog::findOrFail($blog_id);
+
+       $comment = new BlogComment();
+
+       $comment->blog_id = $blog_id;
+       $comment->user_id = auth()->user()->id;
+       $comment->comment = $request->comment;
+       $comment->save();
+
+        return redirect()->back()->with('success', 'Comment successfully added!');
     }
 
   
