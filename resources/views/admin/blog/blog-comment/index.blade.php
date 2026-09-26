@@ -193,6 +193,54 @@ $(function () {
 
     });
 
+
+    $(document).on('click', '.delete-comment', function () {
+
+        let id = $(this).data('id');
+
+        if (!confirm('Are you sure you want to delete this comment?')) {
+            return;
+        }
+
+        $.ajax({
+
+            url: "{{ url('admin/blogs/comments') }}/" + id,
+
+            type: "DELETE",
+
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+
+            success: function (response) {
+
+                $('#comments-table')
+                    .DataTable()
+                    .ajax
+                    .reload(null, false);
+
+                iziToast.success({
+                    title: 'Success',
+                    message: response.message,
+                    position: 'topRight'
+                });
+
+            },
+
+            error: function () {
+
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to delete comment.',
+                    position: 'topRight'
+                });
+
+            }
+
+        });
+
+    });
+
 });
 </script>
 

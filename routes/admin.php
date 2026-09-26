@@ -140,6 +140,10 @@ Route::resource('blog-category', BlogCategoryController::class);
 Route::get('blogs/comments', [BlogController::class, 'blogComment'])->name('blogs.comments.index');
 Route::patch('blogs/comments/{id}/status', [BlogController::class, 'updateCommentStatus'])
     ->name('blogs.comments.status');
+Route::get('blogs/comments/{id}', [BlogController::class, 'showComment'])
+    ->name('blogs.comments.show');
+Route::delete('blogs/comments/{id}', [BlogController::class, 'deleteComment'])
+    ->name('blogs.comments.delete');
 Route::resource('blogs', BlogController::class);
 
 

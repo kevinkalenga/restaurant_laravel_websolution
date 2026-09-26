@@ -217,7 +217,7 @@ class BlogController extends Controller
                 ->addColumn('action', function ($comment) {
                     return '
                      <div class="d-inline-flex align-items-center">
-                        <a href="#" class="btn btn-sm btn-primary">
+                        <a href="' . route('admin.blogs.comments.show', $comment->id) . '" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> View
                         </a>
 
@@ -248,6 +248,26 @@ class BlogController extends Controller
             'success' => true,
             'message' => 'Comment status updated successfully.'
         ]);
+    }
+
+    public function deleteComment(string $id)
+    {
+        $comment = BlogComment::findOrFail($id);
+
+        $comment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Comment deleted successfully.'
+        ]);
+    }
+
+    public function showComment(string $id)
+    {
+        $comment = BlogComment::with(['user', 'blog'])
+            ->findOrFail($id);
+
+        return view('admin.blog.blog-comment.show', compact('comment'));
     }
     
 
