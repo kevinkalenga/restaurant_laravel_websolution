@@ -29,4 +29,9 @@ class Blog extends Model
       //signifie qu’un Blog appartient à une BlogCategory via user_id.
       return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function comments()
+    {
+      return $this->hasMany(BlogComment::class, 'blog_id', 'id');
+    }
 }
