@@ -4,43 +4,42 @@
 
 <section class="section">
 
-```
-<div class="section-header">
-    <h1>Blog Comments</h1>
-</div>
-
-<div class="card card-primary">
-
-    <div class="card-header">
-        <h4>All Comments</h4>
+    <div class="section-header">
+        <h1>Blog Comments</h1>
     </div>
 
-    <div class="card-body">
+    <div class="card card-primary">
 
-        <table class="table table-bordered" id="comments-table">
+        <div class="card-header">
+            <h4>All Comments</h4>
+        </div>
 
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Blog</th>
-                    <th>Comment</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
+        <div class="card-body">
 
-        </table>
+            <table class="table table-bordered" id="comments-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Blog</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>
 
     </div>
-
-</div>
-```
 
 </section>
 
 @endsection
+
 
 @push('scripts')
 
@@ -89,19 +88,39 @@ $(function () {
             {
                 data: 'status',
                 name: 'status',
-                render: function(data) {
+                orderable: false,
+                searchable: false,
+
+                render: function(data, type, row) {
 
                     if (data == 1) {
-                        return '<span class="badge badge-success">Approved</span>';
+
+                        return `
+                            <button type="button"
+                                    class="btn btn-sm btn-success comment-status"
+                                    data-id="${row.id}"
+                                    data-status="0">
+                                Approved
+                            </button>
+                        `;
+
                     }
 
-                    return '<span class="badge badge-warning">Pending</span>';
+                    return `
+                        <button type="button"
+                                class="btn btn-sm btn-warning comment-status"
+                                data-id="${row.id}"
+                                data-status="1">
+                            Disapproved
+                        </button>
+                    `;
                 }
             },
 
             {
                 data: 'created_at',
                 name: 'created_at',
+
                 render: function(data) {
 
                     return new Date(data).toLocaleString('fr-FR', {
@@ -122,6 +141,55 @@ $(function () {
             }
 
         ]
+
+    });
+
+
+    // Update comment status
+
+    $(document).on('click', '.comment-status', function () {
+
+        let button = $(this);
+        let id = button.data('id');
+        let status = button.data('status');
+
+        $.ajax({
+
+            url: "{{ url('admin/blogs/comments') }}/" + id + "/status",
+
+            type: "PATCH",
+
+            data: {
+                status: status,
+                _token: "{{ csrf_token() }}"
+            },
+
+            success: function (response) {
+
+                $('#comments-table')
+                    .DataTable()
+                    .ajax
+                    .reload(null, false);
+
+                iziToast.success({
+                    title: 'Success',
+                    message: response.message,
+                    position: 'topRight'
+                });
+
+            },
+
+            error: function () {
+
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Unable to update comment status.',
+                    position: 'topRight'
+                });
+
+            }
+
+        });
 
     });
 

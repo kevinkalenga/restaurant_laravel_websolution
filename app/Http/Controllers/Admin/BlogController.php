@@ -236,6 +236,19 @@ class BlogController extends Controller
 
         return view('admin.blog.blog-comment.index');
     }
+
+    public function updateCommentStatus(Request $request, string $id)
+    {
+        $comment = BlogComment::findOrFail($id);
+
+        $comment->status = $request->status;
+        $comment->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Comment status updated successfully.'
+        ]);
+    }
     
 
 }

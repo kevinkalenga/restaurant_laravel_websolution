@@ -138,6 +138,8 @@ Route::resource('blog-category', BlogCategoryController::class);
 
 //Blogs Routes 
 Route::get('blogs/comments', [BlogController::class, 'blogComment'])->name('blogs.comments.index');
+Route::patch('blogs/comments/{id}/status', [BlogController::class, 'updateCommentStatus'])
+    ->name('blogs.comments.status');
 Route::resource('blogs', BlogController::class);
 
 

@@ -191,15 +191,5 @@
     </section>
    
 
-
-
-
-
-
-
-
-
-
-
-
 @endsection 
+
