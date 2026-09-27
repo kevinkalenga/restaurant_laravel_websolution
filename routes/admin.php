@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -145,6 +146,10 @@ Route::get('blogs/comments/{id}', [BlogController::class, 'showComment'])
 Route::delete('blogs/comments/{id}', [BlogController::class, 'deleteComment'])
     ->name('blogs.comments.delete');
 Route::resource('blogs', BlogController::class);
+
+
+//About Routes 
+Route::get('about', [AboutController::class, 'index'])->name('about.index');
 
 
 

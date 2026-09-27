@@ -230,5 +230,10 @@ class FrontendController extends Controller
         return redirect()->back()->with('success', 'Comment successfully added!');
     }
 
+    public function about()
+    {
+        return view('frontend.pages.about');
+    }
+
   
 }
