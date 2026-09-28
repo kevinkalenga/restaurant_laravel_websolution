@@ -15,6 +15,7 @@ use App\Models\BannerSlider;
 use App\Models\Chef;
 use App\Models\Testimonial;
 use App\Models\Blog;
+use App\Models\About;
 use App\Models\BlogCategory;
 use App\Models\Counter;
 use App\Models\BlogComment;
@@ -232,7 +233,20 @@ class FrontendController extends Controller
 
     public function about()
     {
-        return view('frontend.pages.about');
+        
+        $keys = [
+            'why_choose_top_title', 
+            'why_choose_main_title', 
+            'why_choose_sub_title',
+          
+        ];
+    
+    
+        $sectionTitles = SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
+        
+        $about = About::first();
+        $whyChooseUs = WhyChooseUs::where('status', 1)->get();
+        return view('frontend.pages.about', compact('about', 'whyChooseUs', 'sectionTitles'));
     }
 
   

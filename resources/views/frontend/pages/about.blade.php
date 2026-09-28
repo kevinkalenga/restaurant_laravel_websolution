@@ -24,102 +24,44 @@
             <div class="row">
                 <div class="col-xl-6 col-lg-5 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__about_us_img">
-                        <img src="images/about_chef.jpg" alt="about us" class="img-fluid w-100">
+                        <img src="{{asset($about->image)}}" alt="about us" class="img-fluid w-100">
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__section_heading mb_40">
-                        <h4>About Company</h4>
-                        <h2>Helathy Foods Provider</h2>
+                        <h4>{!!$about->title !!}</h4>
+                        <h2>{!!$about->main_title !!}</h2>
                         <span>
                             <img src="images/heading_shapes.png" alt="shapes" class="img-fluid w-100">
                         </span>
                     </div>
                     <div class="fp__about_us_text">
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate aspernatur molestiae
-                            minima pariatur consequatur voluptate sapiente deleniti soluta, animi ab necessitatibus
-                            optio similique quasi fuga impedit corrupti obcaecati neque consequatur sequi.</p>
-                        <ul>
-                            <li>Delicious & Healthy Foods </li>
-                            <li>Spacific Family & Kids Zone</li>
-                            <li>Best Price & Offers</li>
-                            <li>Made By Fresh Ingredients</li>
-                            <li>Music & Other Facilities</li>
-                            <li>Delicious & Healthy Foods </li>
-                            <li>Spacific Family & Kids Zone</li>
-                            <li>Best Price & Offers</li>
-                            <li>Made By Fresh Ingredients</li>
-                            <li>Delicious & Healthy Foods </li>
-                        </ul>
+                         {!! ($about->description) !!}
+                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="fp__why_choose mt_100 xs_mt_70">
-        <div class="container">
-            <div class="row wow fadeInUp" data-wow-duration="1s">
-                <div class="col-md-8 col-lg-7 col-xl-6 m-auto text-center">
-                    <div class="fp__section_heading mb_25">
-                        <h4>why choose us</h4>
-                        <h2>why choose us</h2>
-                        <span>
-                            <img src="images/heading_shapes.png" alt="shapes" class="img-fluid w-100">
-                        </span>
-                        <p>Objectively pontificate quality models before intuitive information. Dramatically
-                            recaptiualize multifunctional materials.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-4 col-md-6 col-lg-4">
-                    <div class="fp__choose_single">
-                        <div class="icon icon_1">
-                            <i class="fas fa-percent"></i>
-                        </div>
-                        <div class="text">
-                            <h3>discount voucher</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, debitis expedita .</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6 col-lg-4">
-                    <div class="fp__choose_single">
-                        <div class="icon icon_2">
-                            <i class="fas fa-burger-soda"></i>
-                        </div>
-                        <div class="text">
-                            <h3>fresh healthy foods</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, debitis expedita .</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6 col-lg-4">
-                    <div class="fp__choose_single">
-                        <div class="icon icon_3">
-                            <i class="far fa-hat-chef"></i>
-                        </div>
-                        <div class="text">
-                            <h3>fast serve on table</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, debitis expedita .</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+       <!--=============================
+        WHY CHOOSE START
+    ==============================-->
+         @include('frontend.home.components.why_choose');
+    <!--=============================
+        WHY CHOOSE END
+    ==============================-->
 
     <section class="fp__about_video mt_100 xs_mt_70">
         <div class="container wow fadeInUp" data-wow-duration="1s">
-            <div class="fp__about_video_bg" style="background: url(images/about_video_bg.jpg);">
+            <div class="fp__about_video_bg" style="background: url({{getYtThumbnail($about->video_link, 'high')}});">
                 <div class="fp__about_video_overlay">
                     <div class="row">
                         <div class="col-12">
                             <div class="fp__about_video_text">
                                 <p>Watch Videos</p>
                                 <a class="play_btn venobox" data-autoplay="true" data-vbtype="video"
-                                    href="https://youtu.be/F3zw1Gvn4Mk">
+                                    href="{{$about->video_link}}">
                                     <i class=" fas fa-play"></i>
                                 </a>
                             </div>
@@ -409,11 +351,50 @@
     </section>
   
 
+ <style>
 
+   .fp__about_us_text p {
+    margin: 15px 0px;
+}
 
+.fp__about_us_text ul,
+.fp__about_us_text ol {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
 
+.fp__about_us_text ul li,
+.fp__about_us_text ol li {
+    text-transform: capitalize;
+    font-size: 16px;
+    color: var(--colorBlack);
+    width: 50%;
+    padding-left: 30px;
+    position: relative;
+    margin-top: 15px;
+    list-style: none;
+}
 
+.fp__about_us_text ul li::after,
+.fp__about_us_text ol li::after {
+    position: absolute;
+    content: "\f00c";
+    color: var(--colorWhite);
+    font-family: "Font Awesome 5 Free";
+    font-weight: 600;
+    top: 2px;
+    left: 0;
+    font-size: 10px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background: var(--colorPrimary);
+}
 
-
-
+ </style>
 @endsection 

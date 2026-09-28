@@ -2703,49 +2703,6 @@ footer {
     text-align: left;
 }
 
-.fp__about_us_text p {
-    margin: 15px 0px;
-}
-
-.fp__about_us_text ul,
-.fp__about_us_text ol {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.fp__about_us_text ul li,
-.fp__about_us_text ol li {
-    text-transform: capitalize;
-    font-size: 16px;
-    color: var(--colorBlack);
-    width: 50%;
-    padding-left: 30px;
-    position: relative;
-    margin-top: 15px;
-}
-
-.fp__about_us_text ul li::after,
-.fp__about_us_text ol li::after {
-    position: absolute;
-    content: "\f00c";
-    color: var(--colorWhite);
-    font-family: "Font Awesome 5 Free";
-    font-weight: 600;
-    top: 2px;
-    left: 0;
-    font-size: 10px;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    background: var(--colorPrimary);
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-}
-
 .fp__about_text-box {
     position: relative;
 }
@@ -6945,3 +6902,5 @@ CHECKOUT PAGE START
     background-color: var(--colorPrimary);
     border-color: var(--colorPrimary);
 }
+
+
