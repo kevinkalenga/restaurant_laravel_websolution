@@ -19,6 +19,7 @@ use App\Models\About;
 use App\Models\BlogCategory;
 use App\Models\Counter;
 use App\Models\BlogComment;
+use App\Models\PrivacyPolicy;
 use Cart;
 use App\Models\AppDownloadSection;
 
@@ -256,6 +257,12 @@ class FrontendController extends Controller
         $counter= Counter::first();
         $testimonials = Testimonial::where(['show_at_home' => 1, 'status' => 1])->get();
         return view('frontend.pages.about', compact('about', 'whyChooseUs', 'sectionTitles', 'chefs', 'counter', 'testimonials'));
+    }
+
+    public function privacyPolicy()
+    {
+         $privacyPolicy = PrivacyPolicy::first();
+        return view('frontend.pages.privacy-policy', compact('privacyPolicy'));
     }
 
   

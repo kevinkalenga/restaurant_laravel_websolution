@@ -4,7 +4,8 @@
     <nav class="navbar navbar-expand-lg main_menu">
         <div class="container">
             <a class="navbar-brand" href="{{route('home')}}">
-                <img src="{{asset('frontend/images/logo.png')}}" alt="FoodPark" class="img-fluid">
+                <img src="{{asset('frontend/images/logo.png')}}" alt="FoodPark" class="img-fluid"> 
+                <!-- <img src="{{asset('frontend/images/logo_ecf.png')}}" alt="Vite & Gourmand" class="logo_ecf"> -->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +40,7 @@
                             <li><a href="{{route('login')}}">sign in</a></li>
                             <li><a href="{{route('register')}}">sign up</a></li>
                             <li><a href="{{route('password.request')}}">forgot password</a></li>
-                            <li><a href="privacy_policy.html">privacy policy</a></li>
+                            <li><a href="{{route('privacy-policy.index')}}">privacy policy</a></li>
                             <li><a href="terms_condition.html">terms and condition</a></li>
                         </ul>
                     </li>

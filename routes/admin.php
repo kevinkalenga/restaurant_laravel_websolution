@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\CounterController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\PrivacyPolicyController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -151,6 +152,12 @@ Route::resource('blogs', BlogController::class);
 //About Routes 
 Route::get('about', [AboutController::class, 'index'])->name('about.index');
 Route::put('about', [AboutController::class, 'update'])->name('about.update');
+
+
+//About Routes 
+Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
+Route::put('privacy-policy', [PrivacyPolicyController::class, 'update'])->name('privacy-policy.update');
+
 
 
 
