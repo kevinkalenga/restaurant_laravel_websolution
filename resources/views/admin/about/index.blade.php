@@ -3,27 +3,19 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Create Slider</h1>
-        <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item"><a href="{{ route('admin.sliders.index') }}">Sliders</a></div>
-            <div class="breadcrumb-item active">Create</div>
-        </div>
+        <h1>About</h1>
     </div>
 
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Create New Slider</h4>
+            <h4>Update About</h4>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.about.update') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
 
-                @if(session('success'))
-                  <div class="alert alert-success">
-                   {{ session('success') }}
-                 </div>
-                @endif
+                @method('PUT')
                 
                 <div class="form-group">
                    <label for="image-upload">Image</label>
@@ -32,68 +24,42 @@
                       <label for="image-upload" id="image-label" style="cursor:pointer; display:block; text-align:center; line-height:200px;">
                           Choose File
                       </label>
-                      <input type="file" name="image" id="image-upload" class="form-control @error('image') is-invalid @enderror" style="display:none;" required>
+                      <input type="file" name="image" id="image-upload" class="form-control" style="display:none;">
+                      <input type="hidden" name="old_image" id="image-upload" class="form-control" style="display:none;" value="">
                     </div>
-                   @error('image')
-                       <span class="text-danger">{{ $message }}</span>
-                   @enderror
+                   
                 </div>
 
 
 
                 <div class="form-group">
-                    <label for="offer">Offer</label>
-                    <input type="text" name="offer" class="form-control @error('offer') is-invalid @enderror" required>
-                    @error('offer')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <label>Title</label>
+                    <input type="text" name="title" class="form-control">
+                   
                 </div>
 
                 <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" required>
-                    @error('title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <label>Main Title</label>
+                    <input type="text" name="main_title" class="form-control" >
+                   
                 </div>
 
                 <div class="form-group">
-                    <label for="sub_title">Sub Title</label>
-                    <input type="text" name="sub_title" class="form-control @error('sub_title') is-invalid @enderror">
-                    @error('sub_title')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <label>Description</label>
+                    <textarea name="description" class="form-control"></textarea>
+                   
                 </div>
 
                 <div class="form-group">
-                    <label for="short_description">Short Description</label>
-                    <textarea name="short_description" class="form-control @error('short_description') is-invalid @enderror"></textarea>
-                    @error('short_description')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <label>Youtube Video Link</label>
+                    <input type="text" name="video_link" class="form-control">
+                  
                 </div>
 
-                <div class="form-group">
-                    <label for="button_link">Button Link</label>
-                    <input type="url" name="button_link" class="form-control @error('button_link') is-invalid @enderror">
-                    @error('button_link')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                
 
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" class="form-control @error('status') is-invalid @enderror">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                    @error('status')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <button type="submit" class="btn btn-primary">Create Slider</button>
-                <a href="{{ route('admin.sliders.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+               
             </form>
         </div>
     </div>

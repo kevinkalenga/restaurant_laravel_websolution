@@ -150,6 +150,7 @@ Route::resource('blogs', BlogController::class);
 
 //About Routes 
 Route::get('about', [AboutController::class, 'index'])->name('about.index');
+Route::put('about', [AboutController::class, 'update'])->name('about.update');
 
 
 
