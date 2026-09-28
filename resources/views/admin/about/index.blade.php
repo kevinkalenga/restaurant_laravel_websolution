@@ -25,7 +25,7 @@
                           Choose File
                       </label>
                       <input type="file" name="image" id="image-upload" class="form-control" style="display:none;">
-                      <input type="hidden" name="old_image" id="image-upload" class="form-control" style="display:none;" value="">
+                      <input type="hidden" name="old_image" id="image-upload" class="form-control" style="display:none;" value="{{$about->image}}">
                     </div>
                    
                 </div>
@@ -34,25 +34,27 @@
 
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" name="title" class="form-control">
+                    <input type="text" name="title" class="form-control" value="{{$about->title}}">
                    
                 </div>
 
                 <div class="form-group">
                     <label>Main Title</label>
-                    <input type="text" name="main_title" class="form-control" >
+                    <input type="text" name="main_title" class="form-control"  value="{{$about->main_title}}">
                    
                 </div>
 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="description" class="form-control"></textarea>
+                    <textarea name="description" class="form-control">
+                        {!! $about->description !!}
+                    </textarea>
                    
                 </div>
 
                 <div class="form-group">
                     <label>Youtube Video Link</label>
-                    <input type="text" name="video_link" class="form-control">
+                    <input type="text" name="video_link" class="form-control" value="{{$about->video_link}}">
                   
                 </div>
 
@@ -67,36 +69,23 @@
 @endsection
 
 
-@push('scripts')
-<script>
-const imageUpload = document.getElementById('image-upload');
-const imagePreview = document.getElementById('image-preview');
-const imageLabel = document.getElementById('image-label');
 
-imageUpload.addEventListener('change', function() {
-    const [file] = this.files;
-    if(file) {
-        // Supprimer l’ancien aperçu
-        const oldImg = imagePreview.querySelector('img');
-        if(oldImg) oldImg.remove();
 
-        // Créer la nouvelle image
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
 
-        // Faire remplir le cadre
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover'; // <-- important
-        img.style.display = 'block';
 
-        imagePreview.appendChild(img);
+@push('scripts') 
+  <script>
+     $(document).ready(function(){
+        $('.image-preview').css({
+          'background-image': 'url({{asset(@$about->image)}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
+  </script>
 
-        // Cacher le label
-        imageLabel.style.display = 'none';
-    }
-});
-
-</script>
 @endpush
+
+
+
 

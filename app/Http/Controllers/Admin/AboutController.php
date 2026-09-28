@@ -12,7 +12,8 @@ class AboutController extends Controller
      use FileUploadTrait;
     public function index()
     {
-        return view('admin.about.index');
+        $about = About::first();
+        return view('admin.about.index', compact('about'));
     }
     public function update(Request $request)
     {
@@ -20,7 +21,7 @@ class AboutController extends Controller
 
 
         $request->validate([
-              'image' => 'required|image|max:2048',
+              'image' => 'nullable|image|max:2048',
               'title' => 'required|string|max:255',
               'main_title' => 'required|string|max:255',
               'description' => 'required|string',
@@ -33,7 +34,7 @@ class AboutController extends Controller
         About::updateOrCreate(
             ['id' => 1],
             [
-                'image' => $imagePath,
+                'image' => !empty($imagePath) ? $imagePath : $request->old_image,
                 'title' => $request->title,
                 'main_title' => $request->main_title,
                 'description' => $request->description,
