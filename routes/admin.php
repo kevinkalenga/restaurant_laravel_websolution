@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\PrivacyPolicyController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
@@ -163,6 +164,11 @@ Route::put('privacy-policy', [PrivacyPolicyController::class, 'update'])->name('
 //Terms and Conditions Routes 
 Route::get('terms-and-conditions', [TermsAndConditionController::class, 'index'])->name('terms-and-conditions.index');
 Route::put('terms-and-conditions', [TermsAndConditionController::class, 'update'])->name('terms-and-conditions.update');
+
+
+//Contact Routes 
+Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+Route::put('contact', [ContactController::class, 'update'])->name('contact.update');
 
 
 
