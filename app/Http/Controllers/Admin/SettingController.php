@@ -56,4 +56,30 @@ class SettingController extends Controller
 
         return back()->with('success', 'Settings updated successfully.');
     }
+
+    public function UpdateMailSetting(Request $request)
+    {
+         $data = $request->validate([
+            'mail_driver' => ['required'],
+            'mail_host' => ['required'],
+            'mail_port' => ['required'],
+            'mail_username' => ['required'],
+            'mail_password' => ['required'],
+            'mail_encryption' => ['required'],
+            'mail_from_address' => ['required'],
+            'mail_receive_address' => ['required'],
+        ]);
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        $settingsService = app(SettingsService::class);
+        $settingsService->clearCachedSettings();
+
+        return back()->with('success', 'Settings updated successfully.');
+    }
 }
