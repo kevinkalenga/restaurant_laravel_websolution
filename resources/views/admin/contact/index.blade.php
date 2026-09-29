@@ -4,31 +4,61 @@
 <section class="section">
     <div class="section-header">
         <h1>Contact</h1>
-        <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item"><a href="{{ route('admin.delivery-area.index') }}">Delivery Areas</a></div>
-            <div class="breadcrumb-item active">Delivery Area</div>
-        </div>
+       
     </div>
 
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Create Chefs</h4>
+            <h4>Update Contact</h4>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.chefs.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.contact.update') }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
-
+                @method('PUT')
             
                 
                 <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" class="form-control">
+                    <label>Phone One </label>
+                    <input type="text" name="phone_one" class="form-control" value="{{$contact->phone_one}}">
+                   
+                </div>
+                <div class="form-group">
+                    <label>Phone Two </label>
+                    <input type="text" name="phone_two" class="form-control" value="{{$contact->phone_two}}">
+                   
+                </div>
+                <div class="form-group">
+                    <label>Email One </label>
+                    <input type="text" name="mail_one" class="form-control" value="{{$contact->mail_one}}">
+                   
+                </div>
+                <div class="form-group">
+                    <label>Email Two </label>
+                    <input type="text" name="mail_two" class="form-control" value="{{$contact->mail_two}}">
+                   
+                </div>
+
+                <div class="form-group">
+                    <label>Address </label>
+                     <textarea name="address" class="form-control">
+                        {{$contact->address}}
+                     </textarea>
+                   
+                </div>
+               
+                
+                
+                <div class="form-group">
+                    <label>Google Map Link </label>
+                     <textarea name="map_link" class="form-control">
+                         {{$contact->map_link}}
+                     </textarea>
                    
                 </div>
                 
                
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
                 
             </form>
         </div>
