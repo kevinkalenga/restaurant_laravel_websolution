@@ -18,6 +18,7 @@ use App\Models\Blog;
 use App\Models\About;
 use App\Models\BlogCategory;
 use App\Models\Counter;
+use App\Models\Contact;
 use App\Models\BlogComment;
 use App\Models\PrivacyPolicy;
 use App\Models\TermsAndCondition;
@@ -270,6 +271,11 @@ class FrontendController extends Controller
     {
         $termsAndConditions = TermsAndCondition::first();
          return view('frontend.pages.terms-and-condition', compact('termsAndConditions'));
+    }
+    public function contact()
+    {
+        $contact = Contact::first();
+        return view('frontend.pages.contact', compact('contact'));
     }
 
   

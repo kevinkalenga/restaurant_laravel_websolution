@@ -23,7 +23,7 @@
                             <ul>
                                 <li><a href="{{url('/')}}">Home</a></li>
                                 <li><a href="{{route('about')}}">About Us</a></li>
-                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="{{route('contact.index')}}">Contact Us</a></li>
                                 <li><a href="#">Our Service</a></li>
                                 <li><a href="#">gallery</a></li>
                             </ul>
@@ -37,7 +37,7 @@
                                 <li><a href="{{route('privacy-policy.index')}}">Privacy Policy</a></li>
                                 <li><a href="#">Refund Policy</a></li>
                                 <li><a href="#">FAQ</a></li>
-                                <li><a href="#">contact</a></li>
+                                <li><a href="{{route('contact.index')}}">contact</a></li>
                             </ul>
                         </div>
                     </div>
