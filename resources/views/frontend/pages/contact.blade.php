@@ -94,7 +94,7 @@
                                     <textarea rows="8" placeholder="Message" name="message"></textarea>
                                 </div>
 
-                                <button type="submit">send message</button>
+                                <button type="submit" class="submit-btn">send message</button>
                             </div>
 
                         </div>
@@ -120,20 +120,43 @@
 @push('scripts')
 
 <script>
-$(document).ready(function() {
 
-    $('.fp__contact_form').on('submit', function(e) {
+
+
+$(document).ready(function () {
+
+    $('.fp__contact_form').on('submit', function (e) {
 
         e.preventDefault();
 
-        let formData = $(this).serialize();
+        let form = $(this);
+        let submitBtn = form.find('.submit-btn');
+
+        // Évite une deuxième soumission pendant l'envoi
+        if (submitBtn.prop('disabled')) {
+            return;
+        }
+
+        let originalText = submitBtn.html();
 
         $.ajax({
             method: 'POST',
             url: "{{ route('contact.send-message') }}",
-            data: formData,
+            data: form.serialize(),
 
-            success: function(response) {
+            beforeSend: function () {
+
+                submitBtn
+                    .prop('disabled', true)
+                    .html(`
+                        <span class="spinner-border spinner-border-sm" 
+                              role="status" 
+                              aria-hidden="true"></span>
+                        <span class="ms-2">Sending...</span>
+                    `);
+            },
+
+            success: function (response) {
 
                 iziToast.success({
                     title: 'Success',
@@ -141,18 +164,16 @@ $(document).ready(function() {
                     position: 'topRight'
                 });
 
-                $('.fp__contact_form')[0].reset();
+                form[0].reset();
             },
 
-            error: function(xhr, status, error) {
+            error: function (xhr) {
 
                 console.log(xhr);
 
                 if (xhr.responseJSON && xhr.responseJSON.errors) {
 
-                    let errors = xhr.responseJSON.errors;
-
-                    $.each(errors, function(index, value) {
+                    $.each(xhr.responseJSON.errors, function (index, value) {
 
                         iziToast.error({
                             title: 'Error',
@@ -169,14 +190,29 @@ $(document).ready(function() {
                         message: 'Something went wrong. Please try again.',
                         position: 'topRight'
                     });
-
                 }
+            },
+
+            complete: function () {
+
+                // Toujours remettre le bouton normal
+                submitBtn
+                    .prop('disabled', false)
+                    .html(originalText);
             }
         });
 
     });
 
 });
+
+
+
+
+
+
+
+
 </script>
 
 @endpush

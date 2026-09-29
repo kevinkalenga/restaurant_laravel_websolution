@@ -23,7 +23,9 @@ use App\Models\BlogComment;
 use App\Models\PrivacyPolicy;
 use App\Models\TermsAndCondition;
 use Cart;
+use Illuminate\Support\Facades\Mail;
 use App\Models\AppDownloadSection;
+use App\Mail\ContactMail;
 
 class FrontendController extends Controller
 {
@@ -278,15 +280,30 @@ class FrontendController extends Controller
         return view('frontend.pages.contact', compact('contact'));
     }
 
+    
     public function sendContactMessage(Request $request)
     {
-       $request->validate([
-          'name' => ['required', 'max:50'],
-          'email' => ['required', 'email', 'max:255'],
-          'subject' => ['required', 'max:255'],
-          'message' => ['required', 'max: 1000'],
-       ]);
+        $request->validate([
+            'name' => ['required', 'max:50'],
+            'email' => ['required', 'email', 'max:255'],
+            'subject' => ['required', 'max:255'],
+            'message' => ['required', 'max:1000'],
+        ]);
+
+        Mail::send(new ContactMail(
+            $request->name,
+            $request->email,
+            $request->subject,
+            $request->message
+        ));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Message Sent Successfully!'
+        ]);
     }
+
+
 
   
 }
