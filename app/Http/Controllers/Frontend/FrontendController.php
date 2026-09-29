@@ -20,6 +20,7 @@ use App\Models\BlogCategory;
 use App\Models\Counter;
 use App\Models\BlogComment;
 use App\Models\PrivacyPolicy;
+use App\Models\TermsAndCondition;
 use Cart;
 use App\Models\AppDownloadSection;
 
@@ -263,6 +264,12 @@ class FrontendController extends Controller
     {
          $privacyPolicy = PrivacyPolicy::first();
         return view('frontend.pages.privacy-policy', compact('privacyPolicy'));
+    }
+    
+    public function termsAndCondition()
+    {
+        $termsAndConditions = TermsAndCondition::first();
+         return view('frontend.pages.terms-and-condition', compact('termsAndConditions'));
     }
 
   

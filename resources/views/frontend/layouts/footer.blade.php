@@ -21,8 +21,8 @@
                         <div class="fp__footer_content">
                             <h3>Short Link</h3>
                             <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">About Us</a></li>
+                                <li><a href="{{url('/')}}">Home</a></li>
+                                <li><a href="{{route('about')}}">About Us</a></li>
                                 <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Our Service</a></li>
                                 <li><a href="#">gallery</a></li>
@@ -33,8 +33,8 @@
                         <div class="fp__footer_content">
                             <h3>Help Link</h3>
                             <ul>
-                                <li><a href="#">Terms And Conditions</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="{{route('terms-and-conditions.index')}}">Terms And Conditions</a></li>
+                                <li><a href="{{route('privacy-policy.index')}}">Privacy Policy</a></li>
                                 <li><a href="#">Refund Policy</a></li>
                                 <li><a href="#">FAQ</a></li>
                                 <li><a href="#">contact</a></li>

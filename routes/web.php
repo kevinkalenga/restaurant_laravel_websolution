@@ -28,8 +28,11 @@ Route::post('/blogs/comment/{blog_id}', [FrontendController::class, 'blogComment
 /** About Routes  **/ 
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
-/** Privacy Policy  **/ 
+/** Privacy Policy Routes  **/ 
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy-policy.index');
+
+/** Terms and CConditions Routes  **/ 
+Route::get('/terms-and-condistions', [FrontendController::class, 'termsAndCondition'])->name('terms-and-conditions.index');
 
 /**  Chef Page  **/ 
 Route::get('/chef', [FrontendController::class, 'chef'])->name('chef');

@@ -41,7 +41,7 @@
                             <li><a href="{{route('register')}}">sign up</a></li>
                             <li><a href="{{route('password.request')}}">forgot password</a></li>
                             <li><a href="{{route('privacy-policy.index')}}">privacy policy</a></li>
-                            <li><a href="terms_condition.html">terms and condition</a></li>
+                            <li><a href="{{route('terms-and-conditions.index')}}">terms and condition</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
