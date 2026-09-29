@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Services\SettingsService;
+use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
     public function index()
     {
+        //dd(config('mail'));
       return view('admin.setting.index');
     }
     
@@ -79,6 +81,7 @@ class SettingController extends Controller
 
         $settingsService = app(SettingsService::class);
         $settingsService->clearCachedSettings();
+        Cache::forget('mail_settings');
 
         return back()->with('success', 'Settings updated successfully.');
     }
