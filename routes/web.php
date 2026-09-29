@@ -32,8 +32,9 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy-policy.index');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
-/** Privacy Policy Routes  **/ 
+/** Contact Routes  **/ 
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact.index');
+Route::post('/contact', [FrontendController::class, 'sendContactMessage'])->name('contact.send-message');
 
 /** Terms and CConditions Routes  **/ 
 Route::get('/terms-and-condistions', [FrontendController::class, 'termsAndCondition'])->name('terms-and-conditions.index');

@@ -278,5 +278,15 @@ class FrontendController extends Controller
         return view('frontend.pages.contact', compact('contact'));
     }
 
+    public function sendContactMessage(Request $request)
+    {
+       $request->validate([
+          'name' => ['required', 'max:50'],
+          'email' => ['required', 'email', 'max:255'],
+          'subject' => ['required', 'max:255'],
+          'message' => ['required', 'max: 1000'],
+       ]);
+    }
+
   
 }
