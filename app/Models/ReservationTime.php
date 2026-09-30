@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReservationTime extends Model
 {
-    //
+      protected $fillable = [
+        'start_time',
+        'end_time',
+        'status',
+      ];
 }

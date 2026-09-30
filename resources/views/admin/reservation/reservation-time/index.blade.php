@@ -1,8 +1,7 @@
-```blade
+
 @extends('admin.layouts.master')
 
 @section('content')
-
 
 <section class="section">
 
@@ -25,15 +24,13 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered" id="chefs-table">
+            <table class="table table-bordered" id="reservation-times-table">
 
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Title</th>
-                        <th>Show At Home</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -45,7 +42,50 @@
     </div>
 
 </section>
+
 @endsection
 
+@push('scripts')
 
+<script>
+$(function () {
+
+    $('#reservation-times-table').DataTable({
+        processing: true,
+        serverSide: true,
+
+        ajax: "{{ route('admin.reservation-time.index') }}",
+
+        columns: [
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'start_time',
+                name: 'start_time'
+            },
+            {
+                data: 'end_time',
+                name: 'end_time'
+            },
+            {
+                data: 'status',
+                name: 'status',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+
+});
+</script>
+
+@endpush
 
