@@ -51,6 +51,27 @@
                                             <input type="email" placeholder="Email" name="email" value="{{old('email')}}">
                                         </div>
                                     </div>
+                                    
+                                    
+                                    <div class="col-xl-12">
+                                        <div class="fp__login_imput">
+                                            <label>GSM</label>
+                                            <input
+                                                type="tel"
+                                                placeholder="GSM"
+                                                name="phone"
+                                                value="{{ old('phone') }}"
+                                                required
+                                            >
+                                           
+                                        </div>
+                                    </div>
+
+
+                                    
+                                    
+                                    
+                                    
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
                                             <label>password</label>

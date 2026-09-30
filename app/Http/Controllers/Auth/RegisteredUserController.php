@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
 {
@@ -32,7 +35,26 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => ['required', 'string', 'max:20'],
+            'password' => [
+                'required', 
+                'confirmed', 
+                 Password::min(10) 
+                          ->mixedCase() 
+                          ->numbers() 
+                          ->symbols(),
+            ],
+             
+            [ 
+                'password.required' => 'Le mot de passe est obligatoire.', 
+                'password.confirmed' => 'Les mots de passe ne correspondent pas.', 
+                'password.min' => 'Le mot de passe doit contenir au moins 10 caractères.', 
+                'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.', 
+                'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.', 
+                'password.symbols' => 'Le mot de passe doit contenir au moins un caractère spécial.', 
+            ]
+            
+           
         ]);
 
         $user = User::create([
@@ -42,6 +64,7 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        Mail::to($user->email)->send(new WelcomeMail($user->name));
 
         Auth::login($user);
 
