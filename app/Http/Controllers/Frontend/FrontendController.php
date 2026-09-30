@@ -305,7 +305,23 @@ class FrontendController extends Controller
 
     public function reservation(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'date' => ['required', 'date'],
+            'time' => ['required', 'exists:reservation_times,id'],
+            'persons' => ['required', 'integer', 'min:1', 'max:20'],
+        ]);
 
+
+
+
+
+
+                return response()->json([
+            'status' => true,
+            'message' => 'Reservation created successfully!'
+        ]);
     }
 
 

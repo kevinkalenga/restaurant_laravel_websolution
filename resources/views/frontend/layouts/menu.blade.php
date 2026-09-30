@@ -174,14 +174,163 @@
                                 min="1"
                                 max="20"
                                 required
-                             name="persons">
-                            <button type="submit">book table</button>
+                             >
+                            <button type="submit" class="submitBtn">book table</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--=============================
-        MENU END
-    ==============================-->
+   
+@push('scripts')
+
+<script>
+$(document).ready(function () {
+
+    $('.fp__reservation_form').on('submit', function (e) {
+
+        e.preventDefault();
+
+        // Récupérer le formulaire
+        let form = $(this);
+
+        // Récupérer le bouton
+        let submitButton = form.find('.submitBtn');
+
+        // Récupérer les données
+        let formData = form.serialize();
+
+        $.ajax({
+
+            method: 'POST',
+
+            url: form.attr('action'),
+
+            data: formData,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Before Send
+            |--------------------------------------------------------------------------
+            */
+
+            beforeSend: function () {
+
+                submitButton
+                    .prop('disabled', true)
+                    .html(`
+                        <span class="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"></span>
+                        <span class="ms-2">Sending...</span>
+                    `);
+            },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Success
+            |--------------------------------------------------------------------------
+            */
+
+            success: function (response) {
+
+                iziToast.success({
+                    title: 'Success',
+                    message: response.message || 'Your table has been booked successfully!',
+                    position: 'topRight'
+                });
+
+
+                // Reset form
+                form[0].reset();
+
+
+                // Update nice select
+                if ($.fn.niceSelect) {
+                    form.find('.nice-select').niceSelect('update');
+                }
+
+
+                // Fermer le modal
+                let modalElement = document.getElementById('staticBackdrop');
+
+                let modal = bootstrap.Modal.getInstance(modalElement);
+
+                if (modal) {
+                    modal.hide();
+                }
+
+            },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Error
+            |--------------------------------------------------------------------------
+            */
+
+            error: function (xhr) {
+
+                let message = 'Something went wrong. Please try again.';
+
+
+                // Erreurs Laravel de validation
+                if (
+                    xhr.status === 422 &&
+                    xhr.responseJSON &&
+                    xhr.responseJSON.errors
+                ) {
+
+                    let errors = xhr.responseJSON.errors;
+
+                    let errorMessages = [];
+
+                    $.each(errors, function (field, messages) {
+
+                        $.each(messages, function (index, error) {
+
+                            errorMessages.push(error);
+
+                        });
+
+                    });
+
+                    message = errorMessages.join('<br>');
+                }
+
+
+                iziToast.error({
+                    title: 'Error',
+                    message: message,
+                    position: 'topRight'
+                });
+
+            },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Complete
+            |--------------------------------------------------------------------------
+            */
+
+            complete: function () {
+
+                submitButton
+                    .prop('disabled', false)
+                    .html('Book Table');
+
+            }
+
+        });
+
+    });
+
+});
+</script>
+
+@endpush
+
