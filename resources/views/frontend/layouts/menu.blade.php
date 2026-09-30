@@ -163,7 +163,7 @@
                             <select class="reservation_input nice-select" name="time">
                                 <option value="">select time</option>
                                 @foreach($reservationTimes as $time)
-                                   <option value="{{$time->id}}">{{$time->start_time}} to {{$time->end_time}} </option>
+                                   <option value="{{ $time->start_time }}-{{ $time->end_time }}">{{$time->start_time}} to {{$time->end_time}} </option>
                                 @endforeach
                             </select>
                             <input
@@ -208,6 +208,8 @@ $(document).ready(function () {
             url: form.attr('action'),
 
             data: formData,
+
+            dataType: 'json',
 
 
             /*

@@ -18,6 +18,7 @@ use App\Models\Blog;
 use App\Models\About;
 use App\Models\BlogCategory;
 use App\Models\Counter;
+use App\Models\Reservation;
 use App\Models\Contact;
 use App\Models\BlogComment;
 use App\Models\PrivacyPolicy;
@@ -26,6 +27,7 @@ use Cart;
 use Illuminate\Support\Facades\Mail;
 use App\Models\AppDownloadSection;
 use App\Mail\ContactMail;
+use Illuminate\Support\Str;
 
 class FrontendController extends Controller
 {
@@ -309,16 +311,26 @@ class FrontendController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
-            'time' => ['required', 'exists:reservation_times,id'],
+            'time' => ['required', 'string', 'max:255'],
             'persons' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
 
 
+        $reservation = new Reservation();
+        
+        $reservation->reservation_id = 'RES-' . strtoupper(Str::random(8));
+        $reservation->name = $request->name;
+        $reservation->phone = $request->phone;
+        $reservation->date = $request->date;
+        $reservation->time = $request->time;
+        $reservation->persons = $request->persons;
+        $reservation->status = "pending";
+
+        $reservation->save();
 
 
 
-
-                return response()->json([
+        return response()->json([
             'status' => true,
             'message' => 'Reservation created successfully!'
         ]);
