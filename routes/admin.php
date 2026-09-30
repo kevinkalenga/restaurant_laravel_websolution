@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\PrivacyPolicyController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ReservationTimeController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
@@ -174,6 +175,7 @@ Route::put('contact', [ContactController::class, 'update'])->name('contact.updat
 
 //Reservation Routes 
 Route::resource('/reservation-time', ReservationTimeController::class);
+Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
 
 
 
