@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="{{asset('admin/assets/modules/fontawesome/css/all.min.css')}}">
  
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet" href="{{asset('admin/assets/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css')}}">
  
 
   <!-- Template CSS -->
@@ -75,6 +77,8 @@
   <script src="{{asset('admin/assets/modules/nicescroll/jquery.nicescroll.min.js')}}"></script>
   <script src="{{asset('admin/assets/js/stisla.js')}}"></script>
   <script src="{{asset('admin/assets/modules/upload-preview/assets/js/jquery.uploadPreview.min.js')}}"></script>
+
+  <script src="{{asset('admin/assets/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js')}}"></script>
   
   
   <!-- Template JS File -->

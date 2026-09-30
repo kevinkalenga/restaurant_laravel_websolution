@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ReservationTime;
 
 class ReservationTimeController extends Controller
 {
@@ -20,7 +21,7 @@ class ReservationTimeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.reservation.reservation-time.create');
     }
 
     /**
@@ -28,7 +29,19 @@ class ReservationTimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        $time = new ReservationTime();
+
+        $time->start_time = $request->start_time;
+        $time->end_time = $request->end_time;
+        $time->save();
+
+         return redirect()->route('admin.reservation-time.index')->with('success', 'Reservation created successfully!');
     }
 
     /**
