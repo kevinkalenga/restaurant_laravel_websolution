@@ -36,6 +36,9 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact.index');
 Route::post('/contact', [FrontendController::class, 'sendContactMessage'])->name('contact.send-message');
 
+/** Reservation Routes  **/ 
+Route::post('/reservation', [FrontendController::class, 'reservation'])->name('reservation.store');
+
 /** Terms and CConditions Routes  **/ 
 Route::get('/terms-and-condistions', [FrontendController::class, 'termsAndCondition'])->name('terms-and-conditions.index');
 
