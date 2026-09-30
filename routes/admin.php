@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\PrivacyPolicyController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ReservationTimeController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
@@ -170,6 +171,9 @@ Route::put('terms-and-conditions', [TermsAndConditionController::class, 'update'
 Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
 Route::put('contact', [ContactController::class, 'update'])->name('contact.update');
 
+
+//Reservation Routes 
+Route::resource('/reservation-time', ReservationTimeController::class);
 
 
 
