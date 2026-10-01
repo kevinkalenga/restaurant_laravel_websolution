@@ -58,6 +58,11 @@
                                     aria-controls="v-pills-address" aria-selected="true"><span><i
                                             class="fas fa-user"></i></span>address</button>
 
+                                <button class="nav-link" id="v-pills-reservation-tab" data-bs-toggle="pill"
+                                    data-bs-target="#v-pills-reservation" type="button" role="tab"
+                                    aria-controls="v-pills-reservation" aria-selected="false"><span><i
+                                            class="fas fa-bags-shopping"></i></span> Reservation</button>
+                                
                                 <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-profile" type="button" role="tab"
                                     aria-controls="v-pills-profile" aria-selected="false"><span><i
@@ -124,6 +129,8 @@
 
                                 @include('frontend.dashboard.sections.address-section')
 
+                                @include('frontend.dashboard.sections.reservation-section')
+                                
                                 @include('frontend.dashboard.sections.order-section')
                                 
                                 @include('frontend.dashboard.sections.message-section')

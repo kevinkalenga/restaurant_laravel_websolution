@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\AppDownloadSection;
 use App\Mail\ContactMail;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class FrontendController extends Controller
 {
@@ -315,10 +316,17 @@ class FrontendController extends Controller
             'persons' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
 
+        if (!auth()->check()) {
+            throw ValidationException::withMessages([
+                'auth' => 'Please login to request reservation'
+            ]);
+        }
+
 
         $reservation = new Reservation();
         
         $reservation->reservation_id = 'RES-' . strtoupper(Str::random(8));
+        $reservation->user_id = auth()->user()->id;
         $reservation->name = $request->name;
         $reservation->phone = $request->phone;
         $reservation->date = $request->date;

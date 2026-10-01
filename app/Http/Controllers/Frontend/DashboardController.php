@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\DeliveryArea;
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\Reservation;
 use Auth;
 
 class DashboardController extends Controller
@@ -17,7 +18,8 @@ class DashboardController extends Controller
       $deliveryAreas = DeliveryArea::where('status', 1)->get();
       $userAddresses = Address::where('user_id', Auth()->user()->id)->get();
       $orders = Order::where('user_id', Auth()->user()->id)->get();
-      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses", "orders"));
+      $reservations = Reservation::where('user_id', auth()->id())->get();
+      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses", "orders", "reservations"));
    }
 
    public function createAddress(Request $request)

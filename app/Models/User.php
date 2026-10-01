@@ -58,4 +58,9 @@ class User extends Authenticatable
         // id coming from the User table become a foreign key in Chat table
         return $this->hasMany(Chat::class, 'sender_id', 'id')->orWhere('receiver_id', $this->id);
     }
+
+    public function reservations()
+    {
+      return $this->hasMany(Reservation::class);
+    }
 }

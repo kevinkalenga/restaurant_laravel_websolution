@@ -122,7 +122,7 @@ class ReservationController extends Controller
             'date' => 'required|date',
             'time' => 'required',
             'persons' => 'required|integer|min:1',
-            'status' => 'required|in:pending,confirmed,completed,cancelled',
+            'status' => 'required|in:pending,approved,completed,cancelled',
         ]);
 
         $reservation->update([
