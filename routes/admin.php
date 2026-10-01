@@ -176,6 +176,13 @@ Route::put('contact', [ContactController::class, 'update'])->name('contact.updat
 //Reservation Routes 
 Route::resource('/reservation-time', ReservationTimeController::class);
 Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+Route::get('/reservation/{reservation}/edit', [ReservationController::class, 'edit'])
+    ->name('reservation.edit');
+
+Route::put('/reservation/{reservation}', [ReservationController::class, 'update'])
+    ->name('reservation.update');
+Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])
+    ->name('reservation.destroy');
 
 
 

@@ -55,8 +55,8 @@ class ReservationController extends Controller
                         return '<span class="badge badge-warning">Pending</span>';
                     }
 
-                    if ($reservation->status === 'confirmed') {
-                        return '<span class="badge badge-success">Confirmed</span>';
+                    if ($reservation->status === 'Approved') {
+                        return '<span class="badge badge-success">Approved</span>';
                     }
 
                     if ($reservation->status === 'completed') {
@@ -72,8 +72,31 @@ class ReservationController extends Controller
                         '</span>';
                 })
 
+                ->addColumn('created_at', function ($reservation) { 
+                    return $reservation->created_at ? 
+                    $reservation->created_at->format('d/m/Y H:i') : 'N/A'; 
+                })
+                  ->addColumn('action', function ($reservation) {
+
+                    return '
+                        <button type="button"
+                                class="btn btn-sm btn-primary edit-reservation"
+                                data-id="'.$reservation->id.'">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                         |
+
+                        <button type="button"
+                                class="btn btn-sm btn-danger delete-reservation"
+                                data-id="'.$reservation->id.'">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    ';
+                })
+
                 ->rawColumns([
-                    'status'
+                    'status',
+                    'action'
                 ])
 
                 ->make(true);
@@ -81,6 +104,51 @@ class ReservationController extends Controller
 
         return view('admin.reservation.index');
 
+    }
+
+    public function edit(Reservation $reservation)
+    {
+        return response()->json([
+            'reservation' => $reservation
+        ]);
+    }
+
+
+    public function update(Request $request, Reservation $reservation)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'date' => 'required|date',
+            'time' => 'required',
+            'persons' => 'required|integer|min:1',
+            'status' => 'required|in:pending,confirmed,completed,cancelled',
+        ]);
+
+        $reservation->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'date' => $request->date,
+            'time' => $request->time,
+            'persons' => $request->persons,
+            'status' => $request->status,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reservation updated successfully.',
+        ]);
+    }
+
+
+    public function destroy(Reservation $reservation)
+    {
+        $reservation->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reservation deleted successfully.',
+        ]);
     }
 
 

@@ -155,7 +155,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="fp__reservation_form" action="{{route('reservation.store')}}" method="POST">
+                        <form class="fp__reservation_form" action="{{route('reservation.store')}}" method="POST" novalidate>
                             @csrf
                             <input class="reservation_input" type="text" placeholder="Name" name="name">
                             <input class="reservation_input" type="text" placeholder="Phone" name="phone">
@@ -276,10 +276,7 @@ $(document).ready(function () {
 
             error: function (xhr) {
 
-                let message = 'Something went wrong. Please try again.';
 
-
-                // Erreurs Laravel de validation
                 if (
                     xhr.status === 422 &&
                     xhr.responseJSON &&
@@ -288,29 +285,34 @@ $(document).ready(function () {
 
                     let errors = xhr.responseJSON.errors;
 
-                    let errorMessages = [];
-
                     $.each(errors, function (field, messages) {
 
                         $.each(messages, function (index, error) {
 
-                            errorMessages.push(error);
+                            iziToast.error({
+                                title: 'Error',
+                                message: error,
+                                position: 'topRight',
+                                timeout: 5000
+                            });
 
                         });
 
                     });
 
-                    message = errorMessages.join('<br>');
+                    return;
                 }
-
 
                 iziToast.error({
                     title: 'Error',
-                    message: message,
-                    position: 'topRight'
+                    message: 'Something went wrong. Please try again.',
+                    position: 'topRight',
+                    timeout: 5000
                 });
 
+
             },
+
 
 
             /*
