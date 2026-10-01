@@ -344,6 +344,10 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function subscribeNewsletter(Request $request) {
+        
+    }
+
 
 
   
