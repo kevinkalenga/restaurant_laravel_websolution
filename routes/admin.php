@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\PrivacyPolicyController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ReservationTimeController;
 use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
@@ -183,6 +184,9 @@ Route::put('/reservation/{reservation}', [ReservationController::class, 'update'
     ->name('reservation.update');
 Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])
     ->name('reservation.destroy');
+
+//Newsletter Routes 
+Route::get('/news-letter', [NewsLetterController::class, 'index'])->name('news-letter.index');
 
 
 
