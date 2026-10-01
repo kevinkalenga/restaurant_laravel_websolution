@@ -85,41 +85,107 @@
     </footer>
     @push('scripts')
 
-      <script>
-         $(document).ready(function(){
-            $('.subscribe_form').on('submit', function(e) {
+        <script>
+
+         $(document).ready(function () {
+
+            $('.subscribe_form').on('submit', function (e) {
+
                 e.preventDefault();
-                let formData = $(this).serialize();
-                
+
+                let form = $(this);
+                let button = form.find('.subscribe_btn');
+                let formData = form.serialize();
+
+                // Envoi
                 $.ajax({
+
                     method: 'POST',
-                    url: "{{route('subscribe-newsletter')}}",
+                    url: "{{ route('subscribe-newsletter') }}",
                     data: formData,
-                    beforeSend: function(){
-                      $('.subscribe_btn').html(
-                           `
-                               <span class="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"></span>
-                           `
+                    dataType: 'json',
 
-                      ) 
-                    },
-                    success: function(response) {
+                    // Chargement
+                    beforeSend: function () {
 
+                        button
+                            .prop('disabled', true)
+                            .html(`
+                                <span class="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"></span>
+                                <span class="ms-2">Sending...</span>
+                            `);
                     },
-                    error: function(xhr, status, error) {
 
+                    // Succès
+                    success: function (response) {
+
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.message ||
+                                "You've been subscribed successfully!",
+                            position: 'topRight'
+                        });
+
+                        form[0].reset();
                     },
-                    complete: function() {
-                          .prop('disabled', false)
-                        .html('Subscribe');
+
+                    // Erreur
+                    error: function (xhr) {
+
+                        if (
+                            xhr.status === 422 &&
+                            xhr.responseJSON &&
+                            xhr.responseJSON.errors
+                        ) {
+
+                            $.each(
+                                xhr.responseJSON.errors,
+                                function (field, messages) {
+
+                                    $.each(messages, function (index, error) {
+
+                                        iziToast.error({
+                                            title: 'Error',
+                                            message: error,
+                                            position: 'topRight',
+                                            timeout: 5000
+                                        });
+
+                                    });
+
+                                }
+                            );
+
+                            return;
+                        }
+
+                        iziToast.error({
+                            title: 'Error',
+                            message: xhr.responseJSON?.message ||
+                                'Something went wrong. Please try again.',
+                            position: 'topRight',
+                            timeout: 5000
+                        });
+                    },
+
+                    // Fin
+                    complete: function () {
+
+                        button
+                            .prop('disabled', false)
+                            .html('Subscribe');
                     }
-                })
-                
-            })
-         })
-      </script>
+
+                });
+
+            });
+
+          });
+
+
+        </script>
 
 
     @endpush

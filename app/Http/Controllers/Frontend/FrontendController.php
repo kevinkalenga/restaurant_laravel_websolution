@@ -21,6 +21,7 @@ use App\Models\Counter;
 use App\Models\Reservation;
 use App\Models\Contact;
 use App\Models\BlogComment;
+use App\Models\Subscriber;
 use App\Models\PrivacyPolicy;
 use App\Models\TermsAndCondition;
 use Cart;
@@ -345,7 +346,24 @@ class FrontendController extends Controller
     }
 
     public function subscribeNewsletter(Request $request) {
-        
+         
+        $request->validate([
+            'email' => ['required', 'email', 'max:255', 'unique:subscribers,email']
+        ], [
+            'email.unique' => 'Email is already subscribed!'
+        ]);
+
+        $subcriber = new Subscriber();
+        $subcriber->email = $request->email;
+
+        $subcriber->save();
+
+        //   return redirect()->back()->with('success', 'Comment successfully added!');
+
+         return response()->json([
+            'status' => true,
+            'message' => 'Subscribed successfully!'
+        ]);
     }
 
 
