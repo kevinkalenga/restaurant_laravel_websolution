@@ -15,100 +15,116 @@ class SocialLinkController extends Controller
      
     public function index()
     {
-            if (request()->ajax()) {
+        if (request()->ajax()) {
 
-                $socialLinks = SocialLink::query();
+            $socialLinks = SocialLink::query();
 
-                return DataTables::of($socialLinks)
+            return DataTables::of($socialLinks)
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Icon
-                    |--------------------------------------------------------------------------
-                    */
-                    ->addColumn('icon', function ($socialLink) {
+                /*
+                |--------------------------------------------------------------------------
+                | Icon
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('icon', function ($socialLink) {
 
-                        return $socialLink->icon ?? 'N/A';
-                    })
+                    if (!$socialLink->icon) {
+                        return 'N/A';
+                    }
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Name
-                    |--------------------------------------------------------------------------
-                    */
-                    ->addColumn('name', function ($socialLink) {
+                    return '<i class="' . e($socialLink->icon) . ' fa-2x"></i>';
+                })
 
-                        return $socialLink->name ?? 'N/A';
-                    })
+                /*
+                |--------------------------------------------------------------------------
+                | Name
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('name', function ($socialLink) {
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Link
-                    |--------------------------------------------------------------------------
-                    */
-                    ->addColumn('link', function ($socialLink) {
+                    return $socialLink->name ?? 'N/A';
+                })
 
-                        return $socialLink->link
-                            ? '<a href="' . $socialLink->link . '" target="_blank">
-                                    ' . $socialLink->link . '
-                            </a>'
-                            : 'N/A';
-                    })
+                /*
+                |--------------------------------------------------------------------------
+                | Link
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('link', function ($socialLink) {
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Status
-                    |--------------------------------------------------------------------------
-                    */
-                    ->addColumn('status', function ($socialLink) {
+                    if (!$socialLink->link) {
+                        return 'N/A';
+                    }
 
-                        return $socialLink->status
-                            ? '<span class="badge badge-success">Active</span>'
-                            : '<span class="badge badge-danger">Inactive</span>';
-                    })
+                    return '<a href="' . e($socialLink->link) . '"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                ' . e($socialLink->link) . '
+                            </a>';
+                })
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Action
-                    |--------------------------------------------------------------------------
-                    */
-                    ->addColumn('action', function ($socialLink) {
+                /*
+                |--------------------------------------------------------------------------
+                | Status
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('status', function ($socialLink) {
 
-                        return '
-                            <a href="' . route('admin.social-link.edit', $socialLink->id) . '"
-                                class="btn btn-sm btn-primary mr-1">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                    return $socialLink->status
+                        ? '<span class="badge badge-success">Active</span>'
+                        : '<span class="badge badge-danger">Inactive</span>';
+                })
 
-                            <a href="' . route('admin.social-link.destroy', $socialLink->id) . '"
-                                class="btn btn-sm btn-danger"
-                                onclick="event.preventDefault();
-                                if(confirm(\'Are you sure you want to delete?\')) {
-                                    document.getElementById(\'delete-form-' . $socialLink->id . '\').submit();
-                                }">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                /*
+                |--------------------------------------------------------------------------
+                | Action
+                |--------------------------------------------------------------------------
+                */
+                ->addColumn('action', function ($socialLink) {
 
-                            <form id="delete-form-' . $socialLink->id . '"
-                                action="' . route('admin.social-link.destroy', $socialLink->id) . '"
-                                method="POST"
-                                style="display:none;">
-                                ' . csrf_field() . '
-                                ' . method_field('DELETE') . '
-                            </form>
-                        ';
-                    })
+                    return '
+                        <a href="' . route('admin.social-link.edit', $socialLink->id) . '"
+                            class="btn btn-sm btn-primary mr-1">
+                            <i class="fas fa-edit"></i>
+                        </a>
 
-                    ->rawColumns([
-                        'link',
-                        'status',
-                        'action'
-                    ])
+                        <a href="' . route('admin.social-link.destroy', $socialLink->id) . '"
+                            class="btn btn-sm btn-danger"
+                            onclick="event.preventDefault();
+                            if(confirm(\'Are you sure you want to delete?\')) {
+                                document.getElementById(\'delete-form-' . $socialLink->id . '\').submit();
+                            }">
+                            <i class="fas fa-trash"></i>
+                        </a>
 
-                    ->make(true);
-            }
+                        <form id="delete-form-' . $socialLink->id . '"
+                            action="' . route('admin.social-link.destroy', $socialLink->id) . '"
+                            method="POST"
+                            style="display:none;">
 
-            return view('admin.social-link.index');
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+
+                        </form>
+                    ';
+                })
+
+                /*
+                |--------------------------------------------------------------------------
+                | Allow HTML
+                |--------------------------------------------------------------------------
+                */
+                ->rawColumns([
+                    'icon',
+                    'link',
+                    'status',
+                    'action'
+                ])
+
+                ->make(true);
+        }
+
+        return view('admin.social-link.index');
     }
 
     /**
@@ -142,20 +158,16 @@ class SocialLinkController extends Controller
          return redirect()->route('admin.social-link.index')->with('success', 'Social link created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $socialLink = SocialLink::findOrFail($id);
+
+        return view('admin.social-link.edit', compact('socialLink'));
     }
 
     /**
@@ -163,7 +175,25 @@ class SocialLinkController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $socialLink = SocialLink::findOrFail($id);
+
+        $request->validate([
+        'icon' => 'required|string',
+        'name' => 'required|string|max:255',
+        'link' => 'required|string',
+        'status' => 'required|boolean',
+        ]);
+
+        $socialLink->icon = $request->icon;
+        $socialLink->name = $request->name;
+        $socialLink->link = $request->link;
+        $socialLink->status = $request->status;
+
+        $socialLink->save();
+
+        return redirect()
+        ->route('admin.social-link.index')
+        ->with('success', 'Social link updated successfully!');
     }
 
     /**
@@ -171,6 +201,12 @@ class SocialLinkController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $socialLink = SocialLink::findOrFail($id);
+
+        $socialLink->delete();
+
+        return redirect()
+        ->route('admin.social-link.index')
+        ->with('success', 'Social link deleted successfully!');
     }
 }

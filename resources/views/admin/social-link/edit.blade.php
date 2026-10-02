@@ -9,28 +9,28 @@
 
     <div class="card card-primary">
         <div class="card-header">
-            <h4>Create Link</h4>
+            <h4>Update Link</h4>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('admin.social-link.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form action="{{ route('admin.social-link.update', $socialLink->id) }}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
-
+                @method('PUT')
 
                 <div class="form-group">
                     <label>Icon</label>
-                    <button type="button" class="btn btn-secondary" role="iconpicker" name="icon" data-icon=""></button>
+                    <button type="button" class="btn btn-secondary" role="iconpicker" name="icon" data-icon=""  value="{{$socialLink->icon}}"></button>
                 </div>  
 
                 <div class="form-group">
                     <label for="title">Name</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="name" class="form-control" value="{{$socialLink->name}}">
                     
                 </div>
 
                 <div class="form-group">
                     <label for="sub_title">Link</label>
-                    <input type="text" name="link" class="form-control">
+                    <input type="text" name="link" class="form-control" value="{{$socialLink->link}}">
                     
                 </div>
 
@@ -39,18 +39,20 @@
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" class="form-control">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
+                        <option @selected($socialLink->status === 1) value="1">Yes</option>
+                        <option @selected($socialLink->status === 0) value="0">No</option>
                     </select>
                   
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
                
             </form>
         </div>
     </div>
 </section>
 @endsection
+
+
 
 
