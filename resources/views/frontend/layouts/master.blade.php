@@ -77,12 +77,16 @@
                         <li><a href="callto:123456789"><i class="fas fa-phone-alt"></i> +96487452145214</a></li>
                     </ul>
                 </div>
+                @php 
+                  $socialLinks = \App\Models\SocialLink::where('status', 1)->get();
+
+                @endphp
+                
                 <div class="col-xl-6 col-md-4 d-none d-md-block">
                     <ul class="topbar_icon d-flex flex-wrap">
-                        <li><a href="#"><i class="fab fa-facebook-f"></i></a> </li>
-                        <li><a href="#"><i class="fab fa-twitter"></i></a> </li>
-                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a> </li>
-                        <li><a href="#"><i class="fab fa-behance"></i></a> </li>
+                        @foreach($socialLinks as $socialLink)
+                           <li><a href="{{$socialLink->link}}"><i class="{{$socialLink->icon}}"></i></a> </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

@@ -49,15 +49,16 @@
                                 <input type="text" placeholder="Subscribe" name="email">
                                 <button type="submit" class="subscribe_btn">Subscribe</button>
                             </form>
+                             @php 
+                               $socialLinks = \App\Models\SocialLink::where('status', 1)->get();
+
+                            @endphp
                             <div class="fp__footer_social_link">
                                 <h5>follow us:</h5>
                                 <ul class="d-flex flex-wrap">
-                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-behance"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                    @foreach($socialLinks as $socialLink)
+                                       <li><a href="{{$socialLink->link}}"><i class="{{$socialLink->icon}}"></i></a> </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
