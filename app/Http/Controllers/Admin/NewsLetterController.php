@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Subscriber;
 use Yajra\DataTables\Facades\DataTables;
+use App\Mail\NewsLetter;
+use Illuminate\Support\Facades\Mail;
+
 
 class NewsLetterController extends Controller
 {
@@ -34,6 +37,34 @@ class NewsLetterController extends Controller
 
             return view('admin.news-letter.index');
         }
+
+       
+         
+        public function sendNewsLetter(Request $request)
+        {
+            $request->validate([
+                'subject' => ['required', 'max:255'],
+                'message' => ['required'],
+            ]);
+
+            $subscribers = Subscriber::all();
+
+            foreach ($subscribers as $subscriber) {
+
+                Mail::to($subscriber->email)
+                    ->send(new NewsLetter(
+                        $request->subject,
+                        $request->message
+                    ));
+            }
+
+            return redirect()->back()->with(
+                'success',
+                'Newsletter successfully sent to all subscribers.'
+            );
+        }
+
+
 
 
 }

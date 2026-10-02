@@ -187,6 +187,7 @@ Route::delete('/reservation/{reservation}', [ReservationController::class, 'dest
 
 //Newsletter Routes 
 Route::get('/news-letter', [NewsLetterController::class, 'index'])->name('news-letter.index');
+Route::post('/news-letter', [NewsLetterController::class, 'sendNewsLetter'])->name('news-letter.send');
 
 
 
