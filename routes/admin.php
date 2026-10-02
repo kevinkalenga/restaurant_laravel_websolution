@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\ReservationTimeController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
+use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -188,6 +189,9 @@ Route::delete('/reservation/{reservation}', [ReservationController::class, 'dest
 //Newsletter Routes 
 Route::get('/news-letter', [NewsLetterController::class, 'index'])->name('news-letter.index');
 Route::post('/news-letter', [NewsLetterController::class, 'sendNewsLetter'])->name('news-letter.send');
+
+//Social Links Routes 
+Route::resource('social-link', SocialLinkController::class);
 
 
 
