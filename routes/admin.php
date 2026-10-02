@@ -194,8 +194,9 @@ Route::post('/news-letter', [NewsLetterController::class, 'sendNewsLetter'])->na
 //Social Links Routes 
 Route::resource('social-link', SocialLinkController::class);
 
-//Social Links Routes 
+//Footer Info Routes 
 Route::get('footer-info', [FooterInfoController::class, 'index'])->name("footer-info.index");
+Route::put('footer-info', [FooterInfoController::class, 'update'])->name("footer-info.update");
 
 
 
