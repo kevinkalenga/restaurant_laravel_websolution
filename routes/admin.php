@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\SocialLinkController;
+use App\Http\Controllers\Admin\FooterInfoController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -192,6 +193,9 @@ Route::post('/news-letter', [NewsLetterController::class, 'sendNewsLetter'])->na
 
 //Social Links Routes 
 Route::resource('social-link', SocialLinkController::class);
+
+//Social Links Routes 
+Route::get('footer-info', [FooterInfoController::class, 'index'])->name("footer-info.index");
 
 
 
