@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\TermsAndConditionController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\FooterInfoController;
+use App\Http\Controllers\Admin\MenuBuilderController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 
 
@@ -198,6 +199,9 @@ Route::resource('social-link', SocialLinkController::class);
 Route::get('footer-info', [FooterInfoController::class, 'index'])->name("footer-info.index");
 Route::put('footer-info', [FooterInfoController::class, 'update'])->name("footer-info.update");
 
+
+//Menu Builder Routes 
+Route::get('menu-builder', [MenuBuilderController::class, 'index'])->name("menu-builder.index");
 
 
 // Product Option Routes

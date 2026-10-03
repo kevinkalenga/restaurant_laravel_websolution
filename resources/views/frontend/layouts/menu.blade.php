@@ -4,8 +4,9 @@
     <nav class="navbar navbar-expand-lg main_menu">
         <div class="container">
             <a class="navbar-brand" href="{{route('home')}}">
-                <img src="{{asset('frontend/images/logo.png')}}" alt="FoodPark" class="img-fluid"> 
-                <!-- <img src="{{asset('frontend/images/logo_ecf.png')}}" alt="Vite & Gourmand" class="logo_ecf"> -->
+                <img src="{{asset('frontend/images/logo_vite_gourmand.png')}}" alt="vite and gourmand" class="img-fluid"> 
+                <!-- <img src="{{asset('frontend/images/logo.png')}}" alt="FoodPark" class="img-fluid">  -->
+               
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

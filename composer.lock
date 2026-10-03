@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c9e911b759f5c77be7fc9948933113b",
+    "content-hash": "523517ca3baedc542ee436c1b80c8fe6",
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
@@ -81,6 +81,66 @@
                 "source": "https://github.com/anayarojo/laravel-shopping-cart/tree/4.2.4"
             },
             "time": "2025-03-05T22:20:00+00:00"
+        },
+        {
+            "name": "bdhabib/laravel-menu",
+            "version": "2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/creativehabib/laravel-menu.git",
+                "reference": "8e6a1285cd1bf6f56465013baf4bef28d05a3fc6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/creativehabib/laravel-menu/zipball/8e6a1285cd1bf6f56465013baf4bef28d05a3fc6",
+                "reference": "8e6a1285cd1bf6f56465013baf4bef28d05a3fc6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^v12.2.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "LaravelMenu": "Bdhabib\\LaravelMenu\\Facades\\LaravelMenu"
+                    },
+                    "providers": [
+                        "Bdhabib\\LaravelMenu\\LaravelMenuServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bdhabib\\LaravelMenu\\": "src/",
+                    "Bdhabib\\LaravelMenu\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": ":Habibur Rahaman",
+                    "email": "shamolrahaman@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Drag & Drop menu builder like  WordPress for Laravel 12.x",
+            "homepage": "https://github.com/creativehabib/laravel-menu",
+            "keywords": [
+                "builder",
+                "laravel",
+                "menu",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/creativehabib/laravel-menu/issues",
+                "source": "https://github.com/creativehabib/laravel-menu/tree/v2.2"
+            },
+            "time": "2025-03-17T19:31:58+00:00"
         },
         {
             "name": "brick/math",
