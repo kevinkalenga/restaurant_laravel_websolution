@@ -22,7 +22,7 @@ class PaymentController extends Controller
                 !session()->has('delivery_fee') ||
                 !session()->has('address')
             ) {
-                return redirect()->route('checkout')
+                return redirect()->route('checkout.index')
                     ->with('error', 'Please complete the checkout information first.');
         }
     

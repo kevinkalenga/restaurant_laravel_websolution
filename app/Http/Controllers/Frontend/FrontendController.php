@@ -367,6 +367,12 @@ class FrontendController extends Controller
     }
 
 
+    public function paymentMethods()
+    {
+       return view('frontend.pages.payment-methods');
+    }
+
+
 
   
 }

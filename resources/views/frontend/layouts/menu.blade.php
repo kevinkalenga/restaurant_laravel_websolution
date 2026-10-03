@@ -33,11 +33,10 @@
                             <li><a href="blog_details.html">blog details</a></li>
                             <li><a href="cart_view.html">cart view</a></li>
                             <li><a href="check_out.html">checkout</a></li>
-                            <li><a href="payment.html">payment</a></li>
+                            <li><a href="{{route('payment-methods.index')}}">payment</a></li>
                             <li><a href="{{route('testimonial')}}">testimonial</a></li>
                             <li><a href="search_menu.html">search result</a></li>
                             <li><a href="404.html">404/Error</a></li>
-                            <li><a href="faq.html">FAQs</a></li>
                             <li><a href="{{route('login')}}">sign in</a></li>
                             <li><a href="{{route('register')}}">sign up</a></li>
                             <li><a href="{{route('password.request')}}">forgot password</a></li>

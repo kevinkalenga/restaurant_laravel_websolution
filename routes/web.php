@@ -89,6 +89,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/stripe/success', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
     Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
 
+
+  /** Payment Methods Page **/
+  Route::get('/payment-methods', [FrontendController::class, 'paymentMethods'])
+    ->name('payment-methods.index');
+
    
 
     // Route::get('test', function(){

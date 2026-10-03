@@ -3,6 +3,7 @@
      
         $footerInfo = \App\Models\FooterInfo::first();
         $footerMenuOne = LaravelMenu::getByName('footer_menu_one');
+        $footerMenuTwo = LaravelMenu::getByName('footer_menu_two');
 
     @endphp
     
@@ -88,10 +89,12 @@
                                 <p>{{$footerInfo->copyright}}</p>
                              @endif
                             <ul class="d-flex flex-wrap">
-                                <li><a href="#">FAQs</a></li>
-                                <li><a href="#">payment</a></li>
-                                <li><a href="#">settings</a></li>
-                                <li><a href="#">privacy policy</a></li>
+                                @foreach($footerMenuTwo as $menuItem)  
+                                  <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
+                                @endforeach
+                                <li>
+                                   <a href="#">Legal Notice</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
