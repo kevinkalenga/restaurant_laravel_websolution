@@ -37,6 +37,7 @@
                                             <div class="personal_info_text">
                                                 <p><span>Name:</span>{{Auth()->user()->name}}</p>
                                                 <p><span>Email:</span>{{Auth()->user()->email}}</p>
+                                                <p><span>Gsm:</span>{{Auth()->user()->phone}}</p>
                                                 
                                             </div>
 
@@ -47,14 +48,20 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="fp__comment_imput_single">
-                                                                <label>name</label>
+                                                                <label>Name</label>
                                                                 <input type="text" placeholder="Name" name="name" value="{{Auth()->user()->name}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12 col-lg-12">
                                                             <div class="fp__comment_imput_single">
-                                                                <label>email</label>
+                                                                <label>Email</label>
                                                                 <input type="email" placeholder="Email" name="email" value="{{Auth()->user()->email}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-lg-12">
+                                                            <div class="fp__comment_imput_single">
+                                                                <label>GSM</label>
+                                                                <input type="text" placeholder="GSM" name="phone" value="{{Auth()->user()->phone}}">
                                                             </div>
                                                         </div>
                                                         

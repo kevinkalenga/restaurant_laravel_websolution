@@ -30,7 +30,7 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
 /** Privacy Policy Routes  **/ 
 Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy-policy.index');
-Route::get('/about', [FrontendController::class, 'about'])->name('about');
+// Route::get('/about', [FrontendController::class, 'about'])->name('about');
 
 /** Contact Routes  **/ 
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact.index');
@@ -90,9 +90,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
 
 
-  /** Payment Methods Page **/
-  Route::get('/payment-methods', [FrontendController::class, 'paymentMethods'])
-    ->name('payment-methods.index');
+ 
 
    
 
@@ -107,6 +105,11 @@ Route::group(['middleware' => 'auth'], function(){
     // });
 
 });
+
+
+ /** Payment Methods Page **/
+  Route::get('/payment-methods', [FrontendController::class, 'paymentMethods'])
+    ->name('payment-methods.index');
 
 
 

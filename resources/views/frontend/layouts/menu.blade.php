@@ -1,3 +1,11 @@
+  @php 
+  
+      $MainMenu = LaravelMenu::getByName('main_menu');
+  
+  @endphp
+   
+   
+   
    <!--=============================
         MENU START
     ==============================-->
@@ -14,42 +22,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav m-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('about')}}">about</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="menu.html">menu</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('chef')}}">chefs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">pages <i class="far fa-angle-down"></i></a>
-                        <ul class="droap_menu">
-                            <li><a href="menu_details.html">menu details</a></li>
-                            <li><a href="blog_details.html">blog details</a></li>
-                            <li><a href="cart_view.html">cart view</a></li>
-                            <li><a href="check_out.html">checkout</a></li>
-                            <li><a href="{{route('payment-methods.index')}}">payment</a></li>
-                            <li><a href="{{route('testimonial')}}">testimonial</a></li>
-                            <li><a href="search_menu.html">search result</a></li>
-                            <li><a href="404.html">404/Error</a></li>
-                            <li><a href="{{route('login')}}">sign in</a></li>
-                            <li><a href="{{route('register')}}">sign up</a></li>
-                            <li><a href="{{route('password.request')}}">forgot password</a></li>
-                            <li><a href="{{route('privacy-policy.index')}}">privacy policy</a></li>
-                            <li><a href="{{route('terms-and-conditions.index')}}">terms and condition</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('blogs')}}">blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('contact.index')}}">contact</a>
-                    </li>
+                    @if($MainMenu)
+                        @foreach($MainMenu as $menu)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{$menu['link']}}">{{$menu['label']}} 
+                                    @if($menu['child'])
+                                     <i class="far fa-angle-down"></i>
+                                    @endif
+                                </a>
+                                @if($menu['child'])
+                                    <ul class="droap_menu">
+                                       @foreach($menu['child'] as $item)
+                                         <li><a href="{{$item['link']}}">{{$item['label']}}</a></li>
+                                       @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endforeach
+                    @endif
+                  
                 </ul>
                 <ul class="menu_icon d-flex flex-wrap">
                     <li>
