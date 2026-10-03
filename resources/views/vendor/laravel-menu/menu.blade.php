@@ -27,8 +27,7 @@ $cat_url = config('menu.category.prefix');
                                     <span class="submit-btn">
                                         <input type="submit" class="button-secondary" value="Choose">
                                     </span>
-                                    <span class="add-new-menu-action"> or <a
-                                            href="{{ $currentUrl }}?action=edit&menu=0">Create new menu</a>. </span>
+                                    <!-- <span class="add-new-menu-action"> or <a href="{{ $currentUrl }}?action=edit&menu=0">Create new menu</a>. </span> -->
                                 </form>
                             </div>
                             <div id="nav-menus-frame">
@@ -278,7 +277,7 @@ $cat_url = config('menu.category.prefix');
                                                         <label class="menu-name-label howto open-label"
                                                             for="menu-name">
                                                             <span>Name</span>
-                                                            <input name="menu-name" id="menu-name" type="text"
+                                                            <input readonly name="menu-name" id="menu-name" type="text"
                                                                 class="menu-name regular-text menu-item-textbox"
                                                                 title="Enter menu name"
                                                                 value="@if (isset($indmenu)) {{ $indmenu->name }} @endif">
@@ -508,10 +507,10 @@ $cat_url = config('menu.category.prefix');
                                                                     menu</a>
                                                             </div>
                                                         @elseif(request()->has('menu'))
-                                                            <span class="delete-action"> <a
+                                                            {{--<span class="delete-action"> <a
                                                                     class="submitdelete deletion menu-delete"
                                                                     onclick="deletemenu()"
-                                                                    href="javascript:void(9)">Delete menu</a> </span>
+                                                                    href="javascript:void(9)">Delete menu</a> </span>--}}
                                                             <div class="publishing-action">
 
                                                                 <a onclick="getmenus()" name="save_menu"
