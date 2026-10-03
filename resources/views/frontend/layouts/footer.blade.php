@@ -2,6 +2,7 @@
     @php 
      
         $footerInfo = \App\Models\FooterInfo::first();
+        $footerMenuOne = LaravelMenu::getByName('footer_menu_one');
 
     @endphp
     
@@ -35,23 +36,21 @@
                         <div class="fp__footer_content">
                             <h3>Short Link</h3>
                             <ul>
-                                <li><a href="{{url('/')}}">Home</a></li>
-                                <li><a href="{{route('about')}}">About Us</a></li>
-                                <li><a href="{{route('contact.index')}}">Contact Us</a></li>
-                                <li><a href="#">Our Service</a></li>
-                                <li><a href="#">gallery</a></li>
+                                @foreach($footerMenuOne as $menuItem)
+                                  <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-4 col-md-6 order-sm-4 order-lg-3">
                         <div class="fp__footer_content">
-                            <h3>Help Link</h3>
+                            <h3>Opening Hours</h3>
                             <ul>
-                                <li><a href="{{route('terms-and-conditions.index')}}">Terms And Conditions</a></li>
-                                <li><a href="{{route('privacy-policy.index')}}">Privacy Policy</a></li>
-                                <li><a href="#">Refund Policy</a></li>
-                                <li><a href="#">FAQ</a></li>
-                                <li><a href="{{route('contact.index')}}">contact</a></li>
+                                <li>Monday: 10:00 AM - 10:00 PM</li>
+                                <li>Tuesday: 10:00 AM - 10:00 PM</li>
+                                <li>Wednesday: 10:00 AM - 10:00 PM</li>
+                                <li>Thursday: 10:00 AM - 10:00 PM</li>
+                                <li>Friday: 10:00 AM - 11:00 PM</li>
                             </ul>
                         </div>
                     </div>
