@@ -50,26 +50,51 @@ $cat_url = config('menu.category.prefix');
                                                         <div class="accordion-section-content ">
                                                             <div class="inside">
                                                                 <div class="customlinkdiv" id="customlinkdiv">
+                                                                    
+                                                                    <p id="menu-item-url-wrap">
+                                                                        <label class="howto"
+                                                                            for="custom-menu-item-pages">
+                                                                            <span>Pages <code>(optional)</code></span>&nbsp;&nbsp;&nbsp;
+                                                                            
+                                                                        </label>
+                                                                        <select class="form-control" id="custom-menu-item-pages">
+                                                                                <option value="">Select</option>
+                                                                                <option value="Home" data-url="/">Home</option>
+                                                                                <option value="About" data-url="/about">About</option>
+                                                                                <option value="Blogs" data-url="/blogs">Blogs</option>
+                                                                                <option value="Chefs" data-url="/chef">Chefs</option>
+                                                                                <option value="Blogs" data-url="/blogs">Blog Details</option>
+                                                                                <option value="Payment" data-url="/payment-methods">Payment</option>
+                                                                                <option value="Testimonials" data-url="/testimonial">Testimonials</option>
+                                                                                <option value="Privacy Policy" data-url="/privacy-policy">Privacy Plicy</option>
+                                                                                <option value="Terms And Cnditions" data-url="/terms-and-condistions">Terms And Conditions</option>
+                                                                                <option value="Contact" data-url="/contact">Contact</option>
+                                                                        </select>
+                                                                    </p>
+                                                                   
+                                                                
                                                                     <p id="menu-item-url-wrap">
                                                                         <label class="howto"
                                                                             for="custom-menu-item-url">
                                                                             <span>URL</span>&nbsp;&nbsp;&nbsp;
-                                                                            <input id="custom-menu-item-url"
-                                                                                name="url" type="text"
-                                                                                class="menu-item-textbox "
-                                                                                placeholder="url">
+                                                                           
                                                                         </label>
+                                                                         <input id="custom-menu-item-url"
+                                                                                name="url" type="text"
+                                                                                class="form-control"
+                                                                                placeholder="url">
                                                                     </p>
 
                                                                     <p id="menu-item-name-wrap">
                                                                         <label class="howto"
                                                                             for="custom-menu-item-name">
                                                                             <span>Label</span>&nbsp;
-                                                                            <input id="custom-menu-item-name"
-                                                                                name="label" type="text"
-                                                                                class="regular-text menu-item-textbox input-with-default-title"
-                                                                                title="Label menu">
+                                                                           
                                                                         </label>
+                                                                         <input id="custom-menu-item-name"
+                                                                                name="label" type="text"
+                                                                                class="regular-text menu-item-textbox input-with-default-title form-control text-dark"
+                                                                                title="Label menu">
                                                                     </p>
 
                                                                     @if (!empty($roles))
@@ -524,3 +549,5 @@ $cat_url = config('menu.category.prefix');
         </div>
     </div>
 </div>
+
+

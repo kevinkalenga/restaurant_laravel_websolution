@@ -14,7 +14,9 @@
                     <div class="col-lg-4 col-sm-8 col-md-6">
                         <div class="fp__footer_content">
                             <a class="footer_logo" href="{{url('/')}}">
-                                <img src="{{asset('frontend/images/footer_logo.png')}}" alt="FoodPark" class="img-fluid w-100">
+                                <img src="{{asset('frontend/images/logo_restau.png')}}" alt="restauran" class="img-fluid w-100">
+                                <!-- <img src="{{asset('frontend/images/footer_logo.png')}}" alt="FoodPark" class="img-fluid w-100"> -->
+                                
                             </a>
                             @if($footerInfo->short_info)
                                  <span>{!! $footerInfo->short_info !!}</span>

@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         // php artisan tinker et  \App\Models\Product::factory(5)->create()
         Product::factory(10)->create();
         Coupon::factory(3)->create();
+        $this->call(MenuBuilderSeeder::class);
         
     }
 }

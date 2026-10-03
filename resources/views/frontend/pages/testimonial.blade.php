@@ -37,7 +37,7 @@
         <div class="container">
             <div class="row">
               @foreach($testimonials as $testimonial)
-                <div class="col-xl-4 wow fadeInUp" data-wow-duration="1s">
+                <div class="col-xl-4 wow fadeInUp mt-4" data-wow-duration="1s">
                     <div class="fp__single_testimonial">
                         <div class="fp__testimonial_header d-flex flex-wrap align-items-center">
                             <div class="img">
