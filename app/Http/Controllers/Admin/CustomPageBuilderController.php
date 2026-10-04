@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CustomPageBuilder;
+use Illuminate\Support\Str;
 
 class CustomPageBuilderController extends Controller
 {
@@ -20,7 +22,7 @@ class CustomPageBuilderController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.custom-page-builder.create');
     }
 
     /**
@@ -28,7 +30,23 @@ class CustomPageBuilderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'max:200', 'unique:custom_page_builders,name'],
+            'content' => ['required'],
+            'status' => ['required', 'boolean']
+        ]);
+
+        $page = new CustomPageBuilder();
+        $page->name = $request->name;
+        $page->slug =  Str::slug($request->name);
+        $page->content = $request->content;
+        $page->status = $request->status;
+
+        $page->save();
+
+        return redirect()
+        ->route('admin.custom-page-builder.index')
+        ->with('success', 'Create successfully!');
     }
 
     /**
