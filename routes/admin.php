@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\FooterInfoController;
 use App\Http\Controllers\Admin\MenuBuilderController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
+use App\Http\Controllers\Admin\CustomPageBuilderController;
 
 
 
@@ -202,6 +203,9 @@ Route::put('footer-info', [FooterInfoController::class, 'update'])->name("footer
 
 //Menu Builder Routes 
 Route::get('menu-builder', [MenuBuilderController::class, 'index'])->name("menu-builder.index");
+
+//Custom Page Builder Routes 
+Route::resource('custom-page-builder', CustomPageBuilderController::class);
 
 
 // Product Option Routes
