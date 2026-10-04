@@ -6911,3 +6911,15 @@ CHECKOUT PAGE START
 footer .fp__footer_content ul li {
     color:#ffffff;
 }
+
+#rating_input {
+    width: 100%;
+    padding: 12px 20px;
+    outline: none;
+    resize: none;
+    border: 1px solid #eee;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 300;
+    margin-top: 3px;
+}

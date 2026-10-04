@@ -57,6 +57,7 @@
                                 <li>Samedi : 10h00 - 23h00</li>
                                 <li>Dimanche : 10h00 - 22h00</li>
                             </ul>
+                            
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-8 col-md-6 order-lg-4">

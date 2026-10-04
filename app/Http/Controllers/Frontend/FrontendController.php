@@ -372,6 +372,11 @@ class FrontendController extends Controller
        return view('frontend.pages.payment-methods');
     }
 
+    public function productReviewStore(Request $request)
+    {
+      dd($request->all());
+    }
+
 
 
   
