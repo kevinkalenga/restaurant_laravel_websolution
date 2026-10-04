@@ -49,11 +49,13 @@
                         <div class="fp__footer_content">
                             <h3>Opening Hours</h3>
                             <ul>
-                                <li>Monday: 10:00 AM - 10:00 PM</li>
-                                <li>Tuesday: 10:00 AM - 10:00 PM</li>
-                                <li>Wednesday: 10:00 AM - 10:00 PM</li>
-                                <li>Thursday: 10:00 AM - 10:00 PM</li>
-                                <li>Friday: 10:00 AM - 11:00 PM</li>
+                                <li>Lundi : 10h00 - 22h00</li>
+                                <li>Mardi : 10h00 - 22h00</li>
+                                <li>Mercredi : 10h00 - 22h00</li>
+                                <li>Jeudi : 10h00 - 22h00</li>
+                                <li>Vendredi : 10h00 - 23h00</li>
+                                <li>Samedi : 10h00 - 23h00</li>
+                                <li>Dimanche : 10h00 - 22h00</li>
                             </ul>
                         </div>
                     </div>

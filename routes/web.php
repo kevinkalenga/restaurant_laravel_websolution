@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\OrderController;
+use App\Http\Controllers\Frontend\CustomPageController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Models\Order;
 
@@ -41,6 +42,9 @@ Route::post('/reservation', [FrontendController::class, 'reservation'])->name('r
 
 /** Newsletter Routes  **/ 
 Route::post('/subscribe-newsletter', [FrontendController::class, 'subscribeNewsletter'])->name('subscribe-newsletter');
+
+/** Custome Page Routes  **/ 
+Route::get('/page/{slug}', CustomPageController::class);
 
 /** Terms and CConditions Routes  **/ 
 Route::get('/terms-and-condistions', [FrontendController::class, 'termsAndCondition'])->name('terms-and-conditions.index');
