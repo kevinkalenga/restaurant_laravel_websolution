@@ -231,7 +231,8 @@
                                                     <h4 class="mb-3">write a Review</h4>
 
                                                     <a href="{{ route('login') }}" class="alert alert-warning d-block">
-                                                        Please login first to add the review
+
+                                                        Please click here to login before adding the review!
                                                     </a>
                                                 </div>
                                             </div>

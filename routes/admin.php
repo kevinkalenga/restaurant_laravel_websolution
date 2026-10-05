@@ -36,6 +36,7 @@ use App\Http\Controllers\Admin\FooterInfoController;
 use App\Http\Controllers\Admin\MenuBuilderController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 use App\Http\Controllers\Admin\CustomPageBuilderController;
+use App\Http\Controllers\Admin\ProductReviewController;
 
 
 
@@ -71,6 +72,9 @@ Route::resource('/product-gallery', ProductGalleryController::class);
 // Product Size Routes
 Route::get('/product-size/{product}', [ProductSizeController::class, 'index'])->name('product-size.show-index');
 Route::resource('/product-size', ProductSizeController::class);
+
+// Product Reviews Routes
+Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
 
 // Coupon Routes
 Route::resource('/coupon', CouponController::class);
