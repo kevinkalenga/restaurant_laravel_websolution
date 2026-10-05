@@ -75,6 +75,8 @@ Route::resource('/product-size', ProductSizeController::class);
 
 // Product Reviews Routes
 Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
+Route::put('/product-reviews/{id}/status', [ProductReviewController::class,'toggleStatus'])->name('product-reviews.toggle-status');
+Route::delete('/product-reviews/{id}', [ProductReviewController::class, 'destroy'])->name('product-reviews.destroy');
 
 // Coupon Routes
 Route::resource('/coupon', CouponController::class);

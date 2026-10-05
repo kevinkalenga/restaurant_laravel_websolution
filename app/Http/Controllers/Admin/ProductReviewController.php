@@ -13,7 +13,8 @@ class ProductReviewController extends Controller
     {
         if ($request->ajax()) {
 
-            // Récupère les reviews avec les informations de l'utilisateur et du produit associés
+
+            // Load reviews with their related user and product
             $reviews = ProductRating::with(['user', 'product'])
                 ->select('product_ratings.*');
 
@@ -21,9 +22,11 @@ class ProductReviewController extends Controller
                 ->addColumn('user', function ($review) {
                     return $review->user->name ?? 'N/A';
                 })
+
                 ->addColumn('product', function ($review) {
                     return $review->product->name ?? 'N/A';
                 })
+
                 ->addColumn('rating', function ($review) {
                     $stars = '';
 
@@ -35,14 +38,40 @@ class ProductReviewController extends Controller
 
                     return $stars;
                 })
+
+                ->addColumn('review', function ($review) {
+                    return $review->review;
+                })
+
                 ->addColumn('status', function ($review) {
                     return $review->status
-                        ? '<span class="badge badge-success">Active</span>'
-                        : '<span class="badge badge-danger">Inactive</span>';
+                        ? '<span class="badge badge-success">Approved</span>'
+                        : '<span class="badge badge-warning">Pending</span>';
                 })
+
                 ->addColumn('action', function ($review) {
-                    return '';
+
+                    $statusButton = $review->status
+                        ? '<button type="button"
+                                    class="btn btn-warning btn-sm toggle-review-status"
+                                    data-id="' . $review->id . '">
+                                Unapprove
+                            </button>'
+                        : '<button type="button"
+                                    class="btn btn-success btn-sm toggle-review-status"
+                                    data-id="' . $review->id . '">
+                                Approve
+                            </button>';
+
+                    $deleteButton = '<button type="button"
+                                            class="btn btn-danger btn-sm delete-review"
+                                            data-id="' . $review->id . '">
+                                        Delete
+                                    </button>';
+
+                    return $statusButton . ' ' . $deleteButton;
                 })
+
                 ->rawColumns(['rating', 'status', 'action'])
                 ->make(true);
         }
@@ -51,5 +80,41 @@ class ProductReviewController extends Controller
 
 
     }
+
+
+    public function toggleStatus($id)
+    {
+        $review = ProductRating::findOrFail($id);
+
+
+        $review->status = !$review->status;
+        $review->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => $review->status
+                ? 'Review approved successfully.'
+                : 'Review unapproved successfully.',
+        ]);
+
+
+    }
+
+    public function destroy($id)
+    {
+        $review = ProductRating::findOrFail($id);
+
+
+        $review->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Review deleted successfully.',
+        ]);
+
+
+    }
+
+
 
 }

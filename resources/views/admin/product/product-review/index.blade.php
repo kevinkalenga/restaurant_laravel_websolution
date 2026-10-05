@@ -89,6 +89,80 @@
             ]
         });
     });
+    
+    //Update
+     
+    $(document).on('click', '.toggle-review-status', function () {
+
+        let id = $(this).data('id');
+
+        $.ajax({
+            url: "{{ url('admin/product-reviews') }}/" + id + "/status",
+            type: "POST",
+
+            data: {
+                _token: "{{ csrf_token() }}",
+                _method: "PUT"
+            },
+
+            success: function (response) {
+
+                alert(response.message);
+
+                $('#reviews-table').DataTable().ajax.reload(null, false);
+            },
+
+            error: function (xhr) {
+
+                console.log('STATUS:', xhr.status);
+                console.log('RESPONSE:', xhr.responseText);
+
+                alert(xhr.responseText);
+            }
+        });
+
+    });
+
+    //Delete
+
+    $(document).on('click', '.delete-review', function () {
+
+        let id = $(this).data('id');
+
+        if (!confirm('Are you sure you want to delete this review?')) {
+            return;
+        }
+
+        $.ajax({
+            url: "{{ url('admin/product-reviews') }}/" + id,
+            type: "POST",
+
+            data: {
+                _token: "{{ csrf_token() }}",
+                _method: "DELETE"
+            },
+
+            success: function (response) {
+
+                alert(response.message);
+
+                $('#reviews-table').DataTable().ajax.reload(null, false);
+            },
+
+            error: function (xhr) {
+
+                console.log('STATUS:', xhr.status);
+                console.log('RESPONSE:', xhr.responseText);
+
+                alert(xhr.responseText);
+            }
+        });
+
+    });
+
+
+
+
 </script>
 
 @endpush
