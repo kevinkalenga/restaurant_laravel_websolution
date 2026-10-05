@@ -275,6 +275,19 @@ class MenuBuilderSeeder extends Seeder
                 'updated_at' => '2026-10-03 08:02:07',
                 'role_id' => 0,
             ],
+            [
+                'id' => 21,
+                'label' => 'Menu',
+                'link' => '/products',
+                'parent' => 0,
+                'sort' => 1,
+                'class' => null,
+                'menu' => 1,
+                'depth' => 0,
+                'created_at' => '2026-10-03 07:29:26',
+                'updated_at' => '2026-10-03 08:02:07',
+                'role_id' => 0,
+            ],
         ];
 
         DB::table('menu_items')->insert($menuItems);

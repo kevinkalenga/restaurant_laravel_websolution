@@ -59,6 +59,7 @@ $cat_url = config('menu.category.prefix');
                                                                         <select class="form-control" id="custom-menu-item-pages">
                                                                                 <option value="">Select</option>
                                                                                 <option value="Home" data-url="/">Home</option>
+                                                                                <option value="Menu" data-url="/products">Menu</option>
                                                                                 <option value="About" data-url="/about">About</option>
                                                                                 <option value="Blogs" data-url="/blogs">Blogs</option>
                                                                                 <option value="Chefs" data-url="/chef">Chefs</option>
