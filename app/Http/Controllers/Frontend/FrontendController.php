@@ -440,6 +440,17 @@ class FrontendController extends Controller
             );
     }
 
+    public function products()
+    {
+        $products = Product::where(['status' => 1])
+                    ->orderBy('id', 'DESC')
+                    ->withAvg('reviews', 'rating')
+                    ->withCount('reviews')
+                    ->paginate(4);  
+        $categories = Category::where('status', 1)->get();                                                                                
+        return view('frontend.pages.product', compact('products', 'categories'));
+    }
+
 
   
 }

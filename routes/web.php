@@ -46,6 +46,9 @@ Route::post('/subscribe-newsletter', [FrontendController::class, 'subscribeNewsl
 /** Custome Page Routes  **/ 
 Route::get('/page/{slug}', CustomPageController::class);
 
+/**  Product Page  **/ 
+Route::get('/products', [FrontendController::class, 'products'])->name('product.index');
+
 /** Terms and CConditions Routes  **/ 
 Route::get('/terms-and-condistions', [FrontendController::class, 'termsAndCondition'])->name('terms-and-conditions.index');
 
