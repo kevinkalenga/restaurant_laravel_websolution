@@ -59,7 +59,7 @@ Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name(
 Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
 
 /**  Product Review  **/ 
-Route::post('product-review', [FrontendController::class, 'productReviewStore'])->name('product-review.store');
+Route::post('/product-review', [FrontendController::class, 'productReviewStore'])->name('product-review.store');
 
 /** Add to cart Route  **/ 
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name("add-to-cart");

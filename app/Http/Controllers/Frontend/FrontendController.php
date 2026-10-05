@@ -25,6 +25,8 @@ use App\Models\Subscriber;
 use App\Models\PrivacyPolicy;
 use App\Models\TermsAndCondition;
 use Cart;
+use Auth;
+use App\Models\ProductRating;
 use Illuminate\Support\Facades\Mail;
 use App\Models\AppDownloadSection;
 use App\Mail\ContactMail;
@@ -372,11 +374,49 @@ class FrontendController extends Controller
        return view('frontend.pages.payment-methods');
     }
 
-    public function productReviewStore(Request $request)
-    {
-      dd($request->all());
-    }
+    
 
+
+    public function productReviewStore(Request $request)
+   {
+            $request->validate([
+                'rating' => ['required', 'integer', 'min:1', 'max:5'],
+                'review' => ['required', 'max:500'],
+                'product_id' => ['required', 'integer', 'exists:products,id'],
+            ]);
+
+            $user = Auth::user();
+
+            // Vérifie que l'utilisateur a acheté ce produit
+            // dans une commande livrée
+            $order = $user->orders()
+                ->where('order_status', 'delivered')
+                ->whereHas('orderItems', function ($query) use ($request) {
+                    $query->where('product_id', $request->product_id);
+                })
+                ->latest()
+                ->first();
+
+            if (!$order) {
+                throw ValidationException::withMessages([
+                    'product_id' => 'Buy the product in order to submit the review please!'
+                ]);
+            }
+
+            ProductRating::create([
+                'user_id' => $user->id,
+                'product_id' => $request->product_id,
+                'order_id' => $order->id,
+                'rating' => $request->rating,
+                'review' => $request->review,
+                'status' => 0,
+            ]);
+
+            return redirect()->back()->with(
+                'success',
+                'Review submitted successfully!'
+            );
+    }
 
 
   
