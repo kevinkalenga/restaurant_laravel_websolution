@@ -69,7 +69,10 @@ class ProductReviewController extends Controller
                                         Delete
                                     </button>';
 
-                    return $statusButton . ' ' . $deleteButton;
+                    return '<div class="d-flex align-items-center" style="gap: 5px;">
+                                ' . $statusButton . '
+                                ' . $deleteButton . '
+                            </div>';
                 })
 
                 ->rawColumns(['rating', 'status', 'action'])

@@ -1557,7 +1557,7 @@ button {
     font-family: var(--cursiveFont);
     position: absolute;
     background: var(--colorWhite);
-    padding: 8px 15px;
+    padding: 3px 8px;
     box-shadow: var(--boxShadow);
     border-radius: 30px;
     z-index: 9;
