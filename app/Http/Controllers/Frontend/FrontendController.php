@@ -403,6 +403,19 @@ class FrontendController extends Controller
                 ]);
             }
 
+            $alreadyReviewed = ProductRating::where('user_id', $user->id)
+                                ->where('product_id', $request->product_id)
+                                ->exists();
+
+            if ($alreadyReviewed) {
+                throw ValidationException::withMessages([
+                    'product_id' => 'You have already reviewed this product.'
+                ]);
+            }
+            
+            
+            
+            
             ProductRating::create([
                 'user_id' => $user->id,
                 'product_id' => $request->product_id,
