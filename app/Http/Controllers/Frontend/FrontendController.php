@@ -440,13 +440,25 @@ class FrontendController extends Controller
             );
     }
 
-    public function products()
+    public function products(Request $request)
     {
-        $products = Product::where(['status' => 1])
-                    ->orderBy('id', 'DESC')
-                    ->withAvg('reviews', 'rating')
-                    ->withCount('reviews')
-                    ->paginate(4);  
+    
+        $products = Product::where(['status' => 1])->orderBy('id', 'DESC');
+
+        if($request->filled('search')) {
+            $products->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('long_description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Search category
+        if ($request->filled('category')) {
+            $products->where('category_id', $request->category);
+        }
+
+        $products = $products->withAvg('reviews', 'rating')->withCount('reviews')->paginate(4);  
+            
         $categories = Category::where('status', 1)->get();                                                                                
         return view('frontend.pages.product', compact('products', 'categories'));
     }

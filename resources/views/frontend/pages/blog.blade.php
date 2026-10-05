@@ -69,7 +69,7 @@
                     </div>
                 @endforeach
                 @if($blogs->isEmpty()) 
-                    <h5 class="text-center text-danger">No Blog Found</h5>
+                    <h5 class="text-center text-danger mt-3">No Blog Found</h5>
                 @endif
             </div>
             @if($blogs->hasPages())

@@ -27,10 +27,10 @@
     ==============================-->
     <section class="fp__search_menu mt_120 xs_mt_90 mb_100 xs_mb_70">
         <div class="container">
-            <form class="fp__search_menu_form">
+            <form class="fp__search_menu_form" method="GET" action="{{route('product.index')}}">
                 <div class="row">
                     <div class="col-xl-6 col-md-5">
-                        <input type="text" placeholder="Search...">
+                        <input type="text" placeholder="Search..." name="search" value="{{ @request()->search }}">
                     </div>
                     <div class="col-xl-4 col-md-4">
                         <select class="nice-select" name="category">
@@ -84,6 +84,9 @@
                       </div>
                     </div>
                 @endforeach
+                @if($products->isEmpty()) 
+                    <h5 class="text-center text-danger mt-5">No Product Found</h5>
+                @endif
 
             </div>
             @if($products->hasPages())
