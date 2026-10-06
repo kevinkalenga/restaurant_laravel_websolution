@@ -9,7 +9,8 @@
                                  </div>
                                  <div class="form-group">
                                     <label for="">Default Currency</label>
-                                    <select name="site_default_currency" id="" class="select2 form-control">
+                                    {{--inside the class => select2--}}
+                                    <select name="site_default_currency" id="" class="form-control">
                                         <option value="">Select</option>
                                         @foreach(config('currency.currency_list') as $currency_country) 
                                             
@@ -22,6 +23,7 @@
                                     <div class="col-md-6">
                                       <div class="form-group">
                                         <label for="">Currency Icon</label>
+                                        {{--inside the class => select2--}}
                                         <input type="text" name="site_currency_icon" class="form-control" value="{{config('settings.site_currency_icon')}}">
                                       </div>
                                     
@@ -29,7 +31,8 @@
                                     <div class="col-md-6">
                                       <div class="form-group">
                                         <label for="">Currency Icon Position</label>
-                                        <select name="site_currency_icon_position" id="" class="select2 form-control">
+                                         {{--inside the class => select2--}}
+                                        <select name="site_currency_icon_position" id="" class="form-control">
                                            <option @selected(config('settings.site_currency_icon_position') === 'right') value="right">Right</option>
                                            <option @selected(config('settings.site_currency_icon_position') === 'left') value="left">Left</option>
                                         </select>
