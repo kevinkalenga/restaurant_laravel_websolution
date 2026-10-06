@@ -8,6 +8,7 @@ use App\Models\DeliveryArea;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Reservation;
+use App\Models\Wishlist;
 use App\Models\ProductRating;
 use Auth;
 
@@ -21,7 +22,8 @@ class DashboardController extends Controller
       $orders = Order::where('user_id', Auth()->user()->id)->get();
       $reservations = Reservation::where('user_id', auth()->id())->get();
       $reviews = ProductRating::where('user_id', auth()->user()->id)->get();
-      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses", "orders", "reservations", "reviews"));
+      $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
+      return view('frontend.dashboard.index', compact("deliveryAreas", "userAddresses", "orders", "reservations", "reviews", "wishlist"));
    }
 
    public function createAddress(Request $request)
