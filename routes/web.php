@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\CustomPageController;
+use App\Http\Controllers\Frontend\WishlistController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Models\Order;
 
@@ -97,12 +98,7 @@ Route::group(['middleware' => 'auth'], function(){
   // stripe routes
     Route::get('/stripe/payment', [PaymentController::class, 'payWithStripe'])->name('stripe.payment');
     Route::get('/stripe/success', [PaymentController::class, 'stripeSuccess'])->name('stripe.success');
-    Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
-
-
- 
-
-   
+    Route::get('/stripe/cancel', [PaymentController::class, 'stripeCancel'])->name('stripe.cancel'); 
 
     // Route::get('test', function(){
 
@@ -115,6 +111,10 @@ Route::group(['middleware' => 'auth'], function(){
     // });
 
 });
+
+
+  // wishlist routes
+ Route::get('wishlist/{productId}', [WishlistController::class, 'store'])->name('wishlist.store');
 
 
  /** Payment Methods Page **/

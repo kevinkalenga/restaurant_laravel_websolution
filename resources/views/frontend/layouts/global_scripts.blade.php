@@ -39,6 +39,65 @@
       })
    }
 
+   
+   
+     /** Add product to the wishlist **/ 
+
+     function addToWishlist(productId) {
+         $.ajax({
+            method: 'GET',
+            url: '{{ route("wishlist.store", ":productId") }}'.replace(':productId', productId),
+
+            beforeSend: function() {
+                  showLoader()
+            },
+
+            success: function(response) {
+                  if (response.status === 'success') {
+                     iziToast.success({
+                        title: 'Success',
+                        message: response.message || 'Product added to wishlist',
+                        position: 'topRight'
+                     });
+                  } else {
+                     iziToast.error({
+                        title: 'Error',
+                        message: response.message || 'Unable to add the product to wishlist',
+                        position: 'topRight'
+                     });
+                  }
+            },
+
+            error: function(xhr, status, error) {
+                  hideLoader();
+                  let message = 'Une erreur est survenue.';
+
+                  if (xhr.responseJSON && xhr.responseJSON.message) {
+                     message = xhr.responseJSON.message;
+                  }
+
+                  iziToast.error({
+                     title: 'Error',
+                     message: message,
+                     position: 'topRight'
+                  });
+
+                  console.error('Wishlist error:', error);
+                  console.error('Response:', xhr.responseText);
+            },
+
+            complete: function() {
+                  hideLoader()
+            }
+         });
+      }
+   
+   
+   
+   
+   
+   
+   
    /** Update sidebar cart **/ 
 
    function updateSidebarCart(callback = null) {
