@@ -2,11 +2,33 @@
 
 @section('content')
 
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="fp__breadcrumb" style="background: url({{asset(config('settings.breadcrumb'))}});">
+        <div class="fp__breadcrumb_overlay">
+            <div class="container">
+                <div class="fp__breadcrumb_text">
+                    <h1>Payment Methods</h1>
+                    <ul>
+                        <li><a href="{{url('/')}}">home</a></li>
+                        <li><a href="javascript:;">payment methods</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+
 <section class="fp__payment_page mt_100 xs_mt_70 mb_100 xs_mb_70">
-    <div class="container" style="padding-top: 120px;">
+    <div class="container" style="padding-top: 20px;">
 
         <div class="text-center mb_50">
-            <h2>Payment Methods</h2>
+            <h2 class="mb-3">Payment Methods</h2>
             <p>We accept the following payment methods:</p>
         </div>
 

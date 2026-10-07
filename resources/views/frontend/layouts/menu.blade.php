@@ -12,7 +12,7 @@
     <nav class="navbar navbar-expand-lg main_menu">
         <div class="container">
             <a class="navbar-brand" href="{{route('home')}}">
-                <img src="{{asset('frontend/images/logo_vite_gourmand.png')}}" alt="vite and gourmand" class="img-fluid"> 
+                <img src="{{asset(config('settings.logo'))}}" alt="vite and gourmand" class="img-fluid"> 
                 <!-- <img src="{{asset('frontend/images/logo.png')}}" alt="FoodPark" class="img-fluid">  -->
                
             </a>
