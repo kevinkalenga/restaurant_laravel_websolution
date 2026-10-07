@@ -7,7 +7,7 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="image-upload">Logo</label>
-                                        <div id="image-preview" class="image-preview" 
+                                        <div id="image-preview" class="image-preview logo" 
                                           style="border: 2px dashed #ccc; width: 200px; height: 200px; display: block; overflow: hidden;">
                                           <label for="image-upload" id="image-label" style="cursor:pointer; display:block; text-align:center; line-height:200px;">
                                               Choose File
@@ -20,7 +20,7 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="image-upload">Footer Logo</label>
-                                        <div id="image-preview-2" class="image-preview" 
+                                        <div id="image-preview-2" class="image-preview footer_logo" 
                                           style="border: 2px dashed #ccc; width: 200px; height: 200px; display: block; overflow: hidden;">
                                           <label for="image-upload-2" id="image-label-2" style="cursor:pointer; display:block; text-align:center; line-height:200px;">
                                               Choose File
@@ -33,7 +33,7 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="image-upload">Favicon</label>
-                                        <div id="image-preview-3" class="image-preview" 
+                                        <div id="image-preview-3" class="image-preview favicon" 
                                           style="border: 2px dashed #ccc; width: 200px; height: 200px; display: block; overflow: hidden;">
                                           <label for="image-upload-3" id="image-label-3" style="cursor:pointer; display:block; text-align:center; line-height:200px;">
                                               Choose File
@@ -46,7 +46,7 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="image-upload">Breadcrumb</label>
-                                        <div id="image-preview-4" class="image-preview" 
+                                        <div id="image-preview-4" class="image-preview breadcrumb" 
                                           style="border: 2px dashed #ccc; width: 200px; height: 200px; display: block; overflow: hidden;">
                                           <label for="image-upload-4" id="image-label-4" style="cursor:pointer; display:block; text-align:center; line-height:200px;">
                                               Choose File
@@ -66,6 +66,36 @@
 
 @push('scripts')
 <script>
+    
+      $(document).ready(function(){
+        $('.logo').css({
+          'background-image': 'url({{asset(config("settings.logo"))}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
+      $(document).ready(function(){
+        $('.footer_logo').css({
+          'background-image': 'url({{asset(config("settings.footer_logo"))}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
+      $(document).ready(function(){
+        $('.favicon').css({
+          'background-image': 'url({{asset(config("settings.favicon"))}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
+      $(document).ready(function(){
+        $('.breadcrumb').css({
+          'background-image': 'url({{asset(config("settings.breadcrumb"))}})',
+          'background-size': 'cover',
+          'background-position': 'center center'
+        })
+     })
+    
     document.addEventListener('DOMContentLoaded', function () {
 
         function setupImageUpload(inputId, previewId, labelId) {
