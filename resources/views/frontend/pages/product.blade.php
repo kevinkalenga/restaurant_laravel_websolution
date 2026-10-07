@@ -8,10 +8,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>search result</h1>
+                    <h1>Menus Of The Day</h1>
                     <ul>
                         <li><a href="{{url('/')}}">home</a></li>
-                        <li><a href="javascript:;">search result</a></li>
+                        <li><a href="javascript:;">Delicious</a></li>
                     </ul>
                 </div>
             </div>

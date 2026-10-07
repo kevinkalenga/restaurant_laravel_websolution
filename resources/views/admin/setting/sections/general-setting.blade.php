@@ -7,6 +7,21 @@
                                     <label for="">Site Name</label>
                                     <input type="text" class="form-control" name="site_name" value="{{config('settings.site_name')}}">
                                  </div>
+                                 <div class="row">
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Site Email</label>
+                                            <input type="text" class="form-control" name="site_email" value="{{config('settings.site_email')}}">
+                                        </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Site Phone</label>
+                                            <input type="text" class="form-control" name="site_phone" value="{{config('settings.site_phone')}}">
+                                        </div>
+                                     </div>
+                                 </div>
+                                 
                                  <div class="form-group">
                                     <label for="">Default Currency</label>
                                     {{--inside the class => select2--}}

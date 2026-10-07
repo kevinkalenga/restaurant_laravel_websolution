@@ -25,7 +25,7 @@
 
 
 <section class="fp__payment_page mt_100 xs_mt_70 mb_100 xs_mb_70">
-    <div class="container" style="padding-top: 20px;">
+    <div class="container">
 
         <div class="text-center mb_50">
             <h2 class="mb-3">Payment Methods</h2>
