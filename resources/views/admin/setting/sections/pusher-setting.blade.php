@@ -16,7 +16,7 @@
                                     <input type="text" class="form-control" name="pusher_secret" value="{{config('settings.pusher_secret')}}">
                                  </div>
                                  <div class="form-group">
-                                    <label for="">Puser Cluster</label>
+                                    <label for="">Pusher Cluster</label>
                                     <input type="text" class="form-control" name="pusher_cluster" value="{{config('settings.pusher_cluster')}}">
                                  </div>
                                 
