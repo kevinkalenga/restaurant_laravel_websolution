@@ -176,19 +176,29 @@
                         <h6>total cart</h6>
                         <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
                         <p>delivery: <span id="delivery_fee">$00.00</span></p>
-                        @if(session()->has('coupon'))
+                        <p>
+                            discount:
+                            <span>
+                                {{ currencyPosition((session('coupon.discount', 0)) + $ecfDiscount) }}
+                            </span>
+                        </p>
+                        <!-- @if(session()->has('coupon'))
                            <p>discount: <span>{{currencyPosition(session()->get('coupon')['discount'])}}</span></p>
                         @else
                            <p>discount: <span>{{currencyPosition(0)}}</span></p>
-                        @endif
+                        @endif -->
                        
                         <p class="total">
-                            <span>total:</span> 
+                            <span>total:</span>
+                            <span id="final_total">
+                                {{ currencyPosition(cartTotal() - session('coupon.discount', 0) - $ecfDiscount) }}
+                            </span>
+                            <!-- <span>total:</span> 
                              @if(session()->has('coupon'))
                                 <span id="final_total">{{ currencyPosition(session()->get('coupon')['finalTotal']) }}</span>
                             @else
                                 <span>{{ currencyPosition(cartTotal()) }}</span>
-                            @endif
+                            @endif -->
                         </p>
                         
                         

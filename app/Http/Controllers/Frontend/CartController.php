@@ -16,8 +16,16 @@ class CartController extends Controller
         // 1. Récupérer le produit avec relations
         $product = Product::with(['productSizes', 'productOptions'])
             ->findOrFail($request->product_id);
-        if($product->quantity < $request->quantity) {
-            throw ValidationException::withMessages(['Quantity is not available!']);
+        if ($product->quantity < $request->quantity) {
+            throw ValidationException::withMessages([
+                'quantity' => 'Quantity is not available!'
+            ]);
+        }
+
+        if ($request->quantity < $product->minimum_persons) {
+            throw ValidationException::withMessages([
+                'quantity' => "This menu requires at least {$product->minimum_persons} people."
+            ]);
         }
       try{
         
@@ -146,6 +154,18 @@ class CartController extends Controller
         if($product->quantity < $request->qty) {
            return response(['status' => 'error', 'message' => 'Quantity is not available!', 'qty' => $cartItem->qty]);
         }
+        
+        // Vérification du minimum de personnes
+        if ($request->qty < $product->minimum_persons) {
+            return response([
+                'status' => 'error',
+                'message' => "This menu requires at least {$product->minimum_persons} people.",
+                'qty' => $cartItem->qty
+            ]);
+        }
+        
+        
+        
         
         try {
             $cart = Cart::update($request->rowId, $request->qty);

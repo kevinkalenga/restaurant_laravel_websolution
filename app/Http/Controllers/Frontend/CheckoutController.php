@@ -7,14 +7,43 @@ use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Models\DeliveryArea;
 use Auth;
+use Cart;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
-        $addresses = Address::where('user_id', Auth()->user()->id)->get();
-         $deliveryAreas = DeliveryArea::where('status', 1)->get();
-        return view('frontend.pages.checkout', compact('addresses', 'deliveryAreas'));
+        // $addresses = Address::where('user_id', Auth()->user()->id)->get();
+        //  $deliveryAreas = DeliveryArea::where('status', 1)->get();
+        // return view('frontend.pages.checkout', compact('addresses', 'deliveryAreas'));
+
+         $addresses = Address::where('user_id', Auth()->user()->id)->get();
+        $deliveryAreas = DeliveryArea::where('status', 1)->get();
+
+        $ecfDiscount = 0;
+
+        foreach (Cart::content() as $item) {
+            $product = \App\Models\Product::find($item->id);
+
+            if ($product && $item->qty >= ($product->minimum_persons + 5)) {
+                $productTotal = $item->price * $item->qty;
+                $ecfDiscount += $productTotal * 0.10;
+            }
+        }
+
+        $ecfDiscount = round($ecfDiscount, 2);
+
+        session()->put('ecf_discount', $ecfDiscount);
+
+        
+        
+        
+        
+        return view('frontend.pages.checkout', compact(
+            'addresses',
+            'deliveryAreas',
+            'ecfDiscount'
+        ));
     }
 
     public function calculationDeliveryCharge($id)
@@ -24,9 +53,18 @@ class CheckoutController extends Controller
                $address = Address::findOrFail($id);
                $deliveryFee = $address->deliveryArea?->delivery_fee ?? 0;
                 //dd($deliveryFee);
+                // $subtotal = cartTotal();
+
+                // $discount = session('coupon.discount', 0);
+
+                // $total = round($subtotal - $discount + $deliveryFee, 2);
+
                 $subtotal = cartTotal();
 
-                $discount = session('coupon.discount', 0);
+                $couponDiscount = session('coupon.discount', 0);
+                $ecfDiscount = session('ecf_discount', 0);
+
+                $discount = $couponDiscount + $ecfDiscount;
 
                 $total = round($subtotal - $discount + $deliveryFee, 2);
 

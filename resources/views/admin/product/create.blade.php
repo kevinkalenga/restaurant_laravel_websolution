@@ -77,6 +77,22 @@
                     <input type="text" name="quantity" class="form-control" value="{{ old('quantity') }}">
                 </div>
 
+                <div class="form-group">
+                    <label for="minimum_persons">Minimum de personnes</label>
+                    <input
+                        type="number"
+                        name="minimum_persons"
+                        id="minimum_persons"
+                        class="form-control"
+                        min="1"
+                        value="{{ old('minimum_persons', 1) }}"
+                        required
+                    >
+                </div>
+                
+                
+                
+                
                 <!-- SKU -->
                 <div class="form-group">
                     <label for="sku">SKU</label>

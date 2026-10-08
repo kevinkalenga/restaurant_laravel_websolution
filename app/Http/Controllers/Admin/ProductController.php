@@ -93,6 +93,7 @@ class ProductController extends Controller
         'price' => ['required', 'numeric', 'min:0'],
         'offer_price' => ['nullable', 'numeric', 'min:0'],
         'quantity' => ['required', 'numeric'],
+        'minimum_persons' => ['required', 'integer', 'min:1'],
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
@@ -115,6 +116,7 @@ class ProductController extends Controller
       $product->price = $request->price;
       $product->offer_price = $request->offer_price ?? 0;
       $product->quantity = $request->quantity;
+      $product->minimum_persons = $request->minimum_persons;
       $product->sku = $request->sku;
       $product->seo_title = $request->seo_title;
       $product->seo_description = $request->seo_description;
@@ -160,6 +162,7 @@ class ProductController extends Controller
         'price' => ['required', 'numeric', 'min:0'],
         'offer_price' => ['nullable', 'numeric', 'min:0'],
         'quantity' => ['required', 'numeric'],
+        'minimum_persons' => ['required', 'integer', 'min:1'],
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
@@ -182,6 +185,7 @@ class ProductController extends Controller
     $product->price = $request->price;
     $product->offer_price = $request->offer_price ?? 0;
     $product->quantity = $request->quantity;
+    $product->minimum_persons = $request->minimum_persons;
     $product->sku = $request->sku;
     $product->seo_title = $request->seo_title;
     $product->seo_description = $request->seo_description;

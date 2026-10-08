@@ -28,9 +28,15 @@ class PaymentController extends Controller
     
         $subTotal = cartTotal();
         $delivery = session()->get('delivery_fee', 0);
-        $discount = session()->get('coupon')['discount'] ?? 0;
+        $couponDiscount = session()->get('coupon.discount', 0);
+        $ecfDiscount = session()->get('ecf_discount', 0);
+
+        $discount = $couponDiscount + $ecfDiscount;
 
         $finalTotal = ($subTotal + $delivery) - $discount;
+        // $discount = session()->get('coupon')['discount'] ?? 0;
+
+        // $finalTotal = ($subTotal + $delivery) - $discount;
 
         return view('frontend.pages.payment', compact(
             'subTotal',
