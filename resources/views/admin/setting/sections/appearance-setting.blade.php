@@ -1,5 +1,5 @@
 <div class="tab-pane fade show" id="appearance-setting" role="tabpanel" aria-labelledby="home-tab4">
-                            <form action="{{route('admin.logo-setting.update')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('admin.appearance-setting.update')}}" method="POST">
                               @csrf 
                               @method('PUT')
                               <div class="card-body border">
@@ -7,7 +7,7 @@
                                   <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Simple</label>
-                                        <input type="text" class="form-control colorpickerinput">
+                                        <input type="text" class="form-control colorpickerinput" name="site_color" value="{{config('settings.site_color')}}">
                                     </div>
                                   </div>
                                  

@@ -27,6 +27,13 @@
     <link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/css/custom.css')}}">
 
+    <style>
+       :root {
+         --colorPrimary: {{config('settings.site_color')}};
+   
+        }
+    </style>
+
     <script>
         window.pusherConfig = {
             key: @json(\App\Models\Setting::where('key', 'pusher_key')->value('value')),

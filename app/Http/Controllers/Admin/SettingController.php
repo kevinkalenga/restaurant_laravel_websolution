@@ -154,6 +154,26 @@ class SettingController extends Controller
         );
     }
 
+    public function UpdateAppearanceSetting(Request $request)
+    {
+        $data = $request->validate([
+            'site_color' => ['required']
+        ]);
+
+         foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        $settingsService = app(SettingsService::class);
+        $settingsService->clearCachedSettings();
+        Cache::forget('mail_settings');
+
+        return back()->with('success', 'Settings updated successfully.');
+    }
+
 
 
 }
