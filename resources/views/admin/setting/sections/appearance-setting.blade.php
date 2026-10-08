@@ -1,4 +1,4 @@
-<div class="tab-pane fade show" id="appearance-setting" role="tabpanel" aria-labelledby="home-tab4">
+<div class="tab-pane fade" id="appearance-setting" role="tabpanel" aria-labelledby="appearance-tab">
                             <form action="{{route('admin.appearance-setting.update')}}" method="POST">
                               @csrf 
                               @method('PUT')

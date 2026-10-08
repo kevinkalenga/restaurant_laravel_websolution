@@ -174,6 +174,30 @@ class SettingController extends Controller
         return back()->with('success', 'Settings updated successfully.');
     }
 
+    public function UpdateSeoSetting(Request $request)
+    {
+       
+        $data = $request->validate([
+            'seo_title' => ['nullable', 'string', 'max:255'],
+            'seo_description' => ['nullable', 'string'],
+            'seo_keyword' => ['nullable', 'string'],
+        ]);
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+
+             
+        }
+
+        $settingsService = app(SettingsService::class);
+        $settingsService->clearCachedSettings();
+
+        return back()->with('success', 'SEO settings updated successfully.');
+    }
+
 
 
 }

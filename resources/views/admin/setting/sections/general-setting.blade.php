@@ -1,4 +1,4 @@
-<div class="tab-pane fade show" id="general-setting" role="tabpanel" aria-labelledby="home-tab4">
+<div class="tab-pane fade show active" id="general-setting" role="tabpanel" aria-labelledby="general-tab">
                             <form action="{{route('admin.general-setting.update')}}" method="POST">
                               @csrf 
                               @method('PUT')

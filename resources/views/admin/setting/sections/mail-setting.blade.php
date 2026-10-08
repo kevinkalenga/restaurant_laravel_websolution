@@ -1,4 +1,4 @@
-<div class="tab-pane fade show" id="mail-setting" role="tabpanel" aria-labelledby="home-tab4">
+<div class="tab-pane fade" id="mail-setting" role="tabpanel" aria-labelledby="mail-tab">
                             <form action="{{route('admin.mail-setting.update')}}" method="POST">
                               @csrf 
                               @method('PUT')

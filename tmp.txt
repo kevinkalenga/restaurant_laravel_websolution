@@ -1,158 +1,20 @@
-<script>
-    let currentOrderId = null;
-
-    // Ouvrir le modal
-    $(document).on('click', '.edit-order-status', function () {
-
-        let id = $(this).data('id');
-
-        currentOrderId = id;
-
-        console.log('ORDER ID =', id);
-
-        let url = '{{ route("admin.orders.status", ":id") }}'
-            .replace(':id', id);
-
-        console.log('GET URL =', url);
-
-        $.ajax({
-            method: 'GET',
-            url: url,
-
-            success: function (response) {
-
-                console.log('RESPONSE =', response);
-
-                $('.payment_status').val(response.payment_status);
-                $('.order_status').val(response.order_status);
-
-                $('#order_model').modal('show');
-            },
-
-            error: function (xhr) {
-
-                console.log('STATUS =', xhr.status);
-                console.log('ERROR =', xhr.responseText);
-
-                alert(
-                    'Erreur HTTP ' + xhr.status +
-                    '\n\n' + xhr.responseText
-                );
-            }
-        });
-    });
-
-
-    // Sauvegarder les statuts
-    $(document).on('click', '#save-order-status', function () {
-
-        if (!currentOrderId) {
-            alert('ID de commande introuvable.');
-            return;
-        }
-
-        let paymentStatus = $('.payment_status').val();
-        let orderStatus = $('.order_status').val();
-
-        let url = '{{ route("admin.orders.status", ":id") }}'
-            .replace(':id', currentOrderId);
-
-        console.log('PUT URL =', url);
-        console.log('Payment Status =', paymentStatus);
-        console.log('Order Status =', orderStatus);
-
-        let button = $(this);
-
-        button.prop('disabled', true);
-        button.text('Saving...');
-
-        $.ajax({
-            method: 'PUT',
-            url: url,
-
-            data: {
-                _token: '{{ csrf_token() }}',
-                payment_status: paymentStatus,
-                order_status: orderStatus
-            },
-
-            success: function (response) {
-
-                console.log('UPDATE RESPONSE =', response);
-
-                $('#order_model').modal('hide');
-
-                // Recharge le DataTable
-                $('#products-table')
-                    .DataTable()
-                    .ajax.reload(null, false);
-
-                alert(response.message || 'Order status updated successfully.');
-            },
-
-            error: function (xhr) {
-
-                console.log('UPDATE ERROR STATUS =', xhr.status);
-                console.log('UPDATE ERROR =', xhr.responseText);
-
-                alert(
-                    'Erreur lors de la mise à jour.\n\n' +
-                    'HTTP ' + xhr.status +
-                    '\n' + xhr.responseText
-                );
-            },
-
-            complete: function () {
-
-                button.prop('disabled', false);
-                button.text('Save changes');
-            }
-        });
-    });
-</script>
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-<form action="" method="POST" id="order-status-form">
-                                        @csrf
-                                       @method('PUT')
-
-                                        <div class="form-group">
-                                            <label><strong>Payment Status</strong></label>
-
-                                            <select name="payment_status" class="form-control payment_status">
-                                                <option value="pending">Pending</option>
-                                                <option value="completed">Completed</option>
-                                                
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Order Status</strong></label>
-
-                                            <select name="order_status" class="form-control order_status">
-                                                <option value="pending">
-                                                    Pending
-                                                </option>
-
-                                                <option value="in_process">
-                                                    In Process
-                                                </option>
-
-                                                <option value="delivered">
-                                                    Delivered
-                                                </option>
-
-                                                <option value="declined">
-                                                    Declined
-                                                </option>
-                                            </select>
-                                        </div>
-
-                                        
-                                    </form>
-
-      
-    
-
-
+ <ul class="nav nav-pills flex-column" id="myTab4" role="tablist">
+                          <li class="nav-item">
+                            <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general-setting" role="tab" aria-controls="home" aria-selected="true">General Settings</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="logo-tab" data-toggle="tab" href="#logo-setting" role="tab" aria-controls="home" aria-selected="true">Logo Settings</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="appearance-tab" data-toggle="tab" href="#appearance-setting" role="tab" aria-controls="home" aria-selected="true">Appearance Settings</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pusher-tab" data-toggle="tab" href="#pusher-setting" role="tab" aria-controls="profile" aria-selected="false">Pusher Setting</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="mail-tab" data-toggle="tab" href="#mail-setting" role="tab" aria-controls="contact" aria-selected="false">Mail Settings</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo-setting" role="tab" aria-controls="contact" aria-selected="false">Seo Settings</a>
+                          </li>
+                        </ul>

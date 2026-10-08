@@ -17,31 +17,96 @@
              <div class="row">
                       <div class="col-12 col-sm-12 col-md-2">
                         <ul class="nav nav-pills flex-column" id="myTab4" role="tablist">
-                          <li class="nav-item">
-                            <a class="nav-link active" id="home-tab4" data-toggle="tab" href="#general-setting" role="tab" aria-controls="home" aria-selected="true">General Settings</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" id="home-tab4" data-toggle="tab" href="#logo-setting" role="tab" aria-controls="home" aria-selected="true">Logo Settings</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" id="home-tab4" data-toggle="tab" href="#appearance-setting" role="tab" aria-controls="home" aria-selected="true">Appearance Settings</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" id="profile-tab4" data-toggle="tab" href="#pusher-setting" role="tab" aria-controls="profile" aria-selected="false">Pusher Setting</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" id="" data-toggle="tab" href="#mail-setting" role="tab" aria-controls="contact" aria-selected="false">Mail Settings</a>
-                          </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active"
+                                  id="general-tab"
+                                  data-toggle="tab"
+                                  href="#general-setting"
+                                  role="tab"
+                                  aria-controls="general-setting"
+                                  aria-selected="true">
+                                    General Settings
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                  id="logo-tab"
+                                  data-toggle="tab"
+                                  href="#logo-setting"
+                                  role="tab"
+                                  aria-controls="logo-setting"
+                                  aria-selected="false">
+                                    Logo Settings
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                  id="appearance-tab"
+                                  data-toggle="tab"
+                                  href="#appearance-setting"
+                                  role="tab"
+                                  aria-controls="appearance-setting"
+                                  aria-selected="false">
+                                    Appearance Settings
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                  id="pusher-tab"
+                                  data-toggle="tab"
+                                  href="#pusher-setting"
+                                  role="tab"
+                                  aria-controls="pusher-setting"
+                                  aria-selected="false">
+                                    Pusher Setting
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                  id="mail-tab"
+                                  data-toggle="tab"
+                                  href="#mail-setting"
+                                  role="tab"
+                                  aria-controls="mail-setting"
+                                  aria-selected="false">
+                                    Mail Settings
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                  id="seo-tab"
+                                  data-toggle="tab"
+                                  href="#seo-setting"
+                                  role="tab"
+                                  aria-controls="seo-setting"
+                                  aria-selected="false">
+                                    Seo Settings
+                                </a>
+                            </li>
+
                         </ul>
                       </div>
                       <div class="col-12 col-sm-12 col-md-10">
                         <div class="tab-content no-padding" id="myTab2Content">
+                            <!-- @include('admin.setting.sections.general-setting')
+                            @include('admin.setting.sections.logo-setting')
+                            @include('admin.setting.sections.appearance-setting')
+                            @include('admin.setting.sections.pusher-setting')
+                            @include('admin.setting.sections.mail-setting')
+                            @include('admin.setting.sections.seo-setting') -->
+
                             @include('admin.setting.sections.general-setting')
                             @include('admin.setting.sections.logo-setting')
                             @include('admin.setting.sections.appearance-setting')
                             @include('admin.setting.sections.pusher-setting')
                             @include('admin.setting.sections.mail-setting')
-                          
+                            @include('admin.setting.sections.seo-setting')
                           
                         </div>
                       </div>

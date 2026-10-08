@@ -1,4 +1,4 @@
-<div class="tab-pane fade show" id="logo-setting" role="tabpanel" aria-labelledby="home-tab4">
+<div class="tab-pane fade" id="logo-setting" role="tabpanel" aria-labelledby="logo-tab">
                             <form action="{{route('admin.logo-setting.update')}}" method="POST" enctype="multipart/form-data">
                               @csrf 
                               @method('PUT')
