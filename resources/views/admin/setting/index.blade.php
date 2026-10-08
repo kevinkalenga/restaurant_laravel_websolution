@@ -24,6 +24,9 @@
                             <a class="nav-link" id="home-tab4" data-toggle="tab" href="#logo-setting" role="tab" aria-controls="home" aria-selected="true">Logo Settings</a>
                           </li>
                           <li class="nav-item">
+                            <a class="nav-link" id="home-tab4" data-toggle="tab" href="#appearance-setting" role="tab" aria-controls="home" aria-selected="true">Appearance Settings</a>
+                          </li>
+                          <li class="nav-item">
                             <a class="nav-link" id="profile-tab4" data-toggle="tab" href="#pusher-setting" role="tab" aria-controls="profile" aria-selected="false">Pusher Setting</a>
                           </li>
                           <li class="nav-item">
@@ -35,6 +38,7 @@
                         <div class="tab-content no-padding" id="myTab2Content">
                             @include('admin.setting.sections.general-setting')
                             @include('admin.setting.sections.logo-setting')
+                            @include('admin.setting.sections.appearance-setting')
                             @include('admin.setting.sections.pusher-setting')
                             @include('admin.setting.sections.mail-setting')
                           

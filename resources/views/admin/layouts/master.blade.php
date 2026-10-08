@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
     <link rel="stylesheet" href="{{asset('admin/assets/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css')}}">
+     <link rel="stylesheet" href="{{asset('admin/assets/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}}">
  
 
   <!-- Template CSS -->
@@ -98,6 +99,7 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="{{asset('admin/assets/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+ <script src="{{asset('admin/assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}}"></script>
 
 
 @include('partials.toast')
