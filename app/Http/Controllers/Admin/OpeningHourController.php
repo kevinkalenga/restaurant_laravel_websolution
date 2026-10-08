@@ -42,19 +42,13 @@ class OpeningHourController extends Controller
 
                     ->addColumn('action', function ($openingHour) {
 
-                        return '
-                            <button type="button"
-                                    class="btn btn-sm btn-warning edit-opening-hour"
-                                    data-id="' . $openingHour->id . '">
-                                <i class="fas fa-edit"></i>
-                            </button>
-
-                            <button type="button"
-                                    class="btn btn-sm btn-danger delete-opening-hour"
-                                    data-id="' . $openingHour->id . '">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        ';
+                           return '
+                                <button type="button"
+                                        class="btn btn-sm btn-warning edit-opening-hour"
+                                        data-id="' . $openingHour->id . '">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ';
                     })
 
                     ->editColumn('day', function ($openingHour) {

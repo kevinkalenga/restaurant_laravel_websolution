@@ -5,6 +5,18 @@
         $footerMenuOne = LaravelMenu::getByName('footer_menu_one');
         $footerMenuTwo = LaravelMenu::getByName('footer_menu_two');
 
+         $openingHours = \App\Models\OpeningHour::all();
+
+        $days = [
+            'monday' => 'Lundi',
+            'tuesday' => 'Mardi',
+            'wednesday' => 'Mercredi',
+            'thursday' => 'Jeudi',
+            'friday' => 'Vendredi',
+            'saturday' => 'Samedi',
+            'sunday' => 'Dimanche',
+        ];
+
     @endphp
     
     <footer>
@@ -49,13 +61,19 @@
                         <div class="fp__footer_content">
                             <h3>Opening Hours</h3>
                             <ul>
-                                <li>Lundi : 10h00 - 22h00</li>
-                                <li>Mardi : 10h00 - 22h00</li>
-                                <li>Mercredi : 10h00 - 22h00</li>
-                                <li>Jeudi : 10h00 - 22h00</li>
-                                <li>Vendredi : 10h00 - 23h00</li>
-                                <li>Samedi : 10h00 - 23h00</li>
-                                <li>Dimanche : 10h00 - 22h00</li>
+                                    @foreach($openingHours as $openingHour)
+                                        <li>
+                                            {{ $days[$openingHour->day] ?? $openingHour->day }} :
+
+                                            @if($openingHour->is_closed)
+                                                Closed
+                                            @else
+                                                {{ substr($openingHour->open_time, 0, 5) }}
+                                                -
+                                                {{ substr($openingHour->close_time, 0, 5) }}
+                                            @endif
+                                        </li>
+                                    @endforeach
                             </ul>
                             
                         </div>
