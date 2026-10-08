@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\OrderPlacedNotification;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\Blog;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Models\OrderStatistic;
 
@@ -21,6 +24,14 @@ class AdminDashboardController extends Controller
          $thisMonthEarnings = Order::whereMonth('created_at', now()->month)->where('order_status', 'delivered')->sum('grand_total');
          $thisYearOrders = Order::whereYear('created_at', now()->year)->where('order_status', 'delivered')->count();
          $thisYearEarnings = Order::whereYear('created_at', now()->year)->where('order_status', 'delivered')->sum('grand_total');
+
+         $totalUsers = User::where('role', 'user')->count();
+         $totalAdmins = User::where('role', 'admin')->count();
+
+          $totalProducts = Product::count();
+          $totalBlogs = Blog::count();
+
+
         $statistics = OrderStatistic::orderBy('total_orders', 'desc')->get();
 
         return view('admin.dashboard.index', compact(
@@ -30,7 +41,12 @@ class AdminDashboardController extends Controller
             'thisMonthOrders', 
             'thisMonthEarnings',
             'thisYearOrders',
-            'thisYearEarnings'
+            'thisYearEarnings',
+            'totalUsers',
+            'totalAdmins',
+            'totalProducts',
+            'totalProducts',
+            'totalBlogs'
         ));
     }
     public function clearNotification()
