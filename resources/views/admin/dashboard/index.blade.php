@@ -209,6 +209,58 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="order_model" tabindex="-1" role="dialog" aria-labelledby="order_modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          
+    
+             <div class="form-group">
+                <label><strong>Payment Status</strong></label>
+
+                <select name="payment_status" class="form-control payment_status">
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Order Status</strong></label>
+
+                <select name="order_status" class="form-control order_status">
+                    <option value="pending">Pending</option>
+                    <option value="in_process">In Process</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="declined">Declined</option>
+                </select>
+            </div>
+    
+    
+    
+       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button"
+                class="btn btn-primary"
+                id="save-order-status"
+                data-url="">
+            Save changes
+        </button>
+        <!-- <button type="button" class="btn btn-primary" id="save-order-status">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -375,6 +427,296 @@
         }
     ]
 });
+/**************************************************************/
+
+$(document).off('click', '#save-order-status').on('click', '#save-order-status', function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        // let url = '/admin/orders/' + currentOrderId + '/status';
+
+         let url = '{{ route("admin.orders.update-status", ":id") }}'
+        .replace(':id', currentOrderId);
+
+        console.log('SAVE URL =', url);
+        console.log('### POST VERSION ###');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType:'json',
+
+            data: {
+                _token: '{{ csrf_token() }}',
+                payment_status: $('.payment_status').val(),
+                order_status: $('.order_status').val()
+            },
+
+            success: function (response) {
+
+                console.log('SUCCESS =', response);
+
+                $('#order_model').modal('hide');
+
+                $('#products-table')
+                    .DataTable()
+                    .ajax.reload(null, false);
+
+                    // Message de confirmation
+                    alert(response.message);
+            },
+
+            error: function (xhr) {
+
+                console.log('ERROR STATUS =', xhr.status);
+                console.log('ERROR URL =', xhr.responseURL);
+                console.log('ERROR =', xhr.responseText);
+                 alert('Erreur lors de la mise à jour du statut.');
+            }
+        });
+
+    });
+
+    // Delete order 
+    $(document).on('click', '.delete-item', function (e) {
+
+            e.preventDefault();
+
+            let url = $(this).attr('href');
+
+            console.log('DELETE URL =', url);
+
+            if (!confirm('Are you sure you want to delete this order?')) {
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+
+                success: function (response) {
+
+                    console.log('DELETE SUCCESS =', response);
+
+                    $('#products-table')
+                        .DataTable()
+                        .ajax.reload(null, false);
+                },
+
+                error: function (xhr) {
+
+                    console.log('DELETE ERROR =', xhr.status);
+                    console.log(xhr.responseText);
+
+                    alert('Error deleting order.');
+                }
+            });
+
+    });
+
+
+ 
+let currentOrderId = null;
+
+
+/* =========================================================
+   MODIFIER LE STATUT D'UNE COMMANDE
+   ========================================================= */
+
+$(document).on('click', '.edit-order-status', function (e) {
+
+    e.preventDefault();
+
+    let id = $(this).data('id');
+
+    console.log('ORDER ID =', id);
+
+    if (!id) {
+        alert('ID de commande introuvable.');
+        return;
+    }
+
+    currentOrderId = id;
+
+    let url = '{{ route("admin.orders.status", ":id") }}'
+        .replace(':id', id);
+
+    console.log('GET URL =', url);
+
+    $.ajax({
+        method: 'GET',
+        url: url,
+
+        success: function (response) {
+
+            console.log('RESPONSE =', response);
+
+            $('.payment_status').val(response.payment_status);
+            $('.order_status').val(response.order_status);
+
+            $('#order_model').modal('show');
+        },
+
+        error: function (xhr) {
+
+            console.log('GET ERROR STATUS =', xhr.status);
+            console.log('GET ERROR =', xhr.responseText);
+
+            alert(
+                'Erreur lors de la récupération du statut.\n\n' +
+                'HTTP ' + xhr.status
+            );
+        }
+    });
+});
+
+
+/* =========================================================
+   ENREGISTRER LE NOUVEAU STATUT
+   ========================================================= */
+
+$(document)
+    .off('click', '#save-order-status')
+    .on('click', '#save-order-status', function (e) {
+
+        e.preventDefault();
+
+        if (!currentOrderId) {
+            alert('Aucune commande sélectionnée.');
+            return;
+        }
+
+        let url = '{{ route("admin.orders.update-status", ":id") }}'
+            .replace(':id', currentOrderId);
+
+        console.log('SAVE URL =', url);
+
+        let paymentStatus = $('.payment_status').val();
+        let orderStatus = $('.order_status').val();
+
+        console.log('PAYMENT STATUS =', paymentStatus);
+        console.log('ORDER STATUS =', orderStatus);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+
+            data: {
+                _token: '{{ csrf_token() }}',
+                payment_status: paymentStatus,
+                order_status: orderStatus
+            },
+
+            success: function (response) {
+
+                console.log('SAVE SUCCESS =', response);
+
+                $('#order_model').modal('hide');
+
+                /*
+                 * IMPORTANT :
+                 * On recharge le DataTable du Dashboard,
+                 * pas products-table.
+                 */
+                $('#dashboard-orders-table')
+                    .DataTable()
+                    .ajax.reload(null, false);
+
+                alert(response.message);
+
+                currentOrderId = null;
+            },
+
+            error: function (xhr) {
+
+                console.log('SAVE ERROR STATUS =', xhr.status);
+                console.log('SAVE ERROR =', xhr.responseText);
+
+                /*
+                 * Affiche les erreurs Laravel de validation
+                 * si disponibles.
+                 */
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+
+                    console.log(
+                        'VALIDATION ERRORS =',
+                        xhr.responseJSON.errors
+                    );
+                }
+
+                alert(
+                    'Erreur lors de la mise à jour du statut.\n\n' +
+                    'HTTP ' + xhr.status
+                );
+            }
+        });
+    });
+
+
+/* =========================================================
+   SUPPRIMER UNE COMMANDE
+   ========================================================= */
+
+$(document).on('click', '.delete-item', function (e) {
+
+    e.preventDefault();
+
+    let url = $(this).attr('href');
+
+    console.log('DELETE URL =', url);
+
+    if (!confirm('Are you sure you want to delete this order?')) {
+        return;
+    }
+
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+
+        data: {
+            _token: '{{ csrf_token() }}'
+        },
+
+        success: function (response) {
+
+            console.log('DELETE SUCCESS =', response);
+
+            $('#dashboard-orders-table')
+                .DataTable()
+                .ajax.reload(null, false);
+
+            alert(response.message);
+        },
+
+        error: function (xhr) {
+
+            console.log('DELETE ERROR =', xhr.status);
+            console.log('DELETE ERROR RESPONSE =', xhr.responseText);
+
+            alert(
+                'Error deleting order.\n\n' +
+                'HTTP ' + xhr.status
+            );
+        }
+    });
+});
+
+
+
+
 </script>
 @endpush
+
+
+
+
 @endsection
+
+

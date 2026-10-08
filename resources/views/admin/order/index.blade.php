@@ -367,7 +367,7 @@
    
 
      
-     $(document).off('click', '#save-order-status').on('click', '#save-order-status', function (e) {
+    $(document).off('click', '#save-order-status').on('click', '#save-order-status', function (e) {
 
         e.preventDefault();
         e.stopPropagation();
