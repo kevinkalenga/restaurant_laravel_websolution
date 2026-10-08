@@ -13,8 +13,8 @@
 
                                  </div>
                                  <div class="form-group">
-                                    <label>Seo Keyword</label>
-                                    <input type="text" class="form-control inputtags" name="seo_keyword" value="">
+                                    <label>Seo Keywords</label>
+                                    <input type="text" class="form-control inputtags" name="seo_keywords" value="">
                                     
                                  </div>
                                
