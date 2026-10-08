@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderPlacedNotification;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\OrderStatistic;
 
 class OrderController extends Controller
 {
@@ -30,24 +31,7 @@ class OrderController extends Controller
 
 
 
-                // ->addColumn('action', function($order){
-                //     return '
-                //          <a href="'.route('admin.orders.show', $order->id).'" 
-                //             class="btn btn-sm btn-primary order_status" data-id="'.$order->id.'">
-                //                 <i class="fas fa-eye"></i>
-                //          </a>
-
-                //         <a href="'.route('admin.orders.edit', $order->id).'" 
-                //            class="btn btn-sm btn-warning" data-toggle="modal" data-target="#order_model" data-id="'.$order->id.'">
-                //             <i class="fas fa-edit"></i>
-                //         </a>
-
-                //         <a href="'.route('admin.orders.destroy', $order->id).'" 
-                //         class="btn btn-sm btn-danger delete-item">
-                //             <i class="fas fa-trash"></i>
-                //         </a>
-                //     ';
-                // })
+               
 
                 ->addColumn('action', function($order){
                     return '
@@ -84,23 +68,71 @@ class OrderController extends Controller
    
 
 
-    public function updateStatus(Request $request, Order $order)
-    {
-        $request->validate([
-            'payment_status' => 'required|in:pending,completed,failed,cancelled',
-            'order_status' => 'required|in:pending,in_process,delivered,declined',
-        ]);
+    // public function updateStatus(Request $request, Order $order)
+    // {
+    //     $request->validate([
+    //         'payment_status' => 'required|in:pending,completed,failed,cancelled',
+    //         'order_status' => 'required|in:pending,in_process,delivered,declined',
+    //     ]);
 
-        $order->update([
-            'payment_status' => $request->payment_status,
-            'order_status'   => $request->order_status,
-        ]);
+    //     $order->update([
+    //         'payment_status' => $request->payment_status,
+    //         'order_status'   => $request->order_status,
+    //     ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Order status updated successfully.',
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Order status updated successfully.',
+    //     ]);
+    // }
+
+      
+       public function updateStatus(Request $request, Order $order)
+       {
+            $request->validate([
+                'payment_status' => 'required|in:pending,completed,failed,cancelled',
+                'order_status' => 'required|in:pending,in_process,delivered,declined',
+            ]);
+
+            // On mémorise l'ancien statut avant la modification
+            $oldStatus = $order->order_status;
+
+            // Mise à jour de la commande MySQL
+            $order->update([
+                'payment_status' => $request->payment_status,
+                'order_status'   => $request->order_status,
+            ]);
+
+            // On ajoute les statistiques MongoDB uniquement
+            // lorsqu'une commande passe pour la première fois à "delivered"
+
+            if ($oldStatus !== 'delivered' && $request->order_status === 'delivered') {
+
+                foreach ($order->orderItems as $item) {
+
+                    $statistic = OrderStatistic::where('menu_id', $item->product_id)
+                        ->where('date', now()->format('Y-m-d'))
+                        ->first();
+
+                    if ($statistic) {
+                        $statistic->increment('total_orders', $item->qty);
+                    } else {
+                        OrderStatistic::create([
+                            'menu_id' => $item->product_id,
+                            'menu_name' => $item->product_name,
+                            'total_orders' => $item->qty,
+                            'date' => now()->format('Y-m-d'),
+                        ]);
+                    }
+                }
+            }
+           
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order status updated successfully.',
+            ]);
+        }
 
 
 
