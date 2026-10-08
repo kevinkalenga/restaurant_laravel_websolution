@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\MenuBuilderController;
 use App\Http\Controllers\Admin\AppDownloadSectionController;
 use App\Http\Controllers\Admin\CustomPageBuilderController;
 use App\Http\Controllers\Admin\ProductReviewController;
+use App\Http\Controllers\Admin\OpeningHourController;
 
 
 
@@ -217,6 +218,25 @@ Route::resource('custom-page-builder', CustomPageBuilderController::class);
 // Product Option Routes
 
 Route::resource('/product-option', ProductOptionController::class);
+
+
+// Opening Hours Routes
+
+// Opening Hours Routes
+Route::get('opening-hours', [OpeningHourController::class, 'index'])
+    ->name('opening-hours.index');
+
+Route::post('opening-hours', [OpeningHourController::class, 'store'])
+    ->name('opening-hours.store');
+
+Route::get('opening-hours/{openingHour}/edit', [OpeningHourController::class, 'edit'])
+    ->name('opening-hours.edit');
+
+Route::put('opening-hours/{openingHour}', [OpeningHourController::class, 'update'])
+    ->name('opening-hours.update');
+
+Route::delete('opening-hours/{openingHour}', [OpeningHourController::class, 'destroy'])
+    ->name('opening-hours.destroy');
 
 // Setting Payment Gateway Routes
 Route::get('/payment-gateway-setting', [PaymentGatewaySettingController::class, 'index'])->name('payment-setting.index');

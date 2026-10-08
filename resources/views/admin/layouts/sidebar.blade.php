@@ -147,6 +147,7 @@
               </li>
               
               <li><a class="nav-link" href="{{route('admin.news-letter.index')}}"><i class="far fa-square"></i> <span>News Letter</span></a></li>
+              <li><a class="nav-link" href="{{route('admin.opening-hours.index')}}"><i class="fas fa-clock"></i> <span>Opening Hours</span></a></li>
                 
               <li><a class="nav-link" href="{{route('admin.social-link.index')}}"><i class="far fa-square"></i> <span>Social Links</span></a></li>
 
