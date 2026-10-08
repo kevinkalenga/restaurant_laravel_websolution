@@ -158,9 +158,9 @@
             </div>                  
           </div>
     
-        </section>
+</section>
 
-  <div class="row">
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -169,6 +169,41 @@
 
             <div class="card-body">
                 <canvas id="ordersByMenuChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h4>Dernières commandes</h4>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dashboard-orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Invoice ID</th>
+                                <th>Customer</th>
+                                <th>Product Qty</th>
+                                <th>Address</th>
+                                <th>Subtotal</th>
+                                <th>Discount</th>
+                                <th>Delivery Charge</th>
+                                <th>Grand Total</th>
+                                <th>Payment Method</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -201,6 +236,145 @@
             }
         }
     });
+
+    $('#dashboard-orders-table').DataTable({
+    processing: true,
+    serverSide: true,
+    autoWidth: false,
+
+    ajax: '{{ route("admin.orders.index") }}',
+
+    columns: [
+        {
+            data: 'id',
+            name: 'id'
+        },
+        {
+            data: 'invoice_id',
+            name: 'invoice_id'
+        },
+        {
+            data: 'user.name',
+            name: 'user.name'
+        },
+        {
+            data: 'product_qty',
+            name: 'product_qty'
+        },
+        {
+            data: 'address',
+            name: 'address'
+        },
+        {
+            data: 'subtotal',
+            name: 'subtotal',
+            render: function(data) {
+                const price = Number(data);
+
+                if (isNaN(price)) return '';
+
+                return '{{ config("settings.site_currency_icon_position") }}' === 'left'
+                    ? '{{ config("settings.site_currency_icon") }}' + price.toFixed(2)
+                    : price.toFixed(2) + '{{ config("settings.site_currency_icon") }}';
+            }
+        },
+        {
+            data: 'discount',
+            name: 'discount',
+            render: function(data) {
+                const price = Number(data);
+
+                if (isNaN(price)) return '';
+
+                return '{{ config("settings.site_currency_icon_position") }}' === 'left'
+                    ? '{{ config("settings.site_currency_icon") }}' + price.toFixed(2)
+                    : price.toFixed(2) + '{{ config("settings.site_currency_icon") }}';
+            }
+        },
+        {
+            data: 'delivery_charge',
+            name: 'delivery_charge',
+            render: function(data) {
+                const price = Number(data);
+
+                if (isNaN(price)) return '';
+
+                return '{{ config("settings.site_currency_icon_position") }}' === 'left'
+                    ? '{{ config("settings.site_currency_icon") }}' + price.toFixed(2)
+                    : price.toFixed(2) + '{{ config("settings.site_currency_icon") }}';
+            }
+        },
+        {
+            data: 'grand_total',
+            name: 'grand_total',
+            render: function(data) {
+                const price = Number(data);
+
+                if (isNaN(price)) return '';
+
+                return '{{ config("settings.site_currency_icon_position") }}' === 'left'
+                    ? '{{ config("settings.site_currency_icon") }}' + price.toFixed(2)
+                    : price.toFixed(2) + '{{ config("settings.site_currency_icon") }}';
+            }
+        },
+        {
+            data: 'payment_method',
+            name: 'payment_method'
+        },
+        {
+            data: 'payment_status',
+            name: 'payment_status',
+            render: function(data) {
+                if (data === 'paid') {
+                    return '<span class="badge badge-success">Paid</span>';
+                }
+
+                return '<span class="badge badge-warning">' + data + '</span>';
+            }
+        },
+        {
+            data: 'order_status',
+            name: 'order_status',
+            render: function(data) {
+
+                let badge = 'badge-warning';
+
+                if (data === 'delivered') {
+                    badge = 'badge-success';
+                }
+
+                if (data === 'cancelled' || data === 'declined') {
+                    badge = 'badge-danger';
+                }
+
+                return '<span class="badge ' + badge + '">' +
+                    data +
+                    '</span>';
+            }
+        },
+        {
+            data: 'created_at',
+            name: 'created_at',
+            render: function(data) {
+                return new Date(data).toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        },
+        {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            className: 'action-column',
+            width: '150px'
+        }
+    ]
+});
 </script>
 @endpush
 @endsection
