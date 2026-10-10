@@ -25,6 +25,26 @@
             <strong>Téléphone :</strong> {{ $order->user->phone ?? 'Non renseigné' }}<br>
             <strong>Adresse de livraison :</strong> {{ $order->address }}<br>
             <strong>Statut :</strong> {{ $order->order_status }}<br>
+            <strong>Matériel prêté :</strong>
+                {{ $order->equipment_loaned ? 'Oui' : 'Non' }}<br>
+            
+            
+            <form action="{{ route('employe.orders.updateEquipment', $order->id) }}"
+                method="POST"
+                style="margin: 15px 0;">
+                @csrf
+                @method('PATCH')
+
+                <label for="equipment_loaned">Matériel prêté au client ?</label>
+
+                <select name="equipment_loaned" id="equipment_loaned" required>
+                    <option value="0" {{ !$order->equipment_loaned ? 'selected' : '' }}>Non</option>
+                    <option value="1" {{ $order->equipment_loaned ? 'selected' : '' }}>Oui</option>
+                </select>
+
+                <button type="submit">Enregistrer le matériel</button>
+            </form>
+
             
            
             @if (session('success'))
@@ -48,6 +68,16 @@
                     </option>
                     <option value="delivered" {{ $order->order_status === 'delivered' ? 'selected' : '' }}>
                         Livrée
+                    </option>
+                    <option value="waiting_equipment_return"
+                        {{ $order->order_status === 'waiting_equipment_return' ? 'selected' : '' }}
+                        {{ !$order->equipment_loaned ? 'disabled' : '' }}>
+                        En attente de retour du matériel
+                    </option>
+
+                    <option value="completed"
+                        {{ $order->order_status === 'completed' ? 'selected' : '' }}>
+                        Terminée
                     </option>
                 </select>
 

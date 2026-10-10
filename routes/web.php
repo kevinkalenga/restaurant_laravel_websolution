@@ -176,6 +176,9 @@ Route::middleware(['auth', 'role:employe'])
 
     Route::patch('/orders/{order}/status', [EmployeeOrderController::class, 'updateStatus'])
     ->name('orders.updateStatus');
+
+    Route::patch('/orders/{order}/equipment', [EmployeeOrderController::class, 'updateEquipment'])
+    ->name('orders.updateEquipment');
   });
 
 

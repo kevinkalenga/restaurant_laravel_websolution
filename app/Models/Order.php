@@ -22,6 +22,7 @@ class Order extends Model
         'coupon_info',
         'currency_name',
         'order_status',
+        'equipment_loaned',
     ];
 
     public function user()

@@ -19,7 +19,7 @@ class EmployeeOrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'order_status' => 'required|in:pending,in_process,delivered',
+            'order_status' => 'required|in:pending,in_process,delivered,waiting_equipment_return,completed',
         ]);
 
         $order->update([
@@ -29,6 +29,22 @@ class EmployeeOrderController extends Controller
         return redirect()
             ->route('employe.orders.show', $order->id)
             ->with('success', 'Statut de la commande mis à jour.');
+    }
+
+
+    public function updateEquipment(Request $request, Order $order)
+    {
+        $request->validate([
+            'equipment_loaned' => 'required|boolean',
+        ]);
+
+        $order->update([
+            'equipment_loaned' => $request->equipment_loaned,
+        ]);
+
+        return redirect()
+            ->route('employe.orders.show', $order->id)
+            ->with('success', 'Information sur le matériel mise à jour.');
     }
 
 }
