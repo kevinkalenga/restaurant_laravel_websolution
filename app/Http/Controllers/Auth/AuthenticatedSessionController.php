@@ -35,6 +35,11 @@ class AuthenticatedSessionController extends Controller
                return redirect()->intended(route('admin.dashboard', absolute: false))->with('status', $status);
             }
 
+            if ($request->user()->role === 'employe') {
+                return redirect()->intended(route('employe.dashboard', absolute: false))
+                    ->with('status', $status);
+            }
+
             //Redirige vers le dashboard user
             return redirect()->intended(route('dashboard', absolute: false))->with('status', $status);
     }

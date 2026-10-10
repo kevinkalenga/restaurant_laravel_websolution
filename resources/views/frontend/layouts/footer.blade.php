@@ -116,8 +116,15 @@
                                   <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
                                 @endforeach
                                 <li>
-                                   <a href="#">Legal Notice</a>
+                                   <a href="{{ url('/page/legal-notice') }}">Legal Notice</a>
                                 </li>
+                                
+                                <li>
+                                    <a href="{{ url('/page/conditions-generales-de-vente') }}">
+                                        Conditions générales de vente
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </div>

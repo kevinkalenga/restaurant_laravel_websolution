@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -45,9 +47,32 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
+    /**
+        ];
+    }
+
+    /**
+       * Check the user's role.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->role === 'employe';
+    }
+
+    public function isActive(): bool
+    {
+        return (bool) $this->is_active;
+    }
+    
     public function addresses()
     {
         return $this->hasMany(Address::class);

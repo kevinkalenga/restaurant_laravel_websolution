@@ -159,3 +159,16 @@ Route::group(['middleware' => 'guest'], function () {
 require __DIR__.'/auth.php';
 // require __DIR__.'/admin.php';
 
+
+
+// Espace employé
+Route::middleware(['auth', 'role:employe'])
+    ->prefix('employe')
+    ->name('employe.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('employe.dashboard');
+        })->name('dashboard');
+    });
+
+

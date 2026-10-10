@@ -37,11 +37,20 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+  
+      
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = $this->only('email', 'password');
+
+        // Vérifie les identifiants et que le compte est actif.
+        if (! Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'is_active' => true,
+        ], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -52,6 +61,11 @@ class LoginRequest extends FormRequest
         RateLimiter::clear($this->throttleKey());
     }
 
+    
+    
+    
+    
+    
     /**
      * Ensure the login request is not rate limited.
      *
