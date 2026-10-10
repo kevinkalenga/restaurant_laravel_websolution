@@ -14,6 +14,8 @@ use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\CustomPageController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Events\RTOrderPlacedNotificationEvent;
+use App\Http\Controllers\Employe\EmployeeDashboardController;
+use App\Http\Controllers\Employe\EmployeeOrderController;
 use App\Models\Order;
 
 
@@ -166,9 +168,14 @@ Route::middleware(['auth', 'role:employe'])
     ->prefix('employe')
     ->name('employe.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('employe.dashboard');
-        })->name('dashboard');
-    });
+        Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])
+            ->name('dashboard');
+        
+        Route::get('/orders/{order}', [EmployeeOrderController::class, 'show'])
+    ->name('orders.show');
+
+    Route::patch('/orders/{order}/status', [EmployeeOrderController::class, 'updateStatus'])
+    ->name('orders.updateStatus');
+  });
 
 
