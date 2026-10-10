@@ -30,4 +30,22 @@ class WishlistController extends Controller
 
          return response(['status' => 'success', 'message' => 'Product added to wishlist']);
     }
+
+    
+    public function wishlistDelete($id)
+    {
+        $obj = Wishlist::find($id);
+
+        if (!$obj) {
+            return redirect()->back()->with('error', 'Wishlist item not found!');
+        }
+
+        $obj->delete();
+
+        return redirect()->back()->with(
+            'success',
+            'Wishlist item is deleted successfully!'
+        );
+    }
+
 }

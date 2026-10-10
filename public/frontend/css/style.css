@@ -6923,3 +6923,10 @@ footer .fp__footer_content ul li {
     font-weight: 300;
     
 }
+
+.styleCustom {
+    display: flex;
+    justify-content: space-between;
+    gap: 2;
+    
+}

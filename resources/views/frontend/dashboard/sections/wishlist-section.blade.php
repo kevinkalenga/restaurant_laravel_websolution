@@ -45,8 +45,26 @@
                                                                     @endif
                                                                 </td>
 
-                                                                 <td>
-                                                                    <a href="{{route('product.show', $item->product->slug)}}" class="view_invoice">View Product</a>
+                                                                 <td class="styleCustom">
+                                                                    
+                                                                    
+                                                                         <a href="{{route('product.show', $item->product->slug)}}" class="view_invoice">View Product</a>
+                                                                         
+
+                                                                        <form action="{{ route('wishlist.delete', $item->id) }}"
+                                                                            method="POST"
+                                                                            class="ml-2"
+                                                                            style="display: inline-block;"
+                                                                            onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?')">
+                                                                            @csrf
+                                                                            @method('DELETE')
+
+                                                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                    
+                                                                    
                                                                 </td>    
                                                                
                                                             </tr>

@@ -127,7 +127,7 @@
                               <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
                             
                            @endif
-                            <li><a class="wishlist" href="#"><i class="far fa-heart"></i></a></li>
+                            <li onclick="addToWishlist('{{$product->id}}')"><a class="wishlist" href="javascript:;"><i class="far fa-heart"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -277,8 +277,8 @@
                                    
                                 <ul class="d-flex flex-wrap justify-content-center">
                                     <li><a href="javascript:;" onclick="loadProductModal('{{ $relatedProduct->id }}')"><i class="fas fa-shopping-basket"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="far fa-eye"></i></a></li>
+                                    <li onclick="addToWishlist('{{$relatedProduct->id}}')"><a href="javascript:;"><i class="fal fa-heart"></i></a></li>
+                                    <li><a href="{{route('product.show', $relatedProduct->slug)}}"><i class="far fa-eye"></i></a></li>
                                 </ul>
                             </div>
                         </div>

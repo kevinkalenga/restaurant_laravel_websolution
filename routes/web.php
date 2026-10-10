@@ -141,6 +141,10 @@ Route::group(['middleware' => 'auth'], function(){
     // Cancel Order
       Route::put('/order/{id}/cancel', [OrderController::class, 'cancelOrder'])
         ->name('order.cancel');
+    //Delete Wishlist
+    // Delete Wishlist
+     Route::delete('/wishlist/{id}', [WishlistController::class, 'wishlistDelete'])
+    ->name('wishlist.delete');
 });
 
 
