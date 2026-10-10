@@ -5,31 +5,35 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // we get the instance of the user from the request 
-        // if($request->user()->role === $role) {
-        //    return $next($request);
-        // }
-
-         // Vérifie si l'utilisateur est connecté et Vérifie si l'utilisateur a le bon rôle
-
-        if (!$request->user() || $request->user()->role !== $role) {
-          return to_route('dashboard');
+        // Vérifier que l'utilisateur est connecté
+        if (!$request->user()) {
+            return to_route('login');
         }
 
-       return $next($request);
+        // Vérifier que son compte est actif
+        if (!$request->user()->is_active) {
+            Auth::logout();
 
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        
-       
+            return to_route('login')
+                ->withErrors([
+                    'email' => 'Votre compte a été désactivé. Contactez l’administrateur.',
+                ]);
+        }
+
+        // Vérifier le rôle autorisé
+        if ($request->user()->role !== $role) {
+            return to_route('dashboard');
+        }
+
+        return $next($request);
     }
 }

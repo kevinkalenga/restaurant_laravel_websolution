@@ -152,6 +152,8 @@
               <li><a class="nav-link" href="{{route('admin.social-link.index')}}"><i class="far fa-square"></i> <span>Social Links</span></a></li>
 
               <li><a class="nav-link" href="{{route('admin.menu-builder.index')}}"><i class="far fa-square"></i> <span>Menu Builder</span></a></li>
+              
+              <li><a class="nav-link" href="{{route('admin.employees.index')}}"><i class="far fa-square"></i> <span>Gestion des employés</span></a></li>
 
               <li class="dropdown">
                  <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Sections</span></a>

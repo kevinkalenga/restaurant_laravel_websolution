@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\AppDownloadSectionController;
 use App\Http\Controllers\Admin\CustomPageBuilderController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\OpeningHourController;
+use App\Http\Controllers\Admin\EmployeeController;
 
 
 
@@ -51,6 +52,12 @@ Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dash
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update'); 
+
+// Gestion des employés
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+Route::patch('/employees/{employee}/status', [EmployeeController::class, 'toggleStatus'])->name('employees.toggle-status');
 
 //** Slider Route **/
 // Cette seule ligne crée automatiquement toutes les routes CRUD pour les sliders.(php artisan route:list)
