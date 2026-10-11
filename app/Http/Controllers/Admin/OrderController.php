@@ -114,21 +114,26 @@ class OrderController extends Controller
                     'cancelled',
                 ]),
             ],
+            
             'contact_confirmed' => [
                 'exclude_unless:order_status,cancelled',
                 'required',
                 'accepted',
             ],
+
             'contact_method' => [
-                'required_if:order_status,cancelled',
+                'exclude_unless:order_status,cancelled',
+                'required',
                 Rule::in(['phone', 'email', 'sms', 'in_person']),
             ],
+
             'cancellation_reason' => [
-                'required_if:order_status,cancelled',
-                'nullable',
+                'exclude_unless:order_status,cancelled',
+                'required',
                 'string',
                 'max:1000',
             ],
+
         ]);
 
         $newStatus = $validated['order_status'];

@@ -582,6 +582,7 @@
 @push('scripts') 
 <script>
 $(document).ready(function(){
+  
 
     $('#print_btn').on('click', function(){
 
@@ -652,6 +653,9 @@ $(document).ready(function(){
 
         let form = $(this);
 
+          console.log('Statut sélectionné :', $('#order_status').val());
+    console.log('Données envoyées :', form.serialize());
+
         $.ajax({
             url: form.attr('action'),
             type: 'POST',
@@ -674,13 +678,28 @@ $(document).ready(function(){
 
     });
 
+    
     function toggleCancellationFields() {
         const cancelled = $('#order_status').val() === 'cancelled';
-        $('#cancellation-fields').toggle(cancelled);
+        const fields = $('#cancellation-fields');
+
+        fields.toggle(cancelled);
+
+        // Les champs d'annulation ne sont envoyés
+        // que si le statut choisi est "cancelled".
+        fields.find('input, select, textarea').prop('disabled', !cancelled);
+
+        // Obligatoire uniquement lors d'une annulation.
+        fields.find('[name="contact_method"], [name="cancellation_reason"]')
+            .prop('required', cancelled);
+
+        fields.find('[name="contact_confirmed"]')
+            .prop('required', cancelled);
     }
 
     $('#order_status').on('change', toggleCancellationFields);
     toggleCancellationFields();
+
 
 });
 </script>
