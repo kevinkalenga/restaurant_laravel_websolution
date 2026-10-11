@@ -16,6 +16,7 @@ use App\Http\Controllers\Frontend\WishlistController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Http\Controllers\Employe\EmployeeDashboardController;
 use App\Http\Controllers\Employe\EmployeeOrderController;
+use App\Http\Controllers\Employe\EmployeeProductReviewController;
 use App\Models\Order;
 
 
@@ -185,6 +186,16 @@ Route::middleware(['auth', 'role:employe'])
 
     Route::patch('/orders/{order}/equipment', [EmployeeOrderController::class, 'updateEquipment'])
     ->name('orders.updateEquipment');
+
+    Route::get('/product-reviews', [
+        EmployeeProductReviewController::class,
+        'index'
+    ])->name('product-reviews.index');
+
+    Route::patch('/product-reviews/{id}/status', [
+        EmployeeProductReviewController::class,
+        'toggleStatus'
+    ])->name('product-reviews.toggle-status');
   });
 
 

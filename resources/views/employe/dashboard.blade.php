@@ -106,6 +106,18 @@
 
     <main class="container pb-5">
 
+        {{-- Bouton de gestion des avis clients --}}
+        <div class="mb-4">
+            <a href="{{ route('employe.product-reviews.index') }}"
+            class="btn btn-primary">
+                <i class="bi bi-star me-1"></i>
+                Gestion des avis clients
+            </a>
+        </div>
+    
+    
+        
+    
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif

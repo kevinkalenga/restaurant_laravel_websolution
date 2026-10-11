@@ -19,13 +19,17 @@ class DashboardController extends Controller
       // comparer le current user avec celui qui est en bd
       $deliveryAreas = DeliveryArea::where('status', 1)->get();
       $userAddresses = Address::where('user_id', Auth()->user()->id)->get();
-      $orders = Order::where('user_id', Auth()->user()->id)->get();
+      
+      $orders = Order::with('statusHistories')
+         ->where('user_id', auth()->id())
+         ->get();
+
       $reservations = Reservation::where('user_id', auth()->id())->get();
       $reviews = ProductRating::where('user_id', auth()->user()->id)->get();
       $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
       $totalOrders = Order::where('user_id', auth()->user()->id)->count();
-      $totalCompletedOrders = Order::where('user_id', auth()->user()->id)->where('order_status', 'delivered')->count();
-      $totalCancelOrders = Order::where('user_id', auth()->user()->id)->where('order_status', 'declined')->count();
+      $totalCompletedOrders = Order::where('user_id', auth()->user()->id)->where('order_status', 'completed')->count();
+      $totalCancelOrders = Order::where('user_id', auth()->user()->id)->where('order_status', 'cancelled')->count();
       return view('frontend.dashboard.index', compact(
          "deliveryAreas", 
          "userAddresses", 
