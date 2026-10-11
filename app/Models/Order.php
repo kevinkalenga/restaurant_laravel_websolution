@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrderStatusHistory;
 
 class Order extends Model
 {
@@ -40,8 +41,9 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    // public function address()
-    // {
-    //     return $this->belongsTo(Address::class, 'address');
-    // }
+    public function statusHistories()
+    {
+        return $this->hasMany(OrderStatusHistory::class)
+            ->orderBy('created_at', 'asc');
+    }
 }
