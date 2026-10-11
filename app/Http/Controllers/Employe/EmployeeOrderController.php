@@ -8,6 +8,9 @@ use App\Models\OrderStatusHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use App\Mail\EquipmentReturnMail;
+use App\Mail\OrderReviewInvitationMail;
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeOrderController extends Controller
 {
@@ -167,10 +170,29 @@ class EmployeeOrderController extends Controller
 
             return [
                 'success' => true,
+                'changed' => true,
                 'message' => 'Statut mis à jour et historique enregistré.',
             ];
         });
 
+        
+        // Envoyer les e-mails uniquement après une transition réussie.
+        if ($result['success'] && $result['changed']) {
+            $order->refresh();
+            $order->load('user');
+
+            if ($newStatus === 'waiting_equipment_return') {
+                Mail::to($order->user->email)
+                    ->send(new EquipmentReturnMail($order));
+            } elseif ($newStatus === 'completed') {
+                Mail::to($order->user->email)
+                    ->send(new OrderReviewInvitationMail($order));
+            }
+        }
+        
+        
+        
+        
         return redirect()
             ->route('employe.orders.show', $order->id)
             ->with(
@@ -182,87 +204,99 @@ class EmployeeOrderController extends Controller
     /**
      * Mettre à jour le matériel prêté et confirmer sa restitution.
      */
+    
+   
     public function updateEquipment(Request $request, Order $order)
     {
-        $validated = $request->validate([
-            'equipment_loaned' => ['required', 'boolean'],
-            'equipment_return_confirmed' => ['sometimes', 'accepted'],
-        ]);
+            $validated = $request->validate([
+                'equipment_loaned' => ['required', 'boolean'],
+                'equipment_return_confirmed' => ['sometimes', 'accepted'],
+            ]);
 
-        $result = DB::transaction(function () use (
-            $order,
-            $validated
-        ) {
-            $currentOrder = Order::whereKey($order->id)
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            $equipmentLoaned = (bool) $validated['equipment_loaned'];
-
-            // La confirmation explicite est requise pour clôturer
-            // une commande en attente du retour du matériel.
-            if (
-                $currentOrder->order_status === 'waiting_equipment_return'
-                && $currentOrder->equipment_loaned
-                && !$equipmentLoaned
+            $result = DB::transaction(function () use (
+                $order,
+                $validated
             ) {
+                $currentOrder = Order::whereKey($order->id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                $equipmentLoaned = (bool) $validated['equipment_loaned'];
+
                 if (
-                    !request()->boolean('equipment_return_confirmed')
+                    $currentOrder->order_status === 'waiting_equipment_return'
+                    && $currentOrder->equipment_loaned
+                    && !$equipmentLoaned
                 ) {
+                    if (
+                        !request()->boolean('equipment_return_confirmed')
+                    ) {
+                        return [
+                            'success' => false,
+                            'completed' => false,
+                            'message' => 'Coche la confirmation de restitution du matériel avant de terminer la commande.',
+                        ];
+                    }
+
+                    $oldStatus = $currentOrder->order_status;
+
+                    $currentOrder->update([
+                        'equipment_loaned' => false,
+                        'order_status' => 'completed',
+                    ]);
+
+                    OrderStatusHistory::create([
+                        'order_id' => $currentOrder->id,
+                        'changed_by' => auth()->id(),
+                        'old_status' => $oldStatus,
+                        'new_status' => 'completed',
+                        'note' => 'Restitution du matériel confirmée par l’employé.',
+                    ]);
+
                     return [
-                        'success' => false,
-                        'message' => 'Coche la confirmation de restitution du matériel avant de terminer la commande.',
+                        'success' => true,
+                        'completed' => true,
+                        'message' => 'Retour du matériel confirmé. Commande terminée et historique enregistré.',
                     ];
                 }
 
-                $oldStatus = $currentOrder->order_status;
+                if (
+                    $currentOrder->order_status === 'waiting_equipment_return'
+                    && !$equipmentLoaned
+                ) {
+                    return [
+                        'success' => false,
+                        'completed' => false,
+                        'message' => 'Utilise la confirmation de restitution pour terminer cette commande.',
+                    ];
+                }
 
                 $currentOrder->update([
-                    'equipment_loaned' => false,
-                    'order_status' => 'completed',
-                ]);
-
-                OrderStatusHistory::create([
-                    'order_id' => $currentOrder->id,
-                    'changed_by' => auth()->id(),
-                    'old_status' => $oldStatus,
-                    'new_status' => 'completed',
-                    'note' => 'Restitution du matériel confirmée par l’employé.',
+                    'equipment_loaned' => $equipmentLoaned,
                 ]);
 
                 return [
                     'success' => true,
-                    'message' => 'Retour du matériel confirmé. Commande terminée et historique enregistré.',
+                    'completed' => false,
+                    'message' => 'Information sur le matériel mise à jour.',
                 ];
+            });
+
+            // Envoyer l'invitation seulement si la commande vient d'être terminée.
+            if ($result['success'] && $result['completed']) {
+                $order->refresh();
+                $order->load('user');
+
+                Mail::to($order->user->email)
+                    ->send(new OrderReviewInvitationMail($order));
             }
 
-            // Empêche de retirer l'indicateur de prêt pendant
-            // une étape où la restitution est encore attendue.
-            if (
-                $currentOrder->order_status === 'waiting_equipment_return'
-                && !$equipmentLoaned
-            ) {
-                return [
-                    'success' => false,
-                    'message' => 'Utilise la confirmation de restitution pour terminer cette commande.',
-                ];
-            }
-
-            $currentOrder->update([
-                'equipment_loaned' => $equipmentLoaned,
-            ]);
-
-            return [
-                'success' => true,
-                'message' => 'Information sur le matériel mise à jour.',
-            ];
-        });
-
-        return redirect()
-            ->route('employe.orders.show', $order->id)
-            ->with(
-                $result['success'] ? 'success' : 'error',
-                $result['message']
-            );
+            return redirect()
+                ->route('employe.orders.show', $order->id)
+                ->with(
+                    $result['success'] ? 'success' : 'error',
+                    $result['message']
+                );
     }
+
 }

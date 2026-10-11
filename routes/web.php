@@ -64,8 +64,10 @@ Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name(
 /** Product Modal Route  **/ 
 Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
 
-/**  Product Review  **/ 
-Route::post('/product-review', [FrontendController::class, 'productReviewStore'])->name('product-review.store');
+/** Product Review — clients connectés uniquement **/
+Route::post('/product-review', [FrontendController::class, 'productReviewStore'])
+    ->middleware('auth')
+    ->name('product-review.store');
 
 /** Add to cart Route  **/ 
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name("add-to-cart");

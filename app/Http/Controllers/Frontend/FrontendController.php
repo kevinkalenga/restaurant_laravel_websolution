@@ -95,7 +95,35 @@ class FrontendController extends Controller
                       ->withCount('reviews')
                       ->latest()->get();
       $reviews = ProductRating::where(['product_id'=> $product->id,  'status' => 1])->paginate(6);
-      return view('frontend.pages.product-view', compact('product', 'relatedProducts', 'reviews'));
+
+
+        $canReview = false;
+        $alreadyReviewed = false;
+
+        if (Auth::check()) {
+            $canReview = Auth::user()->orders()
+                ->where('order_status', 'completed')
+                ->whereHas('orderItems', function ($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })
+                ->exists();
+
+            $alreadyReviewed = ProductRating::where('user_id', Auth::id())
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+      
+        return view(
+            'frontend.pages.product-view',
+            compact(
+                'product',
+                'relatedProducts',
+                'reviews',
+                'canReview',
+                'alreadyReviewed'
+            )
+        );
+     
     }
 
     public function loadProductModal($productId)
@@ -387,7 +415,7 @@ class FrontendController extends Controller
 
 
     public function productReviewStore(Request $request)
-   {
+    {
             $request->validate([
                 'rating' => ['required', 'integer', 'min:1', 'max:5'],
                 'review' => ['required', 'max:500'],
@@ -399,7 +427,7 @@ class FrontendController extends Controller
             // Vérifie que l'utilisateur a acheté ce produit
             // dans une commande livrée
             $order = $user->orders()
-                ->where('order_status', 'delivered')
+                ->where('order_status', 'completed')
                 ->whereHas('orderItems', function ($query) use ($request) {
                     $query->where('product_id', $request->product_id);
                 })

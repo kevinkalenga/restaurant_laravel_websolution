@@ -8,6 +8,13 @@ use App\Models\Order;
 use App\Models\OrderPlacedNotification;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\OrderStatistic;
+use App\Models\OrderStatusHistory;
+use App\Mail\EquipmentReturnMail;
+use App\Mail\OrderReviewInvitationMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
+use App\Mail\OrderCancellationContactMail;
 
 class OrderController extends Controller
 {
@@ -86,30 +93,159 @@ class OrderController extends Controller
     //     ]);
     // }
 
-      
-       public function updateStatus(Request $request, Order $order)
-       {
-            $request->validate([
-                'payment_status' => 'required|in:pending,completed,failed,cancelled',
-                'order_status' => 'required|in:pending,in_process,delivered,declined',
+    
+    public function updateStatus(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'payment_status' => [
+                'required',
+                Rule::in(['pending', 'completed', 'failed', 'cancelled']),
+            ],
+            'order_status' => [
+                'required',
+                Rule::in([
+                    'pending',
+                    'accepted',
+                    'in_process',
+                    'in_delivery',
+                    'delivered',
+                    'waiting_equipment_return',
+                    'completed',
+                    'cancelled',
+                ]),
+            ],
+            'contact_confirmed' => [
+                'exclude_unless:order_status,cancelled',
+                'required',
+                'accepted',
+            ],
+            'contact_method' => [
+                'required_if:order_status,cancelled',
+                Rule::in(['phone', 'email', 'sms', 'in_person']),
+            ],
+            'cancellation_reason' => [
+                'required_if:order_status,cancelled',
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ]);
+
+        $newStatus = $validated['order_status'];
+
+        $result = DB::transaction(function () use ($order, $validated, $newStatus) {
+            $currentOrder = Order::whereKey($order->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $oldStatus = $currentOrder->order_status;
+
+            if ($oldStatus === $newStatus) {
+                return ['success' => true, 'changed' => false,
+                    'message' => 'Le statut est inchangé.'];
+            }
+
+            $transitions = [
+                'pending' => ['accepted', 'cancelled'],
+                'accepted' => ['in_process', 'cancelled'],
+                'in_process' => ['in_delivery'],
+                'in_delivery' => ['delivered'],
+                'delivered' => ['completed', 'waiting_equipment_return'],
+                'waiting_equipment_return' => [],
+                'completed' => [],
+                'cancelled' => [],
+                'declined' => [],
+            ];
+
+            if (!in_array($newStatus, $transitions[$oldStatus] ?? [], true)) {
+                return ['success' => false, 'changed' => false,
+                    'message' => 'Transition de statut interdite.'];
+            }
+
+            if ($newStatus === 'completed' && $currentOrder->equipment_loaned) {
+                return ['success' => false, 'changed' => false,
+                    'message' => 'Confirme d’abord la restitution du matériel.'];
+            }
+
+            if ($newStatus === 'waiting_equipment_return'
+                && !$currentOrder->equipment_loaned) {
+                return ['success' => false, 'changed' => false,
+                    'message' => 'Aucun matériel prêté pour cette commande.'];
+            }
+
+            $note = null;
+
+            if ($newStatus === 'cancelled') {
+                $methods = [
+                    'phone' => 'Téléphone',
+                    'email' => 'E-mail',
+                    'sms' => 'SMS',
+                    'in_person' => 'En personne',
+                ];
+
+                $note = 'Contact préalable confirmé. Moyen : '
+                    . $methods[$validated['contact_method']]
+                    . '. Motif : ' . $validated['cancellation_reason'];
+            }
+
+            // Contacter le client par e-mail avant l'annulation.
+            if (
+                $newStatus === 'cancelled'
+                && $validated['contact_method'] === 'email'
+            ) {
+                $currentOrder->loadMissing('user');
+
+                Mail::to($currentOrder->user->email)
+                    ->send(new OrderCancellationContactMail(
+                        $currentOrder,
+                        $validated['cancellation_reason']
+                    ));
+            }
+
+            $currentOrder->update([
+                'order_status' => $newStatus,
+                'payment_status' => $validated['payment_status'],
             ]);
 
-            // On mémorise l'ancien statut avant la modification
-            $oldStatus = $order->order_status;
-
-            // Mise à jour de la commande MySQL
-            $order->update([
-                'payment_status' => $request->payment_status,
-                'order_status'   => $request->order_status,
+            OrderStatusHistory::create([
+                'order_id' => $currentOrder->id,
+                'changed_by' => auth()->id(),
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'note' => $note,
             ]);
 
-            // On ajoute les statistiques MongoDB uniquement
-            // lorsqu'une commande passe pour la première fois à "delivered"
+            return [
+                'success' => true,
+                'changed' => true,
+                'message' => 'Statut et paiement mis à jour.',
+            ];
+        });
 
-            if ($oldStatus !== 'delivered' && $request->order_status === 'delivered') {
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 422);
+        }
 
+        if ($result['changed']) {
+            $order->refresh();
+            $order->load('user');
+
+            if ($newStatus === 'waiting_equipment_return') {
+                Mail::to($order->user->email)
+                    ->send(new EquipmentReturnMail($order));
+            }
+
+            if ($newStatus === 'completed') {
+                Mail::to($order->user->email)
+                    ->send(new OrderReviewInvitationMail($order));
+            }
+
+            // Conserver les statistiques MongoDB au moment de la livraison.
+            if ($newStatus === 'delivered') {
                 foreach ($order->orderItems as $item) {
-
                     $statistic = OrderStatistic::where('menu_id', $item->product_id)
                         ->where('date', now()->format('Y-m-d'))
                         ->first();
@@ -126,16 +262,19 @@ class OrderController extends Controller
                     }
                 }
             }
-           
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Order status updated successfully.',
-            ]);
         }
 
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+        ]);
+    }
 
-
+      
+    
+    
+    
+    
     public function getOrderStatus($id)
     {
         $order = Order::select(['order_status', 'payment_status'])->findOrFail($id);

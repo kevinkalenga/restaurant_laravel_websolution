@@ -465,48 +465,79 @@
              <div class="row mt-4">
 
                                 <div class="col-md-6">
+                                   
+                                
+                                   
                                     <form id="update-order-form"
                                         action="{{ route('admin.orders.update-status', $order->id) }}"
                                         method="POST">
                                         @csrf
-                                       
 
                                         <div class="form-group">
-                                            <label><strong>Payment Status</strong></label>
-
-                                            <select name="payment_status" class="form-control">
-                                                <option value="pending" {{ $order->payment_status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="completed" {{ $order->payment_status == 'completed' ? 'selected' : '' }}>Completed</option>
-                                                
+                                            <label><strong>Statut du paiement</strong></label>
+                                            <select name="payment_status" class="form-control" required>
+                                                @foreach(['pending' => 'En attente', 'completed' => 'Payé', 'failed' => 'Échoué', 'cancelled' => 'Annulé'] as $value => $label)
+                                                    <option value="{{ $value }}" @selected($order->payment_status === $value)>
+                                                        {{ $label }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
+
                                         <div class="form-group">
-                                            <label><strong>Order Status</strong></label>
-
-                                            <select name="order_status" class="form-control">
-                                                <option value="pending" {{ $order->order_status == 'pending' ? 'selected' : '' }}>
-                                                    Pending
-                                                </option>
-
-                                                <option value="in_process" {{ $order->order_status == 'in_process' ? 'selected' : '' }}>
-                                                    In Process
-                                                </option>
-
-                                                <option value="delivered" {{ $order->order_status == 'delivered' ? 'selected' : '' }}>
-                                                    Delivered
-                                                </option>
-
-                                                <option value="declined" {{ $order->order_status == 'declined' ? 'selected' : '' }}>
-                                                    Declined
-                                                </option>
+                                            <label><strong>Statut de la commande</strong></label>
+                                            <select name="order_status" id="order_status" class="form-control" required>
+                                                @foreach([
+                                                    'pending' => 'En attente',
+                                                    'accepted' => 'Acceptée',
+                                                    'in_process' => 'En préparation',
+                                                    'in_delivery' => 'En livraison',
+                                                    'delivered' => 'Livrée',
+                                                    'waiting_equipment_return' => 'En attente de restitution du matériel',
+                                                    'completed' => 'Terminée',
+                                                    'cancelled' => 'Annulée',
+                                                ] as $value => $label)
+                                                    <option value="{{ $value }}" @selected($order->order_status === $value)>
+                                                        {{ $label }}
+                                                    </option>
+                                                @endforeach
                                             </select>
+                                        </div>
+
+                                        <div id="cancellation-fields" style="display:none;">
+                                            <div class="form-group">
+                                                <label>
+                                                    <input type="checkbox" name="contact_confirmed" value="1">
+                                                    J’ai contacté le client avant l’annulation
+                                                </label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Moyen de contact</label>
+                                                <select name="contact_method" class="form-control">
+                                                    <option value="">Choisir</option>
+                                                    <option value="phone">Téléphone</option>
+                                                    <option value="email">E-mail</option>
+                                                    <option value="sms">SMS</option>
+                                                    <option value="in_person">En personne</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Motif de l’annulation</label>
+                                                <textarea name="cancellation_reason" class="form-control" maxlength="1000"></textarea>
+                                            </div>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary">
-                                            Update Order
+                                            Mettre à jour
                                         </button>
                                     </form>
-                                </div>
+
+                            
+                            
+                            
+                                 </div>
 
                            </div>
 
@@ -637,11 +668,19 @@ $(document).ready(function(){
 
                 console.log(xhr.responseText);
 
-                alert('Erreur lors de la mise à jour.');
+                alert(xhr.responseJSON?.message || 'Erreur lors de la mise à jour.');
             }
         });
 
     });
+
+    function toggleCancellationFields() {
+        const cancelled = $('#order_status').val() === 'cancelled';
+        $('#cancellation-fields').toggle(cancelled);
+    }
+
+    $('#order_status').on('change', toggleCancellationFields);
+    toggleCancellationFields();
 
 });
 </script>
