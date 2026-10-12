@@ -1,0 +1,59 @@
+[90m= [39m[34;4mApp\Models\Menu[39;24m {#6446
+    [34mid[39m: [35m2[39m,
+    [34mtitle[39m: "[32mMenu gourmand classique 2[39m",
+    [34mslug[39m: "[32mmenu-gourmand-classique-2[39m",
+    [34mdescription[39m: "[32mEasily generate Lorem Ipsum placeholder text in any number of characters, words sentences or paragraphs. Learn about the origins of the passage and its history, from the Roman era to today.Easily generate Lorem Ipsum placeholder text in any number of characters, words sentences or paragraphs. Learn about the origins of the passage and its history, from the Roman era to today.[39m",
+    [34mimage[39m: "[32mcatering-menus/xLnOv9lIRXoKMFjAyZiDslpNb1u21DPgaMBTxZT6.jpg[39m",
+    [34mprice[39m: "[32m55.20[39m",
+    [34mminimum_persons[39m: [35m3[39m,
+    [34mtheme[39m: "[32mclassique[39m",
+    [34mdiet[39m: "[32mclassique[39m",
+    [34mavailable_stock[39m: [35m15[39m,
+    [34madvance_notice_hours[39m: [35m24[39m,
+    [34mstorage_conditions[39m: "[32mhot place[39m",
+    [34morder_conditions[39m: "[32mEasily generate Lorem Ipsum placeholder text in any number of characters, words sentences or paragraphs.[39m",
+    [34mstatus[39m: [35m1[39m,
+    [34mcreated_at[39m: "[32m2026-10-12 01:13:40[39m",
+    [34mupdated_at[39m: "[32m2026-10-12 01:13:40[39m",
+    [34mproducts[39m: [34;4mIlluminate\Database\Eloquent\Collection[39;24m {#6708
+      [34mall[39m: [
+        [34;4mApp\Models\Product[39;24m {#6709
+          [34mid[39m: [35m1[39m,
+          [34mname[39m: "[32mCarissa Rivas[39m",
+          [34mpivot[39m: [34;4mIlluminate\Database\Eloquent\Relations\Pivot[39;24m {#6909
+            [34mmenu_id[39m: [35m2[39m,
+            [34mproduct_id[39m: [35m1[39m,
+            [34mdish_type[39m: "[32mentree[39m",
+            [34mquantity[39m: [35m1[39m,
+            [34mcreated_at[39m: "[32m2026-10-12 01:13:40[39m",
+            [34mupdated_at[39m: "[32m2026-10-12 01:13:40[39m",
+          },
+        },
+        [34;4mApp\Models\Product[39;24m {#6906
+          [34mid[39m: [35m5[39m,
+          [34mname[39m: "[32mCoridor[39m",
+          [34mpivot[39m: [34;4mIlluminate\Database\Eloquent\Relations\Pivot[39;24m {#6746
+            [34mmenu_id[39m: [35m2[39m,
+            [34mproduct_id[39m: [35m5[39m,
+            [34mdish_type[39m: "[32mplat[39m",
+            [34mquantity[39m: [35m1[39m,
+            [34mcreated_at[39m: "[32m2026-10-12 01:13:40[39m",
+            [34mupdated_at[39m: "[32m2026-10-12 01:13:40[39m",
+          },
+        },
+        [34;4mApp\Models\Product[39;24m {#6907
+          [34mid[39m: [35m9[39m,
+          [34mname[39m: "[32mGrilled Chicken[39m",
+          [34mpivot[39m: [34;4mIlluminate\Database\Eloquent\Relations\Pivot[39;24m {#6747
+            [34mmenu_id[39m: [35m2[39m,
+            [34mproduct_id[39m: [35m9[39m,
+            [34mdish_type[39m: "[32mdessert[39m",
+            [34mquantity[39m: [35m1[39m,
+            [34mcreated_at[39m: "[32m2026-10-12 01:13:40[39m",
+            [34mupdated_at[39m: "[32m2026-10-12 01:13:40[39m",
+          },
+        },
+      ],
+    },
+  }
+

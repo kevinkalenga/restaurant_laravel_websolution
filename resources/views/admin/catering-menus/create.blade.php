@@ -129,6 +129,78 @@
                     </select>
                 </div>
 
+                
+                <hr>
+
+                <h4 class="mb-3">Composition du menu</h4>
+                <p class="text-muted">
+                    Sélectionne les produits qui composeront ce menu, puis précise leur catégorie et leur quantité.
+                </p>
+
+                @if ($products->isEmpty())
+                    <div class="alert alert-warning">
+                        Aucun produit disponible. Crée d'abord des produits dans la rubrique Products.
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sélection</th>
+                                    <th>Produit</th>
+                                    <th>Prix du produit</th>
+                                    <th>Catégorie dans le menu</th>
+                                    <th>Quantité</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                name="products[{{ $product->id }}][selected]"
+                                                value="1"
+                                                {{ old("products.{$product->id}.selected") ? 'checked' : '' }}
+                                            >
+                                        </td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ number_format((float) $product->price, 2, ',', ' ') }} €</td>
+                                        <td>
+                                            <select
+                                                name="products[{{ $product->id }}][dish_type]"
+                                                class="form-control"
+                                            >
+                                                <option value="entree"
+                                                    @selected(old("products.{$product->id}.dish_type") === 'entree')>
+                                                    Entrée
+                                                </option>
+                                                <option value="plat"
+                                                    @selected(old("products.{$product->id}.dish_type", 'plat') === 'plat')>
+                                                    Plat
+                                                </option>
+                                                <option value="dessert"
+                                                    @selected(old("products.{$product->id}.dish_type") === 'dessert')>
+                                                    Dessert
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                name="products[{{ $product->id }}][quantity]"
+                                                class="form-control"
+                                                min="1"
+                                                value="{{ old("products.{$product->id}.quantity", 1) }}"
+                                            >
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
                 <button type="submit" class="btn btn-primary">
                     Créer le menu
                 </button>
