@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\CustomPageBuilderController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\OpeningHourController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\MenuController;
 
 
 
@@ -259,5 +260,10 @@ Route::put('/logo-setting', [SettingController::class, 'UpdateLogoSetting'])->na
 Route::put('/appearance-setting', [SettingController::class, 'UpdateAppearanceSetting'])->name('appearance-setting.update');
 Route::put('/seo-setting', [SettingController::class, 'UpdateSeoSetting'])->name('seo-setting.update');
 
+//Menu Routes 
+Route::resource('catering-menus', MenuController::class)
+    ->except(['show'])
+    ->parameters(['catering-menus' => 'menu'])
+    ->names('catering-menus');
 
 

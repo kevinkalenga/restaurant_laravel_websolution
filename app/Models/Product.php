@@ -34,4 +34,19 @@ class Product extends Model
     {
       return $this->hasMany(ProductRating::class, 'product_id', 'id');
     }
+
+    
+    public function menus(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Menu::class, 'menu_product')
+            ->withPivot('dish_type', 'quantity')
+            ->withTimestamps();
+    }
+
+    public function allergens(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Allergen::class, 'allergen_product')
+            ->withTimestamps();
+    }
+
 }
