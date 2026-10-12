@@ -192,6 +192,55 @@
                    
                   </ul>
               </li>
+              
+              
+                            
+              <li class="dropdown">
+                  <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+                      <i class="fas fa-utensils"></i>
+                      <span>Manage Restaurant</span>
+                  </a>
+
+                  <ul class="dropdown-menu">
+                      <li>
+                          <a class="nav-link" href="{{ route('admin.category.index') }}">
+                              Product Categories
+                          </a>
+                      </li>
+
+                      <li>
+                          <a class="nav-link" href="{{ route('admin.product.index') }}">
+                              Products & Dishes
+                          </a>
+                      </li>
+
+                      <li>
+                          <a class="nav-link" href="{{ route('admin.product-reviews.index') }}">
+                              Product Reviews
+                          </a>
+                      </li>
+
+                      <li>
+                          <a class="nav-link" href="{{ route('admin.catering-menus.index') }}">
+                              <i class="fas fa-book-open"></i>
+                              Menus traiteur
+                          </a>
+                      </li>
+
+                      <li>
+                          <a class="nav-link" href="{{ route('admin.allergens.index') }}">
+                              <i class="fas fa-allergies"></i>
+                              Allergènes
+                          </a>
+                      </li>
+                  </ul>
+              </li>
+
+              
+              
+              
+              
+              
               <li class="dropdown">
 
                     <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Footer</span></a>

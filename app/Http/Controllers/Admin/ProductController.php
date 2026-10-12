@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Traits\FileUploadTrait;
 use Illuminate\Support\Str;
+use App\Models\Allergen;
 
 class ProductController extends Controller
 {
@@ -74,7 +75,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-         return view('admin.product.create', compact('categories'));
+        $allergens = Allergen::orderBy('name')->get();
+         return view('admin.product.create', compact('categories', 'allergens'));
     }
 
     /**
@@ -98,6 +100,8 @@ class ProductController extends Controller
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
         'show_at_home' => ['required', 'boolean'],
+        'allergens' => ['sometimes', 'array'],
+        'allergens.*' => ['integer', 'distinct', 'exists:allergens,id'],
         'status' => ['required', 'boolean'],
       ]);
 
@@ -121,6 +125,7 @@ class ProductController extends Controller
       $product->seo_title = $request->seo_title;
       $product->seo_description = $request->seo_description;
       $product->show_at_home = $request->show_at_home;
+      $product->allergens()->sync($request->input('allergens', []));
       $product->status = $request->status;
       $product->save();
 
@@ -136,9 +141,15 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-         $product = Product::findOrFail($id);
-         $categories = Category::all(); 
-        return view('admin.product.edit', compact('product', 'categories'));
+        $product = Product::with('allergens')->findOrFail($id);
+        $categories = Category::all();
+        $allergens = Allergen::orderBy('name')->get();
+
+        return view('admin.product.edit', compact(
+            'product',
+            'categories',
+            'allergens'
+        ));
     }
 
     /**
@@ -167,6 +178,8 @@ class ProductController extends Controller
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
         'show_at_home' => ['required', 'boolean'],
+        'allergens' => ['sometimes', 'array'],
+        'allergens.*' => ['integer', 'distinct', 'exists:allergens,id'],
         'status' => ['required', 'boolean'],
     ]);
 
@@ -190,6 +203,7 @@ class ProductController extends Controller
     $product->seo_title = $request->seo_title;
     $product->seo_description = $request->seo_description;
     $product->show_at_home = $request->show_at_home;
+    $product->allergens()->sync($request->input('allergens', []));
     $product->status = $request->status;
     $product->save();
 

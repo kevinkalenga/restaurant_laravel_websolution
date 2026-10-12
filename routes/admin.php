@@ -40,6 +40,7 @@ use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\OpeningHourController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\AllergenController;
 
 
 
@@ -265,5 +266,9 @@ Route::resource('catering-menus', MenuController::class)
     ->except(['show'])
     ->parameters(['catering-menus' => 'menu'])
     ->names('catering-menus');
+
+    Route::resource('allergens', AllergenController::class)
+    ->except(['show'])
+    ->names('allergens');
 
 

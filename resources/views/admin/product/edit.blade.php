@@ -95,6 +95,76 @@
                     >
                 </div>
                 
+                 
+                 {{-- Allergènes --}}
+                <div class="form-group">
+                    <label>Allergènes du plat</label>
+
+                    @php
+                        $selectedAllergens = old(
+                            'allergens',
+                            $product->allergens->pluck('id')->all()
+                        );
+                    @endphp
+
+                    <div class="card">
+                        <div class="card-body">
+                            @forelse($allergens as $allergen)
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input
+                                        type="checkbox"
+                                        class="custom-control-input"
+                                        id="allergen_{{ $allergen->id }}"
+                                        name="allergens[]"
+                                        value="{{ $allergen->id }}"
+                                        {{ in_array(
+                                            $allergen->id,
+                                            $selectedAllergens
+                                        ) ? 'checked' : '' }}
+                                    >
+
+                                    <label
+                                        class="custom-control-label"
+                                        for="allergen_{{ $allergen->id }}"
+                                    >
+                                        {{ $allergen->name }}
+
+                                        @if($allergen->description)
+                                            <small class="text-muted">
+                                                — {{ $allergen->description }}
+                                            </small>
+                                        @endif
+                                    </label>
+                                </div>
+                            @empty
+                                <p class="text-muted mb-0">
+                                    Aucun allergène enregistré.
+                                    <a href="{{ route('admin.allergens.create') }}">
+                                        Ajouter un allergène
+                                    </a>
+                                </p>
+                            @endforelse
+
+                            @error('allergens')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+
+                            @error('allergens.*')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <small class="form-text text-muted">
+                        Coche tous les allergènes présents dans ce plat.
+                    </small>
+                </div>
+
+                
+                
+                
+                
+                
                 
                 <!-- SKU -->
                 <div class="form-group">

@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\CustomPageController;
 use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\Frontend\CateringMenuController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Http\Controllers\Employe\EmployeeDashboardController;
 use App\Http\Controllers\Employe\EmployeeOrderController;
@@ -197,5 +198,23 @@ Route::middleware(['auth', 'role:employe'])
         'toggleStatus'
     ])->name('product-reviews.toggle-status');
   });
+
+
+
+// Menus traiteur publics
+Route::get('/menus-traiteur', [
+    CateringMenuController::class,
+    'index'
+])->name('catering-menus.index');
+
+Route::get('/menus-traiteur/filtrer', [
+    CateringMenuController::class,
+    'filter'
+])->name('catering-menus.filter');
+
+Route::get('/menus-traiteur/{slug}', [
+    CateringMenuController::class,
+    'show'
+])->name('catering-menus.show');
 
 
