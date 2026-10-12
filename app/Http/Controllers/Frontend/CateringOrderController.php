@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Mail\CateringOrderConfirmation;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 
 class CateringOrderController extends Controller
@@ -147,6 +150,17 @@ class CateringOrderController extends Controller
 
             return $order;
         });
+
+
+        try {
+            Mail::to($order->catering_email)
+                ->send(new CateringOrderConfirmation($order));
+        } catch (\Throwable $e) {
+            Log::error('Échec de l’e-mail de confirmation traiteur', [
+                'order_id' => $order->id,
+                'exception' => $e->getMessage(),
+            ]);
+        }
 
         return redirect()
             ->route('catering-orders.create', $menu->slug)
