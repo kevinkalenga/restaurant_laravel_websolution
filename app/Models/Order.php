@@ -24,6 +24,19 @@ class Order extends Model
         'currency_name',
         'order_status',
         'equipment_loaned',
+        'catering_menu_id',
+        'delivery_date',
+        'delivery_time',
+        'number_of_persons',
+        'catering_first_name',
+        'catering_last_name',
+        'catering_email',
+        'catering_phone',
+        'service_location',
+    ];
+
+    protected $casts = [
+      'delivery_date' => 'date',
     ];
 
     public function user()
@@ -45,5 +58,10 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatusHistory::class)
             ->orderBy('created_at', 'asc');
+    }
+
+    public function cateringMenu()
+    {
+        return $this->belongsTo(\App\Models\Menu::class, 'catering_menu_id');
     }
 }

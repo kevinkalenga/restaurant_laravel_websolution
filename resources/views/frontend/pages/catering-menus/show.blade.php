@@ -106,10 +106,28 @@
                     </div>
                 @endif
 
-                <a href="{{ route('catering-menus.index') }}"
-                    class="common_btn mt-3">
-                    Retour aux menus
-                </a>
+                
+                <div class="mt-4 d-flex flex-wrap gap-2">
+                    <a href="{{ route('catering-menus.index') }}"
+                        class="common_btn">
+                        Retour aux menus
+                    </a>
+
+                    @auth
+                        @if($menu->status && $menu->available_stock > 0)
+                            <a href="{{ route('catering-orders.create', $menu->slug) }}"
+                                class="common_btn">
+                                Commander ce menu
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="common_btn">
+                            Connectez-vous pour commander
+                        </a>
+                    @endauth
+                </div>
+
             </div>
         </div>
 

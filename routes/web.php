@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Frontend\CustomPageController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\CateringMenuController;
+use App\Http\Controllers\Frontend\CateringOrderController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Http\Controllers\Employe\EmployeeDashboardController;
 use App\Http\Controllers\Employe\EmployeeOrderController;
@@ -149,6 +150,18 @@ Route::group(['middleware' => 'auth'], function(){
     // Delete Wishlist
      Route::delete('/wishlist/{id}', [WishlistController::class, 'wishlistDelete'])
     ->name('wishlist.delete');
+
+     Route::get(
+        '/menus-traiteur/{slug}/commander',
+        [CateringOrderController::class, 'create']
+    )->name('catering-orders.create');
+
+    
+    Route::post(
+        '/menus-traiteur/{slug}/commander',
+        [CateringOrderController::class, 'store']
+    )->name('catering-orders.store');
+
 });
 
 
@@ -216,5 +229,11 @@ Route::get('/menus-traiteur/{slug}', [
     CateringMenuController::class,
     'show'
 ])->name('catering-menus.show');
+
+
+
+
+
+
 
 
