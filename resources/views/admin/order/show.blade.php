@@ -49,33 +49,58 @@
                             <div class="col-md-6">
 
                                 <address>
+                                    @php
+                                        $isCateringOrder = !is_null($order->catering_menu_id);
+
+                                        $customerName = $isCateringOrder
+                                            ? trim(($order->catering_first_name ?? '') . ' ' . ($order->catering_last_name ?? ''))
+                                            : ($order->user->name ?? 'Guest');
+
+                                        $customerEmail = $isCateringOrder
+                                            ? ($order->catering_email ?? '')
+                                            : ($order->user->email ?? '');
+                                    @endphp
 
                                     <strong>Deliver To:</strong>
                                     <br>
 
                                     <strong>Name:</strong>
-                                    {{ $order->user->name ?? 'Guest' }}
-
+                                    {{ $customerName }}
                                     <br>
 
                                     <strong>Email:</strong>
-                                    {{ $order->user->email ?? '' }}
-
+                                    {{ $customerEmail }}
                                     <br>
 
                                     <strong>Address:</strong>
                                     {{ $order->address }}
                                     <br>
-                                     <strong>Delivery Area:</strong>
-                                    {{ $order->deliveryArea->area_name ?? 'N/A' }}
 
-                                    <br>
+                                    @if($isCateringOrder)
+                                        <strong>Service Location:</strong>
+                                        {{ $order->service_location ?? '-' }}
+                                        <br>
 
-                                    <strong>Estimated Delivery:</strong>
-                                    {{ $order->deliveryArea->min_delivery_time ?? '-' }}
-                                    -
-                                    {{ $order->deliveryArea->max_delivery_time ?? '-' }}
+                                        <strong>Number of Persons:</strong>
+                                        {{ $order->number_of_persons ?? '-' }}
+                                        <br>
 
+                                        <strong>Service Date:</strong>
+                                        {{ $order->delivery_date ? \Carbon\Carbon::parse($order->delivery_date)->format('d/m/Y') : '-' }}
+                                        <br>
+
+                                        <strong>Service Time:</strong>
+                                        {{ $order->delivery_time ?? '-' }}
+                                    @else
+                                        <strong>Delivery Area:</strong>
+                                        {{ $order->deliveryArea->area_name ?? 'N/A' }}
+                                        <br>
+
+                                        <strong>Estimated Delivery:</strong>
+                                        {{ $order->deliveryArea->min_delivery_time ?? '-' }}
+                                        -
+                                        {{ $order->deliveryArea->max_delivery_time ?? '-' }}
+                                    @endif
                                 </address>
 
                             </div>

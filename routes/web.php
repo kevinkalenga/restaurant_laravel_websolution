@@ -162,6 +162,18 @@ Route::group(['middleware' => 'auth'], function(){
         [CateringOrderController::class, 'store']
     )->name('catering-orders.store');
 
+    
+    Route::get(
+        '/commandes-traiteur/{order}/modifier',
+        [CateringOrderController::class, 'edit']
+    )->name('catering-orders.edit');
+
+    Route::put(
+        '/commandes-traiteur/{order}',
+        [CateringOrderController::class, 'update']
+    )->name('catering-orders.update');
+
+
 });
 
 

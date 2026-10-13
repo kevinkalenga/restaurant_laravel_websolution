@@ -9,8 +9,6 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use App\Mail\CateringOrderConfirmation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -109,7 +107,7 @@ class CateringOrderController extends Controller
         ) {
             $order = new Order();
 
-            $order->invoice_id = (string) Str::uuid();
+            $order->invoice_id = generateInvoiceId();
             $order->user_id = Auth::id();
 
             $order->catering_menu_id = $menu->id;
@@ -171,5 +169,139 @@ class CateringOrderController extends Controller
                     . '. Le paiement et la confirmation définitive restent à configurer.'
             );
     }
+
+
+
+
+    
+    public function edit(int $id)
+    {
+        $order = Order::where('user_id', Auth::id())
+            ->whereNotNull('catering_menu_id')
+            ->findOrFail($id);
+
+        if ($order->order_status !== 'pending') {
+            return redirect()
+                ->route('dashboard')
+                ->with('error', 'Cette commande ne peut plus être modifiée.');
+        }
+
+        $menu = $order->cateringMenu;
+        $user = Auth::user();
+
+        if (!$menu) {
+            return redirect()
+                ->route('dashboard')
+                ->with('error', 'Le menu de cette commande est introuvable.');
+        }
+
+        return view(
+            'frontend.pages.catering-orders.edit',
+            compact('order', 'menu', 'user')
+        );
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $order = Order::where('user_id', Auth::id())
+            ->whereNotNull('catering_menu_id')
+            ->findOrFail($id);
+
+        if ($order->order_status !== 'pending') {
+            return redirect()
+                ->route('dashboard')
+                ->with('error', 'Cette commande ne peut plus être modifiée.');
+        }
+
+        $menu = $order->cateringMenu;
+
+        if (!$menu) {
+            return back()->with('error', 'Le menu est introuvable.');
+        }
+
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:30'],
+            'address' => ['required', 'string', 'max:2000'],
+            'delivery_date' => ['required', 'date', 'after_or_equal:today'],
+            'delivery_time' => ['required', 'date_format:H:i'],
+            'service_location' => ['required', 'string', 'max:255'],
+            'number_of_persons' => [
+                'required',
+                'integer',
+                'min:' . (int) $menu->minimum_persons,
+            ],
+        ]);
+
+        $persons = (int) $validated['number_of_persons'];
+        $menuPrice = round((float) $menu->price, 2);
+
+        $discount = $persons >= ((int) $menu->minimum_persons + 5)
+            ? round($menuPrice * 0.10, 2)
+            : 0;
+
+        // Même calcul provisoire que lors de la création.
+        $deliveryFee = (float) $order->delivery_charge;
+        $grandTotal = round(
+            $menuPrice - $discount + $deliveryFee,
+            2
+        );
+
+        DB::transaction(function () use (
+            $order,
+            $validated,
+            $persons,
+            $menuPrice,
+            $discount,
+            $deliveryFee,
+            $grandTotal,
+            $menu
+        ) {
+            $order->catering_first_name = $validated['first_name'];
+            $order->catering_last_name = $validated['last_name'];
+            $order->catering_email = $validated['email'];
+            $order->catering_phone = $validated['phone'];
+            $order->address = $validated['address'];
+            $order->delivery_date = $validated['delivery_date'];
+            $order->delivery_time = $validated['delivery_time'];
+            $order->service_location = $validated['service_location'];
+            $order->number_of_persons = $persons;
+
+            $order->subtotal = $menuPrice;
+            $order->discount = $discount;
+            $order->delivery_charge = $deliveryFee;
+            $order->grand_total = $grandTotal;
+
+            $order->save();
+
+            $item = OrderItem::where('order_id', $order->id)->first();
+
+            if ($item) {
+                $item->product_name = $menu->title;
+                $item->unit_price = $menuPrice;
+                $item->qty = 1;
+                $item->save();
+            }
+        });
+
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Votre commande traiteur a été modifiée avec succès.');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

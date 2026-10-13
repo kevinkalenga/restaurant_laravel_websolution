@@ -79,6 +79,20 @@
                                         View
                                     </a>
 
+                                    
+                                    @if($order->order_status === 'pending' && !is_null($order->catering_menu_id))
+                                        <a
+                                            href="{{ route('catering-orders.edit', $order->id) }}"
+                                            class="btn btn-primary btn-sm"
+                                            style="margin-left: 10px;"
+                                        >
+                                            Modifier
+                                        </a>
+                                    @endif
+
+                                    
+                                    
+                                    
                                     @if($order->order_status === 'pending')
                                         <form action="{{ route('order.cancel', $order->id) }}"
                                             method="POST"
@@ -158,16 +172,32 @@
                     <div class="header_address">
                         <h4>invoice to</h4>
 
+                        
                         @php
-                            $address = $order->user->addresses
-                                ->where('delivery_area_id', $order->delivery_area_id)
+                            $address = $order->user?->addresses
+                                ?->where('delivery_area_id', $order->delivery_area_id)
                                 ->first();
+
+                            $isCateringOrder = !is_null($order->catering_menu_id);
+
+                            $customerName = $isCateringOrder
+                                ? trim(($order->catering_first_name ?? '') . ' ' . ($order->catering_last_name ?? ''))
+                                : ($order->user?->name ?? '');
+
+                            $customerPhone = $isCateringOrder
+                                ? $order->catering_phone
+                                : ($address->phone ?? '');
+
+                            $customerEmail = $isCateringOrder
+                                ? $order->catering_email
+                                : ($address->email ?? '');
                         @endphp
 
-                        <p>{{ $order->user->name }}</p>
+                        <p>{{ $customerName }}</p>
                         <p>Adresse : {{ $order->address }}</p>
-                        <p>Phone : {{ $address->phone ?? '' }}</p>
-                        <p>Email : {{ $address->email ?? '' }}</p>
+                        <p>Phone : {{ $customerPhone ?: 'Non renseigné' }}</p>
+                        <p>Email : {{ $customerEmail ?: 'Non renseigné' }}</p>
+
                     </div>
 
                     <div class="header_address" style="width:50%">
