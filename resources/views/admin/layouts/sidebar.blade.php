@@ -117,6 +117,14 @@
                    <li><a class="nav-link" href="{{route('admin.product.index')}}">Products</a></li>
                    <li><a class="nav-link" href="{{route('admin.product-reviews.index')}}">Product Reviews</a></li>
                    
+                  <li>
+                      <a class="nav-link" href="{{ route('admin.catering-reviews.index') }}">
+                          <i class="fas fa-star"></i>
+                          Avis commandes traiteur
+                      </a>
+                  </li>
+
+                   
                   </ul>
               </li> 
               <li class="dropdown">

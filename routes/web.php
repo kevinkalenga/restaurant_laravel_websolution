@@ -15,6 +15,8 @@ use App\Http\Controllers\Frontend\CustomPageController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\CateringMenuController;
 use App\Http\Controllers\Frontend\CateringOrderController;
+use App\Http\Controllers\Frontend\CateringOrderReviewController;
+use App\Http\Controllers\Employe\EmployeeCateringReviewController;
 use App\Events\RTOrderPlacedNotificationEvent;
 use App\Http\Controllers\Employe\EmployeeDashboardController;
 use App\Http\Controllers\Employe\EmployeeOrderController;
@@ -174,6 +176,17 @@ Route::group(['middleware' => 'auth'], function(){
     )->name('catering-orders.update');
 
 
+    Route::get(
+        '/commandes-traiteur/{order}/avis',
+        [CateringOrderReviewController::class, 'create']
+    )->name('catering-orders.review.create');
+
+    Route::post(
+        '/commandes-traiteur/{order}/avis',
+        [CateringOrderReviewController::class, 'store']
+    )->name('catering-orders.review.store');
+
+
 });
 
 
@@ -222,6 +235,16 @@ Route::middleware(['auth', 'role:employe'])
         EmployeeProductReviewController::class,
         'toggleStatus'
     ])->name('product-reviews.toggle-status');
+
+    Route::get('/catering-reviews', [
+        EmployeeCateringReviewController::class,
+        'index'
+    ])->name('catering-reviews.index');
+
+    Route::patch('/catering-reviews/{id}/status', [
+        EmployeeCateringReviewController::class,
+        'toggleStatus'
+    ])->name('catering-reviews.toggle-status');
   });
 
 

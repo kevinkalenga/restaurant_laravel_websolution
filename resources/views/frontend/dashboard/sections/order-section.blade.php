@@ -90,7 +90,16 @@
                                         </a>
                                     @endif
 
-                                    
+                                    @if (
+                                        $order->order_status === 'completed'
+                                        && !is_null($order->catering_menu_id)
+                                        && !$order->cateringReview
+                                    )
+                                        <a href="{{ route('catering-orders.review.create', $order->id) }}"
+                                        class="btn btn-success btn-sm">
+                                            Laisser un avis
+                                        </a>
+                                    @endif
                                     
                                     
                                     @if($order->order_status === 'pending')

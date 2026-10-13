@@ -41,6 +41,7 @@ use App\Http\Controllers\Admin\OpeningHourController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\AllergenController;
+use App\Http\Controllers\Admin\AdminCateringReviewController;
 
 
 
@@ -270,5 +271,12 @@ Route::resource('catering-menus', MenuController::class)
     Route::resource('allergens', AllergenController::class)
     ->except(['show'])
     ->names('allergens');
+
+// Catering Order Reviews Routes
+Route::get('/catering-reviews', [AdminCateringReviewController::class, 'index'])
+    ->name('catering-reviews.index');
+
+Route::patch('/catering-reviews/{id}/status', [AdminCateringReviewController::class, 'toggleStatus'])
+    ->name('catering-reviews.toggle-status');
 
 

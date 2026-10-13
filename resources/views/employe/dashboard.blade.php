@@ -107,13 +107,22 @@
     <main class="container pb-5">
 
         {{-- Bouton de gestion des avis clients --}}
-        <div class="mb-4">
+        <div class="mb-4 d-flex gap-2">
             <a href="{{ route('employe.product-reviews.index') }}"
             class="btn btn-primary">
                 <i class="bi bi-star me-1"></i>
                 Gestion des avis clients
             </a>
+             <a href="{{ route('employe.catering-reviews.index') }}"
+                class="btn btn-outline-primary">
+                    <i class="bi bi-star me-1"></i>
+                    Avis des commandes traiteur
+             </a>
         </div>
+
+        
+       
+
     
     
         

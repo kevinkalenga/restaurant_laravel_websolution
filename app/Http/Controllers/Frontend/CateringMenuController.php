@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use App\Models\CateringOrderReview;
 
 class CateringMenuController extends Controller
 {
@@ -49,6 +50,8 @@ class CateringMenuController extends Controller
     /**
      * Détail public d'un menu traiteur.
      */
+    
+     
     public function show(string $slug)
     {
         $menu = Menu::query()
@@ -57,9 +60,35 @@ class CateringMenuController extends Controller
             ->with(['galleries', 'products', 'products.allergens'])
             ->firstOrFail();
 
-        return view('frontend.pages.catering-menus.show', compact('menu'));
+        $reviews = CateringOrderReview::with('user')
+            ->where('status', 1)
+            ->whereHas('order', function ($query) use ($menu) {
+                $query->where('catering_menu_id', $menu->id);
+            })
+            ->latest()
+            ->get();
+
+        return view(
+            'frontend.pages.catering-menus.show',
+            compact('menu', 'reviews')
+        );
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Réponse JSON destinée aux filtres AJAX.
      */

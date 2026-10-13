@@ -207,4 +207,41 @@
     </div>
 </section>
 
+
+<hr class="my-5">
+
+<section class="catering-reviews">
+    <h3 class="mb-4">Avis clients</h3>
+
+    @forelse ($reviews as $review)
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <strong>{{ $review->user->name ?? 'Client' }}</strong>
+                    <small class="text-muted">
+                        {{ $review->created_at?->format('d/m/Y') }}
+                    </small>
+                </div>
+
+                <div class="my-2" aria-label="Note : {{ $review->rating }} sur 5">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <i class="fas fa-star"
+                           style="color: {{ $i <= $review->rating ? '#f0ad4e' : '#ddd' }}"></i>
+                    @endfor
+                    <span class="text-muted small">
+                        {{ $review->rating }}/5
+                    </span>
+                </div>
+
+                <p class="mb-0">{{ $review->review }}</p>
+            </div>
+        </div>
+    @empty
+        <p class="text-muted">
+            Aucun avis client approuvé pour ce menu pour le moment.
+        </p>
+    @endforelse
+</section>
+
+
 @endsection

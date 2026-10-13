@@ -64,4 +64,9 @@ class Order extends Model
     {
         return $this->belongsTo(\App\Models\Menu::class, 'catering_menu_id');
     }
+
+    public function cateringReview()
+    {
+        return $this->hasOne(\App\Models\CateringOrderReview::class);
+    }
 }
