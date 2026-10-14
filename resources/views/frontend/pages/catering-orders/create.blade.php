@@ -210,6 +210,25 @@
             </small>
         </div>
 
+        
+        <div class="mb-3">
+            <label for="payment_gateway">Moyen de paiement *</label>
+            <select
+                id="payment_gateway"
+                name="payment_gateway"
+                class="form-control"
+                required
+            >
+                <option value="paypal" {{ old('payment_gateway', 'paypal') === 'paypal' ? 'selected' : '' }}>
+                    PayPal
+                </option>
+                <option value="stripe" {{ old('payment_gateway') === 'stripe' ? 'selected' : '' }}>
+                    Stripe (carte bancaire)
+                </option>
+            </select>
+        </div>
+        
+        
         <button type="submit" class="common_btn">
             Continuer la commande
         </button>

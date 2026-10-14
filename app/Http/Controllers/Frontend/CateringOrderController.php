@@ -52,6 +52,7 @@ class CateringOrderController extends Controller
             'delivery_date' => ['required', 'date', 'after_or_equal:today'],
             'delivery_time' => ['required', 'date_format:H:i'],
             'service_location' => ['required', 'string', 'max:255'],
+            'payment_gateway' => ['required', 'string', 'in:paypal,stripe'],
             'number_of_persons' => [
                 'required',
                 'integer',
@@ -143,13 +144,11 @@ class CateringOrderController extends Controller
         // Transmettre la commande au processus de paiement PayPal.
         session(['order_id' => $order->id]);
 
-        return redirect()
-            ->route('paypal.payment')
-            ->with(
-                'success',
-                'Commande enregistrée. Veuillez effectuer le paiement PayPal. Référence : '
-                    . $order->invoice_id
-            );
+            $route = $validated['payment_gateway'] === 'stripe'
+            ? 'stripe.payment'
+            : 'paypal.payment';
+
+        return redirect()->route($route);
     }
 
     public function edit(int $id)

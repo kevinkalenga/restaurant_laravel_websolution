@@ -676,15 +676,38 @@ class PaymentController extends Controller
             });
 
             // Send notifications only once, after the payment update succeeds.
+           
+            // Notifications uniquement après confirmation effective du paiement.
             if ($wasJustPaid) {
-                OrderPlacedNotificationEvent::dispatch($order->id);
-
                 $updatedOrder = Order::find($order->id);
 
+                if ($updatedOrder && $updatedOrder->catering_menu_id) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to(
+                            $updatedOrder->catering_email
+                        )->send(
+                            new \App\Mail\CateringOrderConfirmation($updatedOrder)
+                        );
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::error(
+                            'Échec de l’e-mail traiteur après paiement Stripe.',
+                            [
+                                'order_id' => $updatedOrder->id,
+                                'exception' => $e->getMessage(),
+                            ]
+                        );
+                    }
+                } else {
+                    // Conserver l’e-mail classique des commandes standard.
+                    OrderPlacedNotificationEvent::dispatch($order->id);
+                }
+
+                // Conserver la notification d’équipe pour toutes les commandes.
                 if ($updatedOrder) {
                     RTOrderPlacedNotificationEvent::dispatch($updatedOrder);
                 }
             }
+
 
             $orderService->clearSession();
 
