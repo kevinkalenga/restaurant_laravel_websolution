@@ -68,7 +68,7 @@
                                 </td>
 
                                 <td>
-                                    <a class="view_invoice"
+                                    <a class="view_invoice me-2"
                                        href="javascript:void(0);"
                                        onclick="viewInvoice('{{ $order->id }}')">
                                         Voir
@@ -81,20 +81,18 @@
                                         </a>
                                     @endif
 
-                                    @if($order->order_status === 'completed' && $order->catering_menu_id)
-                                        @if(!$order->cateringReview)
-                                            <a href="{{ route('catering-orders.review.create', $order->id) }}"
-                                               class="btn btn-success btn-sm">
-                                                Laisser un avis
-                                            </a>
-                                        @else
-                                            <a href="#v-pills-messages"
-                                               class="btn btn-outline-primary btn-sm"
-                                               onclick="openCateringReviews(event)">
-                                                Voir mon avis
-                                            </a>
-                                        @endif
+                                   
+                                    @if (
+                                        $order->order_status === 'completed'
+                                        && !is_null($order->catering_menu_id)
+                                        && !$order->cateringReview
+                                    )
+                                        <a href="{{ route('catering-orders.review.create', $order->id) }}"
+                                        class="btn btn-success btn-sm">
+                                            Laisser un avis
+                                        </a>
                                     @endif
+
 
                                     @if($order->order_status === 'pending')
                                         <form action="{{ route('order.cancel', $order->id) }}"

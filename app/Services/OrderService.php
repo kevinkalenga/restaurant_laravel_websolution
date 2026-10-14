@@ -40,6 +40,29 @@ class OrderService {
     // Store Order In Database
     function createOrder()
     {
+         $existingOrderId = session('order_id');
+
+        if ($existingOrderId && Auth::check()) {
+            $existingOrder = Order::where('id', $existingOrderId)
+                ->where('user_id', Auth::id())
+                ->where('order_status', 'pending')
+                ->where('payment_status', 'pending')
+                ->where('address', session('address'))
+                ->first();
+
+            if (
+                $existingOrder &&
+                round((float) $existingOrder->subtotal, 2) ===
+                round((float) cartTotal(), 2)
+            ) {
+                session()->put('grand_total', $existingOrder->grand_total);
+
+                return $existingOrder;
+            }
+        }
+    
+    
+    
         $ecfDiscount = $this->calculateEcfDiscount();
 
         session()->put('ecf_discount', $ecfDiscount);
@@ -106,8 +129,13 @@ class OrderService {
        session()->forget('address');
        session()->forget('delivery_fee');
        session()->forget('delivery_area_id');
-       session()->forget('order_id');
-       session()->forget('grand_total');
+       session()->forget([
+         'order_id',
+         'grand_total',
+         'paypal_order_id',
+         'email',
+      ]);
+
     }
 
     

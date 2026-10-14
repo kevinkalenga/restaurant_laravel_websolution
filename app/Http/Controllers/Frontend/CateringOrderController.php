@@ -9,10 +9,6 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Mail\CateringOrderConfirmation;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-
 
 class CateringOrderController extends Controller
 {
@@ -40,11 +36,9 @@ class CateringOrderController extends Controller
         );
     }
 
-
-    
     public function store(Request $request, string $slug)
     {
-        $menu = \App\Models\Menu::query()
+        $menu = Menu::query()
             ->where('status', 1)
             ->where('slug', $slug)
             ->firstOrFail();
@@ -85,10 +79,7 @@ class CateringOrderController extends Controller
             ? round($menuPrice * 0.10, 2)
             : 0;
 
-        /*
-        * Valeur provisoire pour les tests.
-        * À remplacer par le calcul réel de distance avant la production.
-        */
+        // Frais de livraison provisoires.
         $deliveryFee = 5.00;
 
         $grandTotal = round(
@@ -127,7 +118,7 @@ class CateringOrderController extends Controller
             $order->subtotal = $menuPrice;
             $order->grand_total = $grandTotal;
 
-            // Une commande de menu : une ligne de commande.
+            // Une commande traiteur correspond à une ligne de commande.
             $order->product_qty = 1;
 
             $order->payment_method = null;
@@ -149,31 +140,18 @@ class CateringOrderController extends Controller
             return $order;
         });
 
-
-        try {
-            Mail::to($order->catering_email)
-                ->send(new CateringOrderConfirmation($order));
-        } catch (\Throwable $e) {
-            Log::error('Échec de l’e-mail de confirmation traiteur', [
-                'order_id' => $order->id,
-                'exception' => $e->getMessage(),
-            ]);
-        }
+        // Transmettre la commande au processus de paiement PayPal.
+        session(['order_id' => $order->id]);
 
         return redirect()
-            ->route('catering-orders.create', $menu->slug)
+            ->route('paypal.payment')
             ->with(
                 'success',
-                'Votre commande a été enregistrée. Référence : '
+                'Commande enregistrée. Veuillez effectuer le paiement PayPal. Référence : '
                     . $order->invoice_id
-                    . '. Le paiement et la confirmation définitive restent à configurer.'
             );
     }
 
-
-
-
-    
     public function edit(int $id)
     {
         $order = Order::where('user_id', Auth::id())
@@ -183,7 +161,10 @@ class CateringOrderController extends Controller
         if ($order->order_status !== 'pending') {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Cette commande ne peut plus être modifiée.');
+                ->with(
+                    'error',
+                    'Cette commande ne peut plus être modifiée.'
+                );
         }
 
         $menu = $order->cateringMenu;
@@ -192,7 +173,10 @@ class CateringOrderController extends Controller
         if (!$menu) {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Le menu de cette commande est introuvable.');
+                ->with(
+                    'error',
+                    'Le menu de cette commande est introuvable.'
+                );
         }
 
         return view(
@@ -210,13 +194,19 @@ class CateringOrderController extends Controller
         if ($order->order_status !== 'pending') {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Cette commande ne peut plus être modifiée.');
+                ->with(
+                    'error',
+                    'Cette commande ne peut plus être modifiée.'
+                );
         }
 
         $menu = $order->cateringMenu;
 
         if (!$menu) {
-            return back()->with('error', 'Le menu est introuvable.');
+            return back()->with(
+                'error',
+                'Le menu est introuvable.'
+            );
         }
 
         $validated = $request->validate([
@@ -242,8 +232,8 @@ class CateringOrderController extends Controller
             ? round($menuPrice * 0.10, 2)
             : 0;
 
-        // Même calcul provisoire que lors de la création.
         $deliveryFee = (float) $order->delivery_charge;
+
         $grandTotal = round(
             $menuPrice - $discount + $deliveryFee,
             2
@@ -288,20 +278,9 @@ class CateringOrderController extends Controller
 
         return redirect()
             ->route('dashboard')
-            ->with('success', 'Votre commande traiteur a été modifiée avec succès.');
+            ->with(
+                'success',
+                'Votre commande traiteur a été modifiée avec succès.'
+            );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

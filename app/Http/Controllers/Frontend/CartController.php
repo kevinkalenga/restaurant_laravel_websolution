@@ -89,6 +89,7 @@ class CartController extends Controller
            'weight' => 0,
            'options' => $options
        ]);
+       $this->invalidatePendingCheckout();
 
         return response(['status' => 'success', 'message' => "Product Added Into Card Successfully!"], 200);
       }catch(\Exception $e){
@@ -106,6 +107,7 @@ class CartController extends Controller
     {
         try {
             Cart::remove($rowId);
+            $this->invalidatePendingCheckout();
 
             $subtotal = cartTotal();
 
@@ -169,6 +171,7 @@ class CartController extends Controller
         
         try {
             $cart = Cart::update($request->rowId, $request->qty);
+             $this->invalidatePendingCheckout(); 
 
             return response()->json([
                 'status' => 'success',
@@ -191,6 +194,17 @@ class CartController extends Controller
 
     public function cartDestroy() {
         Cart::destroy();
+        $this->invalidatePendingCheckout();
         return redirect()->back();
     }
+
+    private function invalidatePendingCheckout(): void
+    {
+        session()->forget([
+            'order_id',
+            'grand_total',
+        ]);
+    }
 }
+
+
