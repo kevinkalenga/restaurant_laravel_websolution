@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Wishlist;
 use App\Models\ProductRating;
+use App\Models\CateringOrderReview;
 use Auth;
 
 class DashboardController extends Controller
@@ -20,12 +21,13 @@ class DashboardController extends Controller
       $deliveryAreas = DeliveryArea::where('status', 1)->get();
       $userAddresses = Address::where('user_id', Auth()->user()->id)->get();
       
-      $orders = Order::with('statusHistories')
-         ->where('user_id', auth()->id())
-         ->get();
+      $orders = Order::with(['statusHistories', 'cateringReview'])
+               ->where('user_id', auth()->id())
+               ->get();
 
       $reservations = Reservation::where('user_id', auth()->id())->get();
       $reviews = ProductRating::where('user_id', auth()->user()->id)->get();
+      $cateringReviews = CateringOrderReview::with('user', 'order')->where('user_id', auth()->id())->latest()->get();
       $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
       $totalOrders = Order::where('user_id', auth()->user()->id)->count();
       $totalCompletedOrders = Order::where('user_id', auth()->user()->id)->where('order_status', 'completed')->count();
@@ -39,7 +41,8 @@ class DashboardController extends Controller
          "wishlist", 
          "totalOrders", 
          "totalCompletedOrders",
-         "totalCancelOrders"
+         "totalCancelOrders",
+         "cateringReviews"
       ));
    }
 
