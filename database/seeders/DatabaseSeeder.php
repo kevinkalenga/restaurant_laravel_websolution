@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Slider;
 use App\Models\Product;
 use App\Models\Coupon;
+use App\Models\WhyChooseUs;
 
 class DatabaseSeeder extends Seeder
 {
