@@ -310,15 +310,16 @@
                         </table>
                     </div>
                 @endif
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary">
+                        Enregistrer les modifications
+                    </button>
 
-                <button type="submit" class="btn btn-primary">
-                    Enregistrer les modifications
-                </button>
-
-                <a href="{{ route('employe.catering-menus.index') }}"
-                   class="btn btn-secondary">
-                    Annuler
-                </a>
+                    <a href="{{ route('employe.catering-menus.index') }}"
+                    class="btn btn-secondary">
+                        Annuler
+                    </a>
+                </div>
             </form>
         </div>
     </div>
