@@ -118,6 +118,14 @@
                     <i class="bi bi-star me-1"></i>
                     Avis des commandes traiteur
              </a>
+
+             
+            <a href="{{ route('employe.catering-menus.index') }}"
+                class="btn btn-outline-success">
+                    <i class="bi bi-card-list me-1"></i>
+                    Gestion des menus traiteur
+            </a>
+
         </div>
 
         

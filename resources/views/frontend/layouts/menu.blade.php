@@ -70,7 +70,7 @@
                     
                     
                     <li>
-                        <a class="cart_icon message_icon"
+                        <a href="{{ route('dashboard') }}" class="message_icon"
                             >
                             <i class="fas fa-comment-alt-dots"></i>
                               

@@ -21,6 +21,7 @@ use App\Events\RTOrderPlacedNotificationEvent;
 use App\Http\Controllers\Employe\EmployeeDashboardController;
 use App\Http\Controllers\Employe\EmployeeOrderController;
 use App\Http\Controllers\Employe\EmployeeProductReviewController;
+use App\Http\Controllers\Employe\EmployeeMenuController;
 use App\Models\Order;
 
 
@@ -245,6 +246,11 @@ Route::middleware(['auth', 'role:employe'])
         EmployeeCateringReviewController::class,
         'toggleStatus'
     ])->name('catering-reviews.toggle-status');
+
+    Route::resource('catering-menus', EmployeeMenuController::class)
+    ->except(['show'])
+    ->parameters(['catering-menus' => 'menu'])
+    ->names('catering-menus');
   });
 
 
