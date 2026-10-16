@@ -12,17 +12,31 @@ use App\Traits\FileUploadTrait;
 class ProfileController extends Controller
 {
     use FileUploadTrait;
-    
+
+
+    public function edit()
+    {
+        return view('profile.edit', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+
+
+
     public function updateProfile(ProfileUpdateRequest $request)
     {
       //dd($request->all());
       $user = Auth::user();
       $user->name = $request->name;
-      $user->email = $request->email;
+      if ($user->email !== $request->email) {
+            $user->email = $request->email;
+            $user->email_verified_at = null;
+      }
+
       $user->phone = $request->phone;
       $user->save();
-
-      return redirect()->back()->with('status', 'User Updated Successfully!');
+      return redirect('/profile')->with('status', 'User Updated Successfully!');
     }
 
 
@@ -31,14 +45,14 @@ class ProfileController extends Controller
          $user = Auth::user();
          $user->password = bcrypt($request->password); //new pwd
          $user->save();
-      
+
          return redirect()->back()->with('status', 'Password Updated Successfully!');
     }
 
 
     public function updateAvatar(Request $request)
     {
-        // Handle img file 
+        // Handle img file
         $imagePath = $this->uploadImage($request, 'avatar');
 
         $user = Auth::user();

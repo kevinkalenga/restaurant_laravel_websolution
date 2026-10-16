@@ -22,6 +22,9 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('testing')) {
+            return;
+        }
         $settingsService = $this->app->make(SettingsService::class);
         $settingsService->setGlobalSettings();
     }

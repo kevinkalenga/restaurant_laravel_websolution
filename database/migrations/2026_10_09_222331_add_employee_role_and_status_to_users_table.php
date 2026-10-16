@@ -9,14 +9,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Ajouter le rôle employe aux rôles existants
-        DB::statement("
-            ALTER TABLE users
-            MODIFY role ENUM('user', 'admin', 'employe')
-            NOT NULL DEFAULT 'user'
-        ");
+        // MySQL nécessite cette modification pour ajouter le rôle employé.
+        // SQLite utilise un type compatible sans cette instruction.
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("
+                ALTER TABLE users
+                MODIFY role ENUM('user', 'admin', 'employe')
+                NOT NULL DEFAULT 'user'
+            ");
+        }
 
-        // Ajouter le statut du compte
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('is_active')->default(true);
         });
@@ -24,21 +26,20 @@ return new class extends Migration
 
     public function down(): void
     {
-        // Convertir les employés en utilisateurs avant de retirer leur rôle
         DB::table('users')
             ->where('role', 'employe')
             ->update(['role' => 'user']);
 
-        // Supprimer le statut du compte
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('is_active');
         });
 
-        // Restaurer les rôles d'origine
-        DB::statement("
-            ALTER TABLE users
-            MODIFY role ENUM('user', 'admin')
-            NOT NULL DEFAULT 'user'
-        ");
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("
+                ALTER TABLE users
+                MODIFY role ENUM('user', 'admin')
+                NOT NULL DEFAULT 'user'
+            ");
+        }
     }
 };
