@@ -30,17 +30,17 @@
                                 <!-- <img src="{{asset('frontend/images/footer_logo.png')}}" alt="FoodPark" class="img-fluid w-100"> -->
                                 
                             </a>
-                            @if($footerInfo->short_info)
+                            @if($footerInfo && $footerInfo->short_info)
                                  <span>{!! $footerInfo->short_info !!}</span>
                             @endif
-                            @if($footerInfo->address)
+                            @if($footerInfo && $footerInfo->address)
                                <p class="info"><i class="far fa-map-marker-alt"></i>{!! $footerInfo->address !!}</p>
                             @endif
-                            @if($footerInfo->phone)
+                            @if($footerInfo && $footerInfo->phone)
                               <a class="info" href="callto:{{$footerInfo->phone}}"><i class="fas fa-phone-alt"></i>
                                 {{$footerInfo->phone}}</a>
                             @endif
-                             @if($footerInfo->email)
+                             @if($footerInfo && $footerInfo->email)
                                 <a class="info" href="mailto:{{$footerInfo->email}}"><i class="fas fa-envelope"></i>
                                     {{$footerInfo->email}}
                                 </a>
@@ -108,7 +108,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="fp__footer_bottom_text d-flex flex-wrap justify-content-between">
-                             @if($footerInfo->copyright)
+                             @if($footerInfo && $footerInfo->copyright)
                                 <p>{{$footerInfo->copyright}}</p>
                              @endif
                             <ul class="d-flex flex-wrap">

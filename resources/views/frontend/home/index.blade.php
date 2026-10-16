@@ -62,7 +62,9 @@
     <!--=============================
         DOWNLOAD APP START
     ==============================-->
+      @if($appSection)
         @include('frontend.home.components.app_download');
+      @endif
     <!--=============================
         DOWNLOAD APP END
     ==============================-->
@@ -80,7 +82,9 @@
     <!--=============================
         COUNTER START
     ==============================-->
+      @if($counter)
         @include('frontend.home.components.counter');
+      @endif
     <!--=============================
         COUNTER END
     ==============================-->
