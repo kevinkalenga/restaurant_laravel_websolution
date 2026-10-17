@@ -34,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
             'pusher_secret',
         ];
 
+        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            return;
+        }
+
         $pusherConf = Setting::whereIn('key', $keys)
             ->pluck('value', 'key');
 
