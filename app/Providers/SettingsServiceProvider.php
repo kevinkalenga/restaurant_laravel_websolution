@@ -25,6 +25,11 @@ class SettingsServiceProvider extends ServiceProvider
         if ($this->app->environment('testing')) {
             return;
         }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            return;
+        }
+
         $settingsService = $this->app->make(SettingsService::class);
         $settingsService->setGlobalSettings();
     }
