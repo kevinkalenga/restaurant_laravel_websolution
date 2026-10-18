@@ -253,7 +253,7 @@
                                             <div class="col-lg-4">
                                                 <div class="fp__post_review">
                                                     <h4>Donner un avis</h4>
-                                                    <a href="{{ route('login') }}" class="alert alert-warning d-block">
+                                                    <a href="{{ route('login') }}" class="alert alert-warning d-block mt-3">
                                                         Connectez-vous pour donner votre avis.
                                                     </a>
                                                 </div>
