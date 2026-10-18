@@ -22,6 +22,14 @@ class PaymentGatewaySettingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('testing')) {
+          return;
+        }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('payment_gateway_settings')) {
+            return;
+        }
+
         $paymentGatewaySetting = $this->app->make(PaymentGatewaySettingService::class);
         $paymentGatewaySetting->setGlobalSettings();
     }

@@ -22,12 +22,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
+
+        if ($this->app->environment('testing')) {
+            return;
+        }
+
         $keys = [
             'pusher_app_id',
             'pusher_cluster',
             'pusher_key',
             'pusher_secret',
         ];
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            return;
+        }
 
         $pusherConf = Setting::whereIn('key', $keys)
             ->pluck('value', 'key');
@@ -48,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
                 $pusherConf['pusher_cluster'] ?? null,
 
             'broadcasting.connections.pusher.options.useTLS' => true,
-            
+
             'broadcasting.connections.pusher.options.host' => 'api-eu.pusher.com',
         ]);
     }
