@@ -9,31 +9,35 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Pusher = Pusher;
 
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: window.pusherConfig.key,
-    cluster: window.pusherConfig.cluster,
-    forceTLS: true,
-});
+const pusherConfig = window.pusherConfig;
 
-window.Echo.channel('order-placed')
-    .listen('RTOrderPlacedNotificationEvent', (e) => {
-        console.log('PUSHER EVENT RECEIVED:', e);
-        
+if (pusherConfig?.key) {
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: pusherConfig.key,
+        cluster: pusherConfig.cluster,
+        forceTLS: true,
+    });
 
-        let html = `
+    window.Echo.channel('order-placed')
+        .listen('RTOrderPlacedNotificationEvent', (e) => {
+            console.log('PUSHER EVENT RECEIVED:', e);
+
+            const html = `
                 <a href="/admin/orders/${e.orderId}" class="dropdown-item">
-                      <div class="dropdown-item-icon bg-info text-white">
+                    <div class="dropdown-item-icon bg-info text-white">
                         <i class="fas fa-bell"></i>
-                      </div>
-                      <div class="dropdown-item-desc">
+                    </div>
+                    <div class="dropdown-item-desc">
                         ${e.message}
                         <div class="time">${e.date}</div>
-                      </div>
+                    </div>
                 </a>
-        
-        `;
+            `;
 
-        $('.rt_notification').prepend(html);
-        $('. notification_beep').addClass('beep');
-    });
+            $('.rt_notification').prepend(html);
+            $('.notification_beep').addClass('beep');
+        });
+} else {
+    console.warn('Pusher désactivé : clé de configuration absente.');
+}

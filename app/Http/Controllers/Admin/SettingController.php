@@ -86,7 +86,8 @@ class SettingController extends Controller
 
         $settingsService = app(SettingsService::class);
         $settingsService->clearCachedSettings();
-        Cache::forget('mail_settings');
+        Cache::forget('settings');
+        // Cache::forget('mail_settings');
 
         return back()->with('success', 'Settings updated successfully.');
     }
