@@ -1,0 +1,72 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8001
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-restaurant_websolution}
+      DB_USERNAME: ${DB_USERNAME:-restaurant}
+      DB_PASSWORD: ${DB_PASSWORD:?Définir DB_PASSWORD dans .env.docker}
+      MONGODB_URI: mongodb://${MONGODB_USERNAME:-restaurant}:${MONGODB_PASSWORD:?Définir MONGODB_PASSWORD dans .env.docker}@mongodb:27017/${MONGODB_DATABASE:-restaurant_websolution}?authSource=admin
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-restaurant_websolution}
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+    ports:
+      - "127.0.0.1:8001:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-restaurant_websolution}
+      MYSQL_USER: ${DB_USERNAME:-restaurant}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Définir DB_PASSWORD dans .env.docker}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Définir MYSQL_ROOT_PASSWORD dans .env.docker}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./database/sql/02_demo_data.sql:/docker-entrypoint-initdb.d/02_demo_data.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: mongo:8
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME:-restaurant}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:?Définir MONGODB_PASSWORD dans .env.docker}
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'mongosh --quiet --username "$$MONGO_INITDB_ROOT_USERNAME" --password "$$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --eval "quit(db.adminCommand({ping:1}).ok ? 0 : 1)"'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
+  mongodb_data:

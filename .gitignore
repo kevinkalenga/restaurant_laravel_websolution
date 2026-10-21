@@ -22,3 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Configuration Docker locale (ne pas versionner les secrets)
+.env.docker
+.env.docker.*
+!.env.docker.example

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
+use App\Services\SettingsService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,14 +39,37 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
+        
+        $settings = app(SettingsService::class)->getSettings();
+
+        config([
+            'mail.default' => $settings['mail_driver'] ?? 'smtp',
+            'mail.mailers.smtp.transport' => 'smtp',
+            'mail.mailers.smtp.host' => $settings['mail_host'] ?? 'smtp.gmail.com',
+            'mail.mailers.smtp.port' => (int) ($settings['mail_port'] ?? 587),
+            'mail.mailers.smtp.username' => $settings['mail_username'] ?? null,
+            'mail.mailers.smtp.password' => $settings['mail_password'] ?? null,
+            'mail.mailers.smtp.encryption' => $settings['mail_encryption'] ?? 'tls',
+            'mail.from.address' => $settings['mail_from_address'] ?? null,
+            'mail.from.name' => $settings['site_name'] ?? config('app.name'),
+        ]);
+        
+        
+        
+        
+        
         $pusherConf = Setting::whereIn('key', $keys)
-            ->pluck('value', 'key');
+          ->pluck('value', 'key');
+
+        if (empty($pusherConf['pusher_key'])) {
+            return;
+        };
 
         config([
             'broadcasting.default' => 'pusher',
 
             'broadcasting.connections.pusher.key' =>
-                $pusherConf['pusher_key'] ?? null,
+                $pusherConf['pusher_key'],
 
             'broadcasting.connections.pusher.secret' =>
                 $pusherConf['pusher_secret'] ?? null,
