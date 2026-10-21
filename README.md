@@ -1,59 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vite & Gourmand
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Présentation du projet
 
-## About Laravel
+**Vite & Gourmand** est une application web développée avec Laravel dans le cadre d'un projet de formation (ECF).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+L'objectif est de proposer une plateforme de présentation de restaurants et de leurs menus, avec une interface accessible aux utilisateurs et des fonctionnalités de gestion adaptées aux besoins du projet.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fonctionnalités
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Les fonctionnalités sont à adapter à l'état final de l'application.
 
-## Learning Laravel
+- Création de compte et connexion des utilisateurs.
+- Consultation des restaurants, menus et plats.
+- Affichage des informations relatives aux plats et aux allergènes.
+- [Ajouter les fonctionnalités de réservation, d'avis ou autres si elles sont effectivement implémentées.]
+- Interface d'administration pour la gestion des données, selon les fonctionnalités retenues.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Technologies utilisées
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend :** PHP et Laravel.
+- **Base de données :** [MySQL / MariaDB / autre, à confirmer].
+- **Frontend :** Blade, HTML, CSS, JavaScript et [framework CSS utilisé, le cas échéant].
+- **Gestion de versions :** Git et GitHub.
 
-## Laravel Sponsors
+## Prérequis
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Avant d'installer le projet, vérifier que les outils suivants sont disponibles :
 
-### Premium Partners
+- PHP dans une version compatible avec le projet.
+- Composer.
+- Le moteur de base de données utilisé par l'application.
+- Node.js et npm, si nécessaire pour compiler les ressources frontend.
+- Git.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Installation
 
-## Contributing
+### 1. Récupérer le projet
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone <URL_DU_DEPOT>
+cd Restaurant_Food_Laravel
+```
 
-## Code of Conduct
+### 2. Installer les dépendances PHP
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+### 3. Configurer l'environnement
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## License
+Modifier ensuite le fichier `.env` pour renseigner les paramètres de la base de données et les autres paramètres nécessaires au fonctionnement de l'application.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Attention :** ne jamais publier le fichier `.env` ni les identifiants ou mots de passe qu'il contient.
+
+### 4. Préparer la base de données
+
+Créer une base de données vide, puis configurer ses paramètres dans `.env`.
+
+Exécuter les migrations :
+
+```bash
+php artisan migrate
+```
+
+Si le projet dispose de seeders destinés à créer des données de démonstration, utiliser la commande appropriée après vérification de leur contenu.
+
+### 5. Installer les dépendances frontend
+
+Si le projet utilise npm :
+
+```bash
+npm install
+npm run build
+```
+
+### 6. Lancer l'application
+
+```bash
+php artisan serve
+```
+
+L'application sera accessible à l'adresse locale indiquée dans le terminal, généralement `http://127.0.0.1:8000`.
+
+## Structure du projet
+
+Les principaux répertoires Laravel sont :
+
+- `app/` : logique applicative, modèles, contrôleurs et services.
+- `routes/` : définition des routes.
+- `resources/` : vues et ressources frontend.
+- `database/migrations/` : structure de la base de données.
+- `database/seeders/` : données initiales ou de démonstration, si disponibles.
+- `public/` : point d'entrée et ressources publiques.
+- `config/` : configuration de l'application.
+
+## Gestion du code source
+
+Le projet utilise Git pour le suivi des modifications.
+
+- `main` : branche principale du projet.
+- `develop` : branche de développement et d'intégration.
+- Les branches `feature/*` et `fix/*` servent respectivement au développement de fonctionnalités et à la correction de problèmes.
+
+Les modifications sont intégrées selon l'organisation des branches du dépôt.
+
+## Sécurité et configuration
+
+- Les identifiants et secrets doivent rester dans les variables d'environnement ou dans un système de configuration sécurisé.
+- Les paramètres SMTP doivent être configurés selon le mécanisme prévu par l'application.
+- En production, `APP_DEBUG` doit être désactivé et la configuration doit être adaptée à l'environnement de déploiement.
+
+## État du projet
+
+Le projet est en cours de développement. Les fonctionnalités, les données et les instructions de lancement seront actualisées au fur et à mesure de leur validation.
+
+## Auteur
+
+Projet réalisé dans le cadre d'un ECF de formation.
