@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use App\Mail\EquipmentReturnMail;
 use App\Mail\OrderReviewInvitationMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCancellationContactMail;
 
 class EmployeeOrderController extends Controller
 {
@@ -33,50 +34,50 @@ class EmployeeOrderController extends Controller
      */
     public function updateStatus(Request $request, Order $order)
     {
-        $validated = $request->validate([
-            'order_status' => [
-                'required',
-                'string',
-                Rule::in([
-                    'pending',
+            $validated = $request->validate([
+                'order_status' => [
+                    'required',
+                    'string',
+                    Rule::in([
+                        'pending',
+                        'accepted',
+                        'in_process',
+                        'in_delivery',
+                        'delivered',
+                        'waiting_equipment_return',
+                        'completed',
+                        'cancelled',
+                    ]),
+                ],
+
+                // Informations obligatoires en cas d'annulation.
+                
+                'contact_confirmed' => [
+                    'exclude_unless:order_status,cancelled',
+                    'required',
                     'accepted',
-                    'in_process',
-                    'in_delivery',
-                    'delivered',
-                    'waiting_equipment_return',
-                    'completed',
-                    'cancelled',
-                ]),
-            ],
+                ],
 
-            // Informations obligatoires en cas d'annulation.
-            
-            'contact_confirmed' => [
-                'exclude_unless:order_status,cancelled',
-                'required',
-                'accepted',
-            ],
+                
+                'contact_method' => [
+                    'required_if:order_status,cancelled',
+                    Rule::in(['phone', 'email', 'sms', 'in_person']),
+                ],
+                'cancellation_reason' => [
+                    'required_if:order_status,cancelled',
+                    'nullable',
+                    'string',
+                    'max:1000',
+                ],
+            ]);
 
-            
-            'contact_method' => [
-                'required_if:order_status,cancelled',
-                Rule::in(['phone', 'email', 'sms', 'in_person']),
-            ],
-            'cancellation_reason' => [
-                'required_if:order_status,cancelled',
-                'nullable',
-                'string',
-                'max:1000',
-            ],
-        ]);
+            $newStatus = $validated['order_status'];
 
-        $newStatus = $validated['order_status'];
-
-        $result = DB::transaction(function () use (
-            $order,
-            $newStatus,
-            $validated
-        ) {
+            $result = DB::transaction(function () use (
+                $order,
+                $newStatus,
+                $validated
+            ) {
             // Verrouille la commande pendant la vérification et la mise à jour.
             $currentOrder = Order::whereKey($order->id)
                 ->lockForUpdate()
@@ -129,6 +130,7 @@ class EmployeeOrderController extends Controller
                 ];
             }
 
+            
             if (
                 $newStatus === 'waiting_equipment_return'
                 && !$currentOrder->equipment_loaned
@@ -176,11 +178,25 @@ class EmployeeOrderController extends Controller
         });
 
         
-        // Envoyer les e-mails uniquement après une transition réussie.
-        if ($result['success'] && $result['changed']) {
-            $order->refresh();
-            $order->load('user');
+            // Envoyer les e-mails uniquement après une transition réussie.
+            if ($result['success'] && $result['changed']) {
+                $order->refresh();
+                $order->load('user');
 
+                    if (
+                $newStatus === 'cancelled'
+                && $validated['contact_method'] === 'email'
+            ) {
+                Mail::to($order->user->email)
+                    ->send(new OrderCancellationContactMail(
+                        $order,
+                        $validated['cancellation_reason']
+                    ));
+            }
+            
+            
+            
+            
             if ($newStatus === 'waiting_equipment_return') {
                 Mail::to($order->user->email)
                     ->send(new EquipmentReturnMail($order));
