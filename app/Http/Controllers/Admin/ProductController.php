@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Traits\FileUploadTrait;
 use Illuminate\Support\Str;
 use App\Models\Allergen;
+use App\Models\SectionTitle;
 
 class ProductController extends Controller
 {
@@ -66,7 +67,15 @@ class ProductController extends Controller
             ->make(true);
        }
 
-        return view('admin.product.index'); // Vue index pour produits
+        $keys = [
+            'food_menu_top_title',
+            'food_menu_main_title',
+            'food_menu_sub_title'
+        ];
+
+        $titles = SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
+
+        return view('admin.product.index', compact('titles')); // Vue index pour produits
     }
 
     /**
@@ -231,5 +240,31 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.product.index')
             ->with('success', 'Product deleted successfully!');
+    }
+
+
+    public function updateTitle(Request $request)
+    {
+        $request->validate([
+            'food_menu_top_title' => ['nullable', 'max:100'],
+            'food_menu_main_title' => ['nullable', 'max:200'],
+            'food_menu_sub_title' => ['nullable', 'max:500'],
+        ]);
+
+        $keys = [
+            'food_menu_top_title',
+            'food_menu_main_title',
+            'food_menu_sub_title'
+        ];
+
+        foreach ($keys as $key) {
+            SectionTitle::updateOrCreate(
+                ['key' => $key],
+                ['value' => $request->input($key)]
+            );
+        }
+
+        return redirect()->back()
+            ->with('status', 'Food Menu titles updated successfully!');
     }
 }

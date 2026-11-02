@@ -77,6 +77,9 @@ class FrontendController extends Controller
             'testimonial_top_title',
             'testimonial_main_title', 
             'testimonial_sub_title',
+            'food_menu_top_title',
+            'food_menu_main_title',
+            'food_menu_sub_title',
         ];
         return SectionTitle::whereIn('key', $keys)->pluck('value', 'key');
     }
@@ -242,7 +245,14 @@ class FrontendController extends Controller
     }
     public function blogDetails($slug)
     {
-        $blog = Blog::with(['user'])->where('slug', $slug)->where('status', 1)->firstOrFail();
+        $blog = Blog::with(['user'])
+        ->withCount(['comments' => function ($query) {
+            $query->where('status', 1);
+        }])
+        ->where('slug', $slug)
+        ->where('status', 1)
+        ->firstOrFail();
+        // $blog = Blog::with(['user'])->where('slug', $slug)->where('status', 1)->firstOrFail();
         // comments is the relation
         $comments = $blog->comments()->where('status', 1)->orderBy('id', 'DESC')->paginate(10);
         // we are ignoring the recent post or blog

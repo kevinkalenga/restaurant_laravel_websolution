@@ -61,7 +61,8 @@
                                 <ul class="d-flex flex-wrap mt_15">
                                     <li><i class="fas fa-user"></i>{{$blog->user->name}}</li>
                                     <li><i class="fas fa-calendar-alt"></i> {{date('d m Y', strtotime($blog->created_at))}}</li>
-                                    <li><i class="fas fa-comments"></i> {{$blog->comments_count}} comment</li>
+                                   
+                                     <li><i class="fas fa-comments"></i> {{$blog->comments_count > 1 ? 'commentaires':'commentaire'}}</li>
                                 </ul>
                                 <a class="title" href="{{route('blogs.details', $blog->slug)}}">{!! truncate($blog->title, 30) !!}</a>
                             </div>
@@ -69,7 +70,7 @@
                     </div>
                 @endforeach
                 @if($blogs->isEmpty()) 
-                    <h5 class="text-center text-danger mt-3">No Blog Found</h5>
+                    <h5 class="text-center text-danger mt-3">Aucun article trouvé</h5>
                 @endif
             </div>
             @if($blogs->hasPages())

@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -75,6 +74,215 @@ Route::resource('/category', CategoryController::class);
 
 // Product Routes(pour le crud)
 Route::resource('/product', ProductController::class);
+// Food Menu Title Route
+Route::put('/product-title-update', [ProductController::class, 'updateTitle'])
+    ->name('product-title.update');
+
+// Product Gellery Routes
+Route::get('/product-gallery/{product}', [ProductGalleryController::class, 'index'])->name('product-gallery.show-index');
+Route::resource('/product-gallery', ProductGalleryController::class);
+
+// Product Size Routes
+Route::get('/product-size/{product}', [ProductSizeController::class, 'index'])->name('product-size.show-index');
+Route::resource('/product-size', ProductSizeController::class);
+
+// Product Reviews Routes
+Route::get('/product-reviews', [ProductReviewController::class, 'index'])->name('product-reviews.index');
+Route::put('/product-reviews/{id}/status', [ProductReviewController::class,'toggleStatus'])->name('product-reviews.toggle-status');
+Route::delete('/product-reviews/{id}', [ProductReviewController::class, 'destroy'])->name('product-reviews.destroy');
+
+// Coupon Routes
+Route::resource('/coupon', CouponController::class);
+
+
+// Delivery Area Routes
+Route::resource('/delivery-area', DeliveryAreaController::class);
+
+
+// Orders Routes 
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/pending-orders', [OrderController::class, 'pendingOrdersIndex'])->name('pending-orders');
+Route::get('/pending-orders/data', [OrderController::class, 'pendingOrders'])->name('orders.pending.data');
+Route::get('/in-process-orders', [OrderController::class, 'inProcessOrdersIndex'])->name('in-process-orders');
+Route::get('/in-process-orders/data', [OrderController::class, 'inProcessOrders'])->name('orders.in-process.data');
+Route::get('/delivered-orders', [OrderController::class, 'deliveredOrdersIndex'])->name('delivered-orders');
+Route::get('/delivered-orders/data', [OrderController::class, 'deliveredOrders'])->name('orders.delivered.data');
+Route::get('/declined-orders', [OrderController::class, 'declinedOrdersIndex'])->name('declined-orders');
+Route::get('/declined-orders/data', [OrderController::class, 'declinedOrders'])->name('orders.declined.data');
+Route::get('orders/{order}', [OrderController::class,'show'])
+    ->name('orders.show');
+
+Route::get('orders/{order}/edit', [OrderController::class,'edit'])
+    ->name('orders.edit');
+
+Route::delete('orders/{order}', [OrderController::class, 'destroy'])
+    ->name('orders.destroy');
+
+// Récupérer le statut de la commande
+Route::get('/orders/status/{id}', [OrderController::class, 'getOrderStatus'])
+    ->name('orders.status');
+
+// Modifier le statut de la commande
+Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])
+    ->name('orders.update-status');
+
+// Order Notification Routes
+Route::get('clear-notification', [AdminDashboardController::class, 'clearNotification'])->name('clear-notification');
+
+// Chat routes
+Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
+Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
+
+// Daily Offer routes
+Route::get('dayly-offer/search-product', [DailyOfferController::class, 'productSearch'])->name('dayly-offer.search-product');
+Route::resource('dayly-offer', DailyOfferController::class);
+Route::put('/daily-offer-title-update', [DailyOfferController::class, 'updateTitle'])->name('daily-offer-title.update');
+
+// Banner Slider routes
+Route::resource('/banner-slider', BannerSliderController::class);
+
+
+//Chef routes
+Route::put('/chefs-title-update', [ChefController::class, 'updateTitle'])->name('chefs-title.update');
+Route::resource('/chefs', ChefController::class);
+
+
+//App Download Routes
+Route::get('app-download', [AppDownloadSectionController::class, 'index'])->name('app-download.index');
+Route::post('app-download', [AppDownloadSectionController::class, 'store'])->name('app-download.store');
+
+//Testimonial Routes 
+Route::put('/testimonial-title-update', [TestimonialController::class, 'updateTitle'])->name('testimonial-title.update');
+Route::resource('testimonial', TestimonialController::class);
+
+
+
+//Counter Routes 
+Route::get('counter', [CounterController::class, 'index'])->name('counter.index');
+Route::put('counter', [CounterController::class, 'update'])->name('counter.update');
+
+//Blogs category Routes 
+Route::resource('blog-category', BlogCategoryController::class);
+
+
+//Blogs Routes 
+Route::get('blogs/comments', [BlogController::class, 'blogComment'])->name('blogs.comments.index');
+Route::patch('blogs/comments/{id}/status', [BlogController::class, 'updateCommentStatus'])
+    ->name('blogs.comments.status');
+Route::get('blogs/comments/{id}', [BlogController::class, 'showComment'])
+    ->name('blogs.comments.show');
+Route::delete('blogs/comments/{id}', [BlogController::class, 'deleteComment'])
+    ->name('blogs.comments.delete');
+Route::resource('blogs', BlogController::class);
+
+
+//About Routes 
+Route::get('about', [AboutController::class, 'index'])->name('about.index');
+Route::put('about', [AboutController::class, 'update'])->name('about.update');
+
+
+//Privacy Policy Routes 
+Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
+Route::put('privacy-policy', [PrivacyPolicyController::class, 'update'])->name('privacy-policy.update');
+
+
+//Terms and Conditions Routes 
+Route::get('terms-and-conditions', [TermsAndConditionController::class, 'index'])->name('terms-and-conditions.index');
+Route::put('terms-and-conditions', [TermsAndConditionController::class, 'update'])->name('terms-and-conditions.update');
+
+
+//Contact Routes 
+Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
+Route::put('contact', [ContactController::class, 'update'])->name('contact.update');
+
+
+//Reservation Routes 
+Route::resource('/reservation-time', ReservationTimeController::class);
+Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+Route::get('/reservation/{reservation}/edit', [ReservationController::class, 'edit'])
+    ->name('reservation.edit');
+
+Route::put('/reservation/{reservation}', [ReservationController::class, 'update'])
+    ->name('reservation.update');
+Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])
+    ->name('reservation.destroy');
+
+//Newsletter Routes 
+Route::get('/news-letter', [NewsLetterController::class, 'index'])->name('news-letter.index');
+Route::post('/news-letter', [NewsLetterController::class, 'sendNewsLetter'])->name('news-letter.send');
+
+//Social Links Routes 
+Route::resource('social-link', SocialLinkController::class);
+
+//Footer Info Routes 
+Route::get('footer-info', [FooterInfoController::class, 'index'])->name("footer-info.index");
+Route::put('footer-info', [FooterInfoController::class, 'update'])->name("footer-info.update");
+
+
+//Menu Builder Routes 
+Route::get('menu-builder', [MenuBuilderController::class, 'index'])->name("menu-builder.index");
+
+//Custom Page Builder Routes 
+Route::resource('custom-page-builder', CustomPageBuilderController::class);
+
+
+// Product Option Routes
+
+Route::resource('/product-option', ProductOptionController::class);
+
+
+// Opening Hours Routes
+
+// Opening Hours Routes
+Route::get('opening-hours', [OpeningHourController::class, 'index'])
+    ->name('opening-hours.index');
+
+Route::post('opening-hours', [OpeningHourController::class, 'store'])
+    ->name('opening-hours.store');
+
+Route::get('opening-hours/{openingHour}/edit', [OpeningHourController::class, 'edit'])
+    ->name('opening-hours.edit');
+
+Route::put('opening-hours/{openingHour}', [OpeningHourController::class, 'update'])
+    ->name('opening-hours.update');
+
+Route::delete('opening-hours/{openingHour}', [OpeningHourController::class, 'destroy'])
+    ->name('opening-hours.destroy');
+
+// Setting Payment Gateway Routes
+Route::get('/payment-gateway-setting', [PaymentGatewaySettingController::class, 'index'])->name('payment-setting.index');
+Route::put('/paypal-setting', [PaymentGatewaySettingController::class, 'paypalSettingUpdate'])->name('paypal-setting.update');
+Route::put('/stripe-setting', [PaymentGatewaySettingController::class, 'stripeSettingUpdate'])->name('stripe-setting.update');
+
+// Setting Routes
+Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+Route::put('/general-setting', [SettingController::class, 'UpdateGeneralSetting'])->name('general-setting.update');
+Route::put('/pusher-setting', [SettingController::class, 'UpdatePusherSetting'])->name('pusher-setting.update');
+Route::put('/mail-setting', [SettingController::class, 'UpdateMailSetting'])->name('mail-setting.update');
+Route::put('/logo-setting', [SettingController::class, 'UpdateLogoSetting'])->name('logo-setting.update');
+Route::put('/appearance-setting', [SettingController::class, 'UpdateAppearanceSetting'])->name('appearance-setting.update');
+Route::put('/seo-setting', [SettingController::class, 'UpdateSeoSetting'])->name('seo-setting.update');
+
+//Menu Routes 
+Route::resource('catering-menus', MenuController::class)
+    ->except(['show'])
+    ->parameters(['catering-menus' => 'menu'])
+    ->names('catering-menus');
+
+    Route::resource('allergens', AllergenController::class)
+    ->except(['show'])
+    ->names('allergens');
+
+// Catering Order Reviews Routes
+Route::get('/catering-reviews', [AdminCateringReviewController::class, 'index'])
+    ->name('catering-reviews.index');
+
+Route::patch('/catering-reviews/{id}/status', [AdminCateringReviewController::class, 'toggleStatus'])
+    ->name('catering-reviews.toggle-status');
+
+
+
 
 // Product Gellery Routes
 Route::get('/product-gallery/{product}', [ProductGalleryController::class, 'index'])->name('product-gallery.show-index');

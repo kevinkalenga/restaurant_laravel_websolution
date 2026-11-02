@@ -4,8 +4,8 @@
                 <div class="row wow fadeInUp" data-wow-duration="1s">
                     <div class="col-md-8 col-lg-7 col-xl-6 m-auto text-center">
                         <div class="fp__section_heading mb_25">
-                            <h4>news & blogs</h4>
-                            <h2>our latest foods blog</h2>
+                            <h4>Actualités</h4>
+                            <h2>Nos derniers articles gourmands</h2>
                             <span>
                                 <img src="{{asset('frontend/images/heading_shapes.png')}}" alt="shapes" class="img-fluid w-100">
                             </span>
@@ -24,7 +24,7 @@
                                     <ul class="d-flex flex-wrap mt_15">
                                         <li><i class="fas fa-user"></i>{{$blog->user->name}}</li>
                                         <li><i class="fas fa-calendar-alt"></i> {{date('d M Y', strtotime($blog->created_at))}}</li>
-                                        <li><i class="fas fa-comments"></i> {{$blog->comments_count}} comment</li>
+                                        <li><i class="fas fa-comments"></i> {{ $blog->comments_count }} {{$blog->comments_count > 1 ? 'commentaires':'commentaire'}}</li>
                                     </ul>
                                     <a class="title" href="{{route('blogs.details', $blog->slug)}}">{{truncate($blog->title, 40)}}</a>
                                 </div>
