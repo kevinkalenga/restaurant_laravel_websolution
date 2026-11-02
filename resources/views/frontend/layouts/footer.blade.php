@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-lg-2 col-sm-4 col-md-6">
                         <div class="fp__footer_content">
-                            <h3>Short Link</h3>
+                            <h3>Liens rapides</h3>
                             <ul>
                                 @foreach($footerMenuOne as $menuItem)
                                   <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-lg-2 col-sm-4 col-md-6 order-sm-4 order-lg-3">
                         <div class="fp__footer_content">
-                            <h3>Opening Hours</h3>
+                            <h3>Horaires</h3>
                             <ul>
                                     @foreach($openingHours as $openingHour)
                                         <li>
@@ -80,18 +80,18 @@
                     </div>
                     <div class="col-lg-3 col-sm-8 col-md-6 order-lg-4">
                         <div class="fp__footer_content">
-                            <h3>subscribe</h3>
+                            <h3>S'abonner</h3>
                             <form class="subscribe_form">
                                 @csrf
-                                <input type="text" placeholder="Subscribe" name="email">
-                                <button type="submit" class="subscribe_btn">Subscribe</button>
+                                <input type="text" placeholder="Votre adresse e-mail" name="email">
+                                <button type="submit" class="subscribe_btn">S'abonner</button>
                             </form>
                              @php 
                                $socialLinks = \App\Models\SocialLink::where('status', 1)->get();
 
                             @endphp
                             <div class="fp__footer_social_link">
-                                <h5>follow us:</h5>
+                                <h5>Suivez-nous:</h5>
                                 <ul class="d-flex flex-wrap">
                                     @foreach($socialLinks as $socialLink)
                                        <li><a href="{{$socialLink->link}}"><i class="{{$socialLink->icon}}"></i></a> </li>
@@ -116,7 +116,7 @@
                                   <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
                                 @endforeach
                                 <li>
-                                   <a href="{{ url('/page/legal-notice') }}">Legal Notice</a>
+                                   <a href="{{ url('/page/legal-notice') }}">Mentions légales</a>
                                 </li>
                                 
                                 <li>

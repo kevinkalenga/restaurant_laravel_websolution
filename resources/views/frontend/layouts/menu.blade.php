@@ -86,7 +86,7 @@
                     </li>
                     <li>
                         <a class="common_btn" href="#" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">reservation</a>
+                            data-bs-target="#staticBackdrop">réservation</a>
                     </li>
                 </ul>
             </div>
@@ -142,17 +142,17 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Book a Table</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Réserver une table</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form class="fp__reservation_form" action="{{route('reservation.store')}}" method="POST" novalidate>
                             @csrf
-                            <input class="reservation_input" type="text" placeholder="Name" name="name">
-                            <input class="reservation_input" type="text" placeholder="Phone" name="phone">
+                            <input class="reservation_input" type="text" placeholder="Nom" name="name">
+                            <input class="reservation_input" type="text" placeholder="Télephone" name="phone">
                             <input class="reservation_input" type="date" name="date">
                             <select class="reservation_input nice-select" name="time">
-                                <option value="">select time</option>
+                                <option value="">Choisir l'heure</option>
                                 @foreach($reservationTimes as $time)
                                    <option value="{{ $time->start_time }}-{{ $time->end_time }}">{{$time->start_time}} to {{$time->end_time}} </option>
                                 @endforeach
@@ -161,12 +161,12 @@
                                 class="reservation_input"
                                 type="number"
                                 name="persons"
-                                placeholder="Number of persons"
+                                placeholder="Nombre de personnes"
                                 min="1"
                                 max="20"
                                 required
                              >
-                            <button type="submit" class="submitBtn">book table</button>
+                            <button type="submit" class="submitBtn">Réserver une table</button>
                         </form>
                     </div>
                 </div>

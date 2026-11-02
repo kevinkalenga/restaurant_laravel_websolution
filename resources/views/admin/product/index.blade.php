@@ -1,4 +1,5 @@
-@extends('admin.layouts.master')  
+
+@extends('admin.layouts.master')
 
 @section('content')
 <section class="section">
@@ -6,6 +7,62 @@
         <h1>Products</h1>
     </div>
 
+    {{-- Food Menu Section Titles --}}
+    <div class="card">
+        <div class="card-body">
+            <div id="accordion">
+                <div class="accordion">
+                    <div class="accordion-header collapsed bg-primary text-light p-3"
+                         role="button"
+                         data-toggle="collapse"
+                         data-target="#panel-body-1"
+                         aria-expanded="false">
+                        <h4>Food Menu Section Titles</h4>
+                    </div>
+
+                    <div class="accordion-body collapse"
+                         id="panel-body-1"
+                         data-parent="#accordion">
+
+                        <form action="{{ route('admin.product-title.update') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="form-group">
+                                <label>Top Title</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="food_menu_top_title"
+                                       value="{{ $titles['food_menu_top_title'] ?? '' }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Main Title</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="food_menu_main_title"
+                                       value="{{ $titles['food_menu_main_title'] ?? '' }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Sub Title</label>
+                                <textarea class="form-control"
+                                          name="food_menu_sub_title"
+                                          rows="3">{{ $titles['food_menu_sub_title'] ?? '' }}</textarea>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">
+                                Save
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Products Table --}}
     <div class="card card-primary">
         <div class="card-header">
             <h4>All Products</h4>
@@ -41,84 +98,95 @@
 <script>
     const currencyIcon = "{{ config('settings.site_currency_icon') }}";
     const currencyPosition = "{{ config('settings.site_currency_icon_position') }}";
-$(function () {
-    $('#products-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{{ route("admin.product.index") }}',
-        columns: [
-            { data: 'id', name: 'id' },
 
-            { data: 'name', name: 'name' },
+    $(function () {
+        $('#products-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{{ route("admin.product.index") }}',
+            columns: [
+                { data: 'id', name: 'id' },
 
-            { data: 'thumb_image', name: 'thumb_image',
-              orderable: false, searchable: false,
-              render: function(data) {
-                  return data ? '<img src="'+data+'" width="50">' : '';
-              }
-            },
+                { data: 'name', name: 'name' },
 
-            { 
-                data: 'price', 
-                name: 'price',
-                render: function(data) {
-                    //  return '$' + parseFloat(data).toFixed(2);
-                    //   return currencyPosition + parseFloat(data).toFixed(2);
-                    const price = Number(data);
-                    if (isNaN(price)) return '';
+                {
+                    data: 'thumb_image',
+                    name: 'thumb_image',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return data ? '<img src="'+data+'" width="50">' : '';
+                    }
+                },
 
-                    return currencyPosition === 'left'
-                        ? currencyIcon + price.toFixed(2)
-                    : price.toFixed(2) + currencyIcon;
+                {
+                    data: 'price',
+                    name: 'price',
+                    render: function(data) {
+                        const price = Number(data);
+                        if (isNaN(price)) return '';
+
+                        return currencyPosition === 'left'
+                            ? currencyIcon + price.toFixed(2)
+                            : price.toFixed(2) + currencyIcon;
+                    }
+                },
+
+                {
+                    data: 'offer_price',
+                    name: 'offer_price',
+                    render: function(data) {
+                        const price = Number(data);
+                        if (isNaN(price)) return '';
+
+                        return currencyPosition === 'left'
+                            ? currencyIcon + price.toFixed(2)
+                            : price.toFixed(2) + currencyIcon;
+                    }
+                },
+
+                {
+                    data: 'show_at_home',
+                    name: 'show_at_home',
+                    render: function(data) {
+                        return data == 1
+                            ? '<span class="badge badge-success">Yes</span>'
+                            : '<span class="badge badge-danger">No</span>';
+                    }
+                },
+
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function(data) {
+                        return data == 1
+                            ? '<span class="badge badge-success">Active</span>'
+                            : '<span class="badge badge-danger">Inactive</span>';
+                    }
+                },
+
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function(data) {
+                        return new Date(data).toLocaleString('fr-FR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                },
+
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
                 }
-            },
-
-            { 
-                data: 'offer_price', 
-                name: 'offer_price',
-                render: function(data) {
-                    //  return '$' + parseFloat(data).toFixed(2);
-                    //  return currencyPosition + parseFloat(data).toFixed(2);
-                     const price = Number(data);
-                     if (isNaN(price)) return '';
-
-                     return currencyPosition === 'left'
-                         ? currencyIcon + price.toFixed(2)
-                         : price.toFixed(2) + currencyIcon;
-                }
-            },
-
-            { data: 'show_at_home', name: 'show_at_home',
-              render: function(data) {
-                  return data == 1 
-                  ? '<span class="badge badge-success">Yes</span>'
-                  : '<span class="badge badge-danger">No</span>';
-              }
-            },
-
-            { data: 'status', name: 'status',
-              render: function(data) {
-                  return data == 1 
-                  ? '<span class="badge badge-success">Active</span>'
-                  : '<span class="badge badge-danger">Inactive</span>';
-              }
-            },
-
-            { data: 'created_at', name: 'created_at',
-              render: function(data) {
-                  return new Date(data).toLocaleString('fr-FR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                  });
-              }
-            },
-
-            { data: 'action', name: 'action', orderable: false, searchable: false }
-        ]
+            ]
+        });
     });
-});
 </script>
 @endpush

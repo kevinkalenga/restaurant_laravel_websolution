@@ -53,22 +53,22 @@ $cat_url = config('menu.category.prefix');
                                                                     <p id="menu-item-url-wrap">
                                                                         <label class="howto"
                                                                             for="custom-menu-item-pages">
-                                                                            <span>Pages <code>(optional)</code></span>&nbsp;&nbsp;&nbsp;
+                                                                            <span>Découvrir <code>(optional)</code></span>&nbsp;&nbsp;&nbsp;
                                                                             
                                                                         </label>
                                                                         <select class="form-control" id="custom-menu-item-pages">
                                                                                 <option value="">Select</option>
-                                                                                <option value="Home" data-url="/">Home</option>
+                                                                                <option value="Accueil" data-url="/">Accueil</option>
                                                                                 <option value="Menu" data-url="/products">Menu</option>
                                                                                 <option value="Menu Traiteur" data-url="/menus-traiteur">Menu Traiteur</option>
-                                                                                <option value="About" data-url="/about">About</option>
-                                                                                <option value="Blogs" data-url="/blogs">Blogs</option>
-                                                                                <option value="Chefs" data-url="/chef">Chefs</option>
-                                                                                <option value="Blogs" data-url="/blogs">Blog Details</option>
-                                                                                <option value="Payment" data-url="/payment-methods">Payment</option>
-                                                                                <option value="Testimonials" data-url="/testimonial">Testimonials</option>
-                                                                                <option value="Privacy Policy" data-url="/privacy-policy">Privacy Plicy</option>
-                                                                                <option value="Terms And Cnditions" data-url="/terms-and-condistions">Terms And Conditions</option>
+                                                                                <option value="À propos" data-url="/about">À propos</option>
+                                                                                <option value="Actualités" data-url="/blogs">Actualités</option>
+                                                                                <option value="Nos chefs" data-url="/chef">Nos chefs</option>
+                                                                                <option value="Détail de l'article" data-url="/blogs">Détail de l'article</option>
+                                                                                <option value="Paiement" data-url="/payment-methods">Paiement</option>
+                                                                                <option value="Témoignages" data-url="/testimonial">Témoignages</option>
+                                                                                <option value="Politique de confidentialité" data-url="/privacy-policy">Politique de confidentialité</option>
+                                                                                <option value="Conditions générales" data-url="/terms-and-condistions">Conditions générales</option>
                                                                                 <option value="Contact" data-url="/contact">Contact</option>
                                                                         </select>
                                                                     </p>
