@@ -79,6 +79,67 @@
                     </small>
                 </div>
 
+                
+                
+                {{-- Galerie d'images --}}
+                <div class="form-group">
+                    <label for="gallery">Galerie d'images</label>
+
+                    {{-- Photos déjà enregistrées --}}
+                    @if ($menu->galleries->isNotEmpty())
+                        <div class="row mb-3">
+                            @foreach ($menu->galleries as $gallery)
+                                <div class="col-md-3 mb-3">
+                                    <div class="card">
+                                        <img
+                                            src="{{ asset('storage/' . $gallery->image) }}"
+                                            alt="Photo du menu {{ $menu->title }}"
+                                            class="card-img-top"
+                                            style="height: 140px; object-fit: cover;"
+                                        >
+
+                                        <div class="card-body text-center">
+                                            <label class="mb-0">
+                                                <input
+                                                    type="checkbox"
+                                                    name="delete_gallery[]"
+                                                    value="{{ $gallery->id }}"
+                                                >
+                                                Supprimer cette photo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">Aucune photo supplémentaire enregistrée.</p>
+                    @endif
+
+                    {{-- Ajouter de nouvelles photos --}}
+                    <input
+                        type="file"
+                        name="gallery[]"
+                        id="gallery"
+                        class="form-control"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <small class="form-text text-muted">
+                        Tu peux sélectionner plusieurs nouvelles photos.
+                    </small>
+
+                    <div id="gallery-preview" class="row mt-3"></div>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
                 {{-- Description --}}
                 <div class="form-group">
                     <label for="description">Description</label>
@@ -360,5 +421,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+const galleryUpload = document.getElementById('gallery');
+const galleryPreview = document.getElementById('gallery-preview');
+
+if (galleryUpload && galleryPreview) {
+    galleryUpload.addEventListener('change', function () {
+        galleryPreview.innerHTML = '';
+
+        Array.from(this.files).forEach(function (file) {
+            const col = document.createElement('div');
+            col.className = 'col-md-3 mb-3';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.alt = 'Aperçu de la galerie';
+            img.className = 'img-fluid rounded';
+            img.style.width = '100%';
+            img.style.height = '120px';
+            img.style.objectFit = 'cover';
+
+            col.appendChild(img);
+            galleryPreview.appendChild(col);
+        });
+    });
+}
 </script>
 @endpush

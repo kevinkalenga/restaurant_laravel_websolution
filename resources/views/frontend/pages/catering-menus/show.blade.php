@@ -39,19 +39,24 @@
                     </div>
                 @endif
 
-                @if($menu->galleries->isNotEmpty())
+                 @if($menu->galleries->isNotEmpty())
                     <div class="row mt-3">
                         @foreach($menu->galleries as $gallery)
                             <div class="col-4 mb-3">
-                                <img
-                                    src="{{ asset('storage/' . $gallery->image) }}"
-                                    alt="Photo du menu {{ $menu->title }}"
-                                    class="img-fluid rounded"
-                                    loading="lazy">
+                                <div style="height: 120px; overflow: hidden;">
+                                    <img
+                                        src="{{ asset('storage/' . $gallery->image) }}"
+                                        alt="Photo du menu {{ $menu->title }}"
+                                        class="img-fluid rounded w-100"
+                                        style="height: 120px; object-fit: cover;"
+                                        loading="lazy">
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 @endif
+            
+            
             </div>
 
             <div class="col-lg-6">
@@ -131,10 +136,13 @@
             </div>
         </div>
 
-        <hr class="my-5">
+       
 
-        <div class="row">
+      <hr class="my-5">
+
+        <div class="row align-items-stretch">
             <div class="col-12">
+                
                 <h3 class="mb-4">Composition du menu</h3>
             </div>
 
@@ -208,9 +216,9 @@
 </section>
 
 
-<hr class="my-5">
 
-<section class="catering-reviews">
+
+<section class="catering-reviews mt-5">
     <h3 class="mb-4">Avis clients</h3>
 
     @forelse ($reviews as $review)

@@ -151,6 +151,23 @@
                                 <div class="menu_det_description">
                                      {!! $product->long_description !!}
                                 </div>
+                                @if($product->allergens->isNotEmpty())
+                                    <div class="mt-4">
+                                        <h4 class="mb-3">Allergènes</h4>
+
+                                        <p>Ce produit contient les allergènes suivants :</p>
+
+                                        <ul class="d-flex flex-wrap gap-2 list-unstyled">
+                                            @foreach($product->allergens as $allergen)
+                                                <li>
+                                                    <span class="badge bg-warning text-dark p-2">
+                                                        {{ $allergen->name }}
+                                                    </span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="pills-contact" role="tabpanel"
                                 aria-labelledby="pills-contact-tab" tabindex="0">

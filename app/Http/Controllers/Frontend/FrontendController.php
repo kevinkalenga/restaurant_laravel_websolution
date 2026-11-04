@@ -86,7 +86,7 @@ class FrontendController extends Controller
 
     public function showProduct($slug)
     {
-      $product = Product::with(['productImages', 'productSizes', 'productOptions'])
+      $product = Product::with(['productImages', 'productSizes', 'productOptions', 'allergens'])
                  ->where(['slug' => $slug, 'status' => 1])
                  ->withAvg('reviews', 'rating')
                  ->withCount('reviews')
