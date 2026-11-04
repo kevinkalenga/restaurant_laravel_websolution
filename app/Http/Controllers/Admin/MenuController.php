@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Models\MenuGallery;
 
 class MenuController extends Controller
 {
@@ -31,7 +32,7 @@ class MenuController extends Controller
     {
         $products = Product::orderBy('name')->get();
 
-        $menu->load('products');
+        $menu->load(['products', 'galleries']);
 
         return view('admin.catering-menus.edit', compact('menu', 'products'));
     }
@@ -42,6 +43,8 @@ class MenuController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
+            'gallery' => ['nullable', 'array'],
+            'gallery.*' => ['image', 'max:2048'],
             'price' => ['required', 'numeric', 'min:0'],
             'minimum_persons' => ['required', 'integer', 'min:1'],
             'theme' => ['required', Rule::in(['classique', 'noel', 'paques', 'evenement'])],
@@ -72,6 +75,16 @@ class MenuController extends Controller
         $menu = Menu::create($validated);
         $menu->products()->sync($selectedProducts);
 
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                $path = $image->store('catering-menus/gallery', 'public');
+
+                $menu->galleries()->create([
+                    'image' => $path,
+                ]);
+            }
+        }
+
         return redirect()
             ->route('admin.catering-menus.index')
             ->with('success', 'Menu créé avec succès.');
@@ -83,6 +96,10 @@ class MenuController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
+            'gallery' => ['nullable', 'array'],
+            'gallery.*' => ['image', 'max:2048'],
+            'delete_gallery' => ['nullable', 'array'],
+            'delete_gallery.*' => ['integer', 'exists:menu_galleries,id'],
             'price' => ['required', 'numeric', 'min:0'],
             'minimum_persons' => ['required', 'integer', 'min:1'],
             'theme' => ['required', Rule::in(['classique', 'noel', 'paques', 'evenement'])],
@@ -119,6 +136,36 @@ class MenuController extends Controller
         $menu->update($validated);
         $menu->products()->sync($selectedProducts);
 
+
+        // Supprimer les photos sélectionnées
+        if ($request->filled('delete_gallery')) {
+            $galleries = $menu->galleries()
+                ->whereIn('id', $request->input('delete_gallery'))
+                ->get();
+
+            foreach ($galleries as $gallery) {
+                \Illuminate\Support\Facades\Storage::disk('public')
+                    ->delete($gallery->image);
+
+                $gallery->delete();
+            }
+        }
+        
+
+        // Ajouter les nouvelles photos
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                $path = $image->store('catering-menus/gallery', 'public');
+
+                $menu->galleries()->create([
+                    'image' => $path,
+                ]);
+            }
+        }
+
+        
+        
+        
         return redirect()
             ->route('admin.catering-menus.index')
             ->with('success', 'Menu modifié avec succès.');

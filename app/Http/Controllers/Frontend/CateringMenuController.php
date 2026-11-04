@@ -16,7 +16,7 @@ class CateringMenuController extends Controller
     {
         $menus = Menu::query()
             ->where('status', 1)
-            ->with(['galleries', 'products']);
+            ->with(['galleries', 'products.allergens']);
 
         if ($request->filled('theme')) {
             $menus->where('theme', $request->theme);

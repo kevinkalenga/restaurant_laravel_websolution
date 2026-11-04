@@ -51,6 +51,26 @@
                     </div>
                 </div>
 
+                
+                <div class="form-group">
+                    <label for="gallery">Galerie d'images</label>
+                    <input
+                        type="file"
+                        name="gallery[]"
+                        id="gallery"
+                        class="form-control"
+                        accept="image/*"
+                        multiple
+                    >
+                    <small class="form-text text-muted">
+                        Tu peux sélectionner plusieurs images pour ce menu.
+                    </small>
+
+                    <div id="gallery-preview" class="row mt-3"></div>
+                </div>
+                
+                
+                
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description"
@@ -239,5 +259,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+const galleryUpload = document.getElementById('gallery');
+const galleryPreview = document.getElementById('gallery-preview');
+
+if (galleryUpload && galleryPreview) {
+    galleryUpload.addEventListener('change', function () {
+        galleryPreview.innerHTML = '';
+
+        Array.from(this.files).forEach(function (file) {
+            const col = document.createElement('div');
+            col.className = 'col-md-3 mb-3';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'img-fluid rounded';
+            img.style.height = '120px';
+            img.style.width = '100%';
+            img.style.objectFit = 'cover';
+
+            col.appendChild(img);
+            galleryPreview.appendChild(col);
+        });
+    });
+}
 </script>
 @endpush
