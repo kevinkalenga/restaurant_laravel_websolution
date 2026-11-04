@@ -72,6 +72,69 @@
                             
                         </h3>
                         <p class="short_description">{!! $product->short_description !!}</p>
+                        
+                         <div class="my-4">
+                            <h3>
+                                {{ currencyPosition(
+                                    ($product->offer_price > 0 ? $product->offer_price : $product->price)
+                                    * $product->minimum_persons
+                                ) }}
+                            </h3>
+
+                            <p class="text-muted">
+                                Prix du menu pour le minimum de
+                                {{ $product->minimum_persons }} personne(s).
+                            </p>
+                        </div>
+
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <strong>Thème :</strong>
+                                {{ ucfirst($product->theme) }}
+                            </li>
+
+                            <li class="mb-2">
+                                <strong>Régime :</strong>
+                                {{ ucfirst($product->diet) }}
+                            </li>
+
+                            <li class="mb-2">
+                                <strong>Minimum de personnes :</strong>
+                                {{ $product->minimum_persons }}
+                            </li>
+
+                            <li class="mb-2">
+                                <strong>Délai de commande :</strong>
+                                {{ $product->advance_notice_hours }} heure(s) à l'avance
+                            </li>
+
+                            <li class="mb-2">
+                                <strong>Disponibilité :</strong>
+                                 
+                                @if($product->quantity > 0)
+                                    {{ $product->quantity }} commande(s)
+                                @else
+                                    <span class="text-danger">Indisponible</span>
+                                @endif
+                            </li>
+                        </ul>
+
+                        @if($product->storage_conditions)
+                            <div class="mt-4">
+                                <h5>Conditions de conservation</h5>
+                                <p>{{ $product->storage_conditions }}</p>
+                            </div>
+                        @endif
+
+                        @if($product->order_conditions)
+                            <div class="mt-3">
+                                <h5>Conditions de commande</h5>
+                                <p>{{ $product->order_conditions }}</p>
+                            </div>
+                        @endif
+                        
+                        
+                        
                         <form action="" id="v_add_to_cart_form">
                             @csrf 
 

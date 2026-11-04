@@ -95,8 +95,128 @@
                     >
                 </div>
                 
+                {{-- Informations complémentaires du menu classique --}}
+
+                <hr>
+                <h5 class="mb-3">Informations du menu classique</h5>
+
+                {{-- Thème --}}
+                <div class="form-group">
+                    <label for="theme">Thème</label>
+                    <input
+                        type="text"
+                        name="theme"
+                        id="theme"
+                        class="form-control"
+                        value="{{ old('theme', $product->theme ?? 'classique') }}"
+                        required
+                    >
+                    @error('theme')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Régime alimentaire --}}
+                <div class="form-group">
+                    <label for="diet">Régime alimentaire</label>
+                    <input
+                        type="text"
+                        name="diet"
+                        id="diet"
+                        class="form-control"
+                        value="{{ old('diet', $product->diet ?? 'classique') }}"
+                        required
+                    >
+                    @error('diet')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Délai de commande --}}
+                <div class="form-group">
+                    <label for="advance_notice_hours">Délai de commande (en heures)</label>
+                    <input
+                        type="number"
+                        name="advance_notice_hours"
+                        id="advance_notice_hours"
+                        class="form-control"
+                        min="1"
+                        value="{{ old('advance_notice_hours', $product->advance_notice_hours ?? 24) }}"
+                        required
+                    >
+                    @error('advance_notice_hours')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Disponibilité des commandes --}}
+                <div class="form-group">
+                    <label for="quantity">Disponibilité des commandes</label>
+                    <input
+                        type="number"
+                        name="quantity"
+                        id="quantity"
+                        class="form-control"
+                        min="0"
+                        value="{{ old('quantity', $product->quantity ?? 10) }}"
+                        required
+                    >
+                    <small class="form-text text-muted">
+                        Nombre de commandes disponibles pour ce menu.
+                    </small>
+                    @error('quantity')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                {{-- Conditions de conservation --}}
+                <div class="form-group">
+                    <label for="storage_conditions">Conditions de conservation</label>
+                    <textarea
+                        name="storage_conditions"
+                        id="storage_conditions"
+                        class="form-control"
+                        rows="3"
+                    >{{ old('storage_conditions', $product->storage_conditions) }}</textarea>
+                    @error('storage_conditions')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Conditions de commande --}}
+                <div class="form-group">
+                    <label for="order_conditions">Conditions de commande</label>
+                    <textarea
+                        name="order_conditions"
+                        id="order_conditions"
+                        class="form-control"
+                        rows="3"
+                    >{{ old('order_conditions', $product->order_conditions) }}</textarea>
+                    @error('order_conditions')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
                  
-                 {{-- Allergènes --}}
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                {{-- Allergènes --}}
                 <div class="form-group">
                     <label>Allergènes du plat</label>
 
