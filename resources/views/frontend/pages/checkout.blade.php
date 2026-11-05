@@ -14,10 +14,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>checkout</h1>
+                    <h1>Passer à la commande</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
-                        <li><a href="javascript:;">checkout</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Passer à la commande</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,8 +37,8 @@
                 <div class="col-lg-8 col-lg-7 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__checkout_form">
                         <div class="fp__check_form">
-                            <h5>select address <a href="#" data-bs-toggle="modal" data-bs-target="#address_modal"><i
-                                        class="far fa-plus"></i> add address</a></h5>
+                            <h5>Sélectionner une adresse <a href="#" data-bs-toggle="modal" data-bs-target="#address_modal"><i
+                                        class="far fa-plus"></i> Ajouter une adresse</a></h5>
 
                             <div class="fp__address_modal">
                                 <div class="modal fade" id="address_modal" data-bs-backdrop="static"
@@ -47,7 +47,7 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="address_modalLabel">add new address
+                                                <h1 class="modal-title fs-5" id="address_modalLabel">Ajouter une nouvelle adresse
                                                 </h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
@@ -62,7 +62,7 @@
                                                         <div class="col-md-12 col-lg-12 col-x-12">
                                                             <div class="fp__check_single_form">
                                                                 <select class="nice-select" name="delivery_area_id">
-                                                                    <option value="">Select Area</option>
+                                                                    <option value="">Sélectionner une zone</option>
                                                                     @foreach($deliveryAreas as $area)
                                                                       <option value="{{$area->id}}">{{$area->area_name}}</option>
                                                                     @endforeach
@@ -96,7 +96,7 @@
                                                         <div class="col-md-12 col-lg-12 col-xl-12">
                                                             <div class="fp__check_single_form">
                                                                 <textarea cols="3" rows="4"
-                                                                    placeholder="Address" name="address"></textarea>
+                                                                    placeholder="Adresse" name="address"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -106,7 +106,7 @@
                                                                         name="type" id="flexRadioDefault1" value="home">
                                                                     <label class="form-check-label"
                                                                         for="flexRadioDefault1">
-                                                                        home
+                                                                        Domicile
                                                                     </label>
                                                                 </div>
                                                                 <div class="form-check">
@@ -114,16 +114,15 @@
                                                                         name="type" id="flexRadioDefault2" value="office">
                                                                     <label class="form-check-label"
                                                                         for="flexRadioDefault2">
-                                                                        office
+                                                                        Travail
                                                                     </label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div style="display:flex;" >
                                                             <button type="button"
-                                                                class="common_btn cancel_new_address mx-2"  style="width:200px;">cancel</button>
-                                                            <button type="submit" class="common_btn mx-2" style="width:200px;">save
-                                                                address</button>
+                                                                class="common_btn cancel_new_address mx-2"  style="width:200px;">Annuler</button>
+                                                            <button type="submit" class="common_btn mx-2" style="width:200px;">Enregistrer l'adresse</button>
                                                         </div>
                                                     </div>
                                                  </form>
@@ -173,11 +172,11 @@
 
                 <div class="col-lg-4 wow fadeInUp" data-wow-duration="1s">
                     <div id="sticky_sidebar" class="fp__cart_list_footer_button">
-                        <h6>total cart</h6>
-                        <p>subtotal: <span>{{currencyPosition(cartTotal())}}</span></p>
-                        <p>delivery: <span id="delivery_fee">$00.00</span></p>
+                        <h6>Total du panier</h6>
+                        <p>Sous-total: <span>{{currencyPosition(cartTotal())}}</span></p>
+                        <p>Livraison: <span id="delivery_fee">$00.00</span></p>
                         <p>
-                            discount:
+                            Réduction:
                             <span>
                                 {{ currencyPosition((session('coupon.discount', 0)) + $ecfDiscount) }}
                             </span>
@@ -189,7 +188,7 @@
                         @endif -->
                        
                         <p class="total">
-                            <span>total:</span>
+                            <span>Total:</span>
                             <span id="final_total">
                                 {{ currencyPosition(cartTotal() - session('coupon.discount', 0) - $ecfDiscount) }}
                             </span>
@@ -202,7 +201,7 @@
                         </p>
                         
                         
-                        <a class="common_btn" id="proceed_pmt_button" href=" #">Proceed To Payment</a>
+                        <a class="common_btn" id="proceed_pmt_button" href=" #">Procéder au paiement</a>
                     </div>
                 </div>
             </div>

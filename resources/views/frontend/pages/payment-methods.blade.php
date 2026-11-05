@@ -9,9 +9,9 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Payment Methods</h1>
+                    <h1>Moyens de paiement</h1>
                     <ul>
-                        <li><a href="{{url('/')}}">home</a></li>
+                        <li><a href="{{url('/')}}">Accueil</a></li>
                         <li><a href="javascript:;">payment methods</a></li>
                     </ul>
                 </div>
@@ -28,8 +28,8 @@
     <div class="container">
 
         <div class="text-center mb_50">
-            <h2 class="mb-3">Payment Methods</h2>
-            <p>We accept the following payment methods:</p>
+            <h2 class="mb-3">Moyens de paiement</h2>
+            <p>Nous acceptons les moyens de paiement suivants :</p>
         </div>
 
         <div class="row justify-content-center">

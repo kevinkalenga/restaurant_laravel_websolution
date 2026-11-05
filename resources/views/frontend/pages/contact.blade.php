@@ -7,9 +7,9 @@
     <div class="fp__breadcrumb_overlay">
         <div class="container">
             <div class="fp__breadcrumb_text">
-                <h1>contact with us</h1>
+                <h1>Contactez-nous</h1>
                 <ul>
-                    <li><a href="{{ route('home') }}">home</a></li>
+                    <li><a href="{{ route('home') }}">Accueil</a></li>
                     <li><a href="javascript:;">contact</a></li>
                 </ul>
             </div>
@@ -25,7 +25,7 @@
                 <div class="fp__contact_info">
                     <span><i class="fal fa-phone-alt"></i></span>
                     <div class="text">
-                        <h3>call</h3>
+                        <h3>Appeler</h3>
                         <p>{{ $contact->phone_one }}</p>
                         <p>{{ $contact->phone_two }}</p>
                     </div>
@@ -36,7 +36,7 @@
                 <div class="fp__contact_info">
                     <span><i class="fal fa-envelope"></i></span>
                     <div class="text">
-                        <h3>mail</h3>
+                        <h3>E-mail</h3>
                         <p>{{ $contact->mail_one }}</p>
                         <p>{{ $contact->mail_two }}</p>
                     </div>
@@ -47,7 +47,7 @@
                 <div class="fp__contact_info">
                     <span><i class="fas fa-street-view"></i></span>
                     <div class="text">
-                        <h3>location</h3>
+                        <h3>Adresse</h3>
                         <p>{!! $contact->address !!}</p>
                     </div>
                 </div>

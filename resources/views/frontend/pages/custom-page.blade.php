@@ -14,7 +14,7 @@
                 <div class="fp__breadcrumb_text">
                     <h1>{{$page->name}}</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
                         <li><a href="javascript:;">{{$page->name}}</a></li>
                     </ul>
                 </div>

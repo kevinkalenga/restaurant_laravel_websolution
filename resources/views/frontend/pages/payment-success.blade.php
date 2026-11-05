@@ -12,7 +12,7 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Order</h1>
+                    <h1>Commande</h1>
                     <ul>
                         <!-- <li><a href="{{url('/')}}">home</a></li>
                         <li><a href="javascript:;">payment</a></li> -->
@@ -38,8 +38,8 @@
                     <div class="mb-4">
                         <i class="fas fa-check order-success-style"></i>
                     </div>
-                   <h4>Order Placed Successfully!</h4>
-                   <a class="common_btn mt-3" href="{{route('dashboard')}}">Go To Dashboard</a>
+                   <h4>Votre commande a été passée avec succès !</h4>
+                   <a class="common_btn mt-3" href="{{route('dashboard')}}">Accéder au tableau de bord</a>
                 </div>
                 
             </div>

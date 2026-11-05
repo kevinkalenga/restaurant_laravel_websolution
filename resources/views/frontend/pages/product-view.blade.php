@@ -10,10 +10,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>menu Details</h1>
+                    <h1>Détails du menu</h1>
                     <ul>
-                        <li><a href="{{url('/')}}">home</a></li>
-                        <li><a href="javascript:;">menu Details</a></li>
+                        <li><a href="{{url('/')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Détails du menu</a></li>
                     </ul>
                 </div>
             </div>
@@ -158,7 +158,7 @@
                             @endif
                             @if ($product->productOptions()->exists())
                                 <div class="details_extra_item">
-                                    <h5>select option <span>(optional)</span></h5>
+                                    <h5>Sélectionner une option <span>(Facultatif)</span></h5>
                                     @foreach($product->productOptions as $productOption)
                                     <div class="form-check">
 
@@ -185,10 +185,10 @@
                         </form>
                         <ul class="details_button_area d-flex flex-wrap">
                            @if($product->quantity === 0)
-                             <li><a class="common_btn bg-danger" href="javascript:;">Out of Stock</a></li>
+                             <li><a class="common_btn bg-danger" href="javascript:;">En rupture de stock</a></li>
                          
                            @else 
-                              <li><a class="common_btn v_submit_button" href="#">add to cart</a></li>
+                              <li><a class="common_btn v_submit_button" href="#">Ajouter au panier</a></li>
                             
                            @endif
                             <li onclick="addToWishlist('{{$product->id}}')"><a class="wishlist" href="javascript:;"><i class="far fa-heart"></i></a></li>
@@ -201,12 +201,12 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                                    aria-selected="true">Description</button>
+                                    aria-selected="true">Déscription</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-contact" type="button" role="tab"
-                                    aria-controls="pills-contact" aria-selected="false">Reviews</button>
+                                    aria-controls="pills-contact" aria-selected="false">Avis clients</button>
                             </li>
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
@@ -238,7 +238,7 @@
                                 <div class="fp__review_area">
                                     <div class="row">
                                         <div class="col-lg-8">
-                                            <h4>{{count($reviews)}} reviews</h4>
+                                            <h4>{{count($reviews)}} Avis clients</h4>
                                             <div class="fp__comment pt-0 mt_20">
                                                 @foreach($reviews as $review)
                                                     <div class="fp__single_comment m-0 border-0">
@@ -267,7 +267,7 @@
                                                 @endif
                                                 
                                                 @if(count($reviews) === 0)
-                                                  <div class="alert alert-warning mt-4">No review found</div>
+                                                  <div class="alert alert-warning mt-4">Aucun avis pour le moment</div>
 
                                                 @endif
 
@@ -357,7 +357,7 @@
             </div>
             @if (count($relatedProducts) > 0)
               <div class="fp__related_menu mt_90 xs_mt_60">
-                <h2>related item</h2>
+                <h2>Articles similaires</h2>
                 <div class="row related_product_slider">
                   @foreach($relatedProducts as $relatedProduct)
                     <div class="col-xl-3 wow fadeInUp" data-wow-duration="1s">

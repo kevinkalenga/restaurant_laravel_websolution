@@ -48,8 +48,8 @@
                         <div class="fp__search_form">
                             <form action="{{route('product.index')}}" method="GET">
                                 <span class="close_search"><i class="far fa-times"></i></span>
-                                <input type="text" placeholder="Search . . ." name="search">
-                                <button type="submit">search</button>
+                                <input type="text" placeholder="Rechercher . . ." name="search">
+                                <button type="submit">Rechercher</button>
                             </form>
                         </div>
                     </li>
@@ -96,7 +96,7 @@
     <div class="fp__menu_cart_area">
         <div class="fp__menu_cart_boody">
             <div class="fp__menu_cart_header">
-                <h5>total item (<span class="cart_count" style="font-size:20px;">{{count(Cart::content())}}</span>)</h5>
+                <h5>Nombre total de menus (<span class="cart_count" style="font-size:20px;">{{count(Cart::content())}}</span>)</h5>
                 <span class="close_cart"><i class="fal fa-times"></i></span>
             </div>
             <ul class="cart_contents">
@@ -108,7 +108,7 @@
                         </div>
                         <div class="menu_cart_text">
                             <a class="title" href="{{route('product.show', $cartProduct->options->product_info['slug'])}}">{!! $cartProduct->name !!} </a>
-                            <p class="size">Qty: {{$cartProduct->qty}}</p>
+                            <p class="size">Qté: {{$cartProduct->qty}}</p>
                             <p class="size">{{@$cartProduct->options->product_size['name']}}  {{@$cartProduct->options->product_size['price'] ? '('.currencyPosition(@$cartProduct->options->product_size['price']).')' : ''}} </p>
                             @foreach($cartProduct->options->product_options as $cartProductOption)
                                 <span class="extra">{{$cartProductOption['name']}} ({{currencyPosition($cartProductOption['price'])}}) </span>
@@ -121,9 +121,9 @@
                 @endforeach
               
             </ul>
-            <p class="subtotal">sub total <span class="cart_subtotal">{{currencyPosition(cartTotal())}}</span></p>
-            <a class="cart_view" href="{{route('cart.index')}}"> view cart</a>
-            <a class="checkout" href="check_out.html">checkout</a>
+            <p class="subtotal">Sous-total <span class="cart_subtotal">{{currencyPosition(cartTotal())}}</span></p>
+            <a class="cart_view" href="{{route('cart.index')}}"> Voir le panier</a>
+            <a class="checkout" href="javascript:;">Passer à la commande</a>
         </div>
     </div>
 
