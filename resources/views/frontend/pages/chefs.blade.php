@@ -11,9 +11,9 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Meet Our Expert Chefs</h1>
+                    <h1>Découvrez nos chefs cuisiniers experts</h1>
                     <ul>
-                        <li><a href="{{url('/')}}">home</a></li>
+                        <li><a href="{{url('/')}}">Accueil</a></li>
                         <li><a href="javascript:;">chefs</a></li>
                     </ul>
                 </div>

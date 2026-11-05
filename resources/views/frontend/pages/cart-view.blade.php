@@ -14,10 +14,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>cart view</h1>
+                    <h1>Voir le panier</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
-                        <li><a href="#">cart view</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="#">Voir le panier</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,23 +45,23 @@
                                         </th>
 
                                         <th class="fp__pro_name">
-                                            details
+                                            Nom du menu
                                         </th>
 
                                         <th class="fp__pro_status">
-                                            price
+                                            Prix
                                         </th>
 
                                         <th class="fp__pro_select">
-                                            quantity
+                                            Quantité
                                         </th>
 
                                         <th class="fp__pro_tk">
-                                            total
+                                            Total
                                         </th>
 
                                         <th class="fp__pro_icon">
-                                            <a class="clear_all" href="{{route('cart.destroy')}}">clear all</a>
+                                            <a class="clear_all" href="{{route('cart.destroy')}}">Vider le panier</a>
                                         </th>
                                     </tr>
                                     @foreach(Cart::content() as $product)
@@ -101,7 +101,7 @@
                                     @endforeach
                                     @if(Cart::content()->count() === 0) 
                                       <tr>
-                                         <td colspan="6" class="text-center fp__pro_name" style="width: 100%; display:inline;">Cart is empty</td>
+                                         <td colspan="6" class="text-center fp__pro_name" style="width: 100%; display:inline;">Votre panier est vide</td>
                                       </tr>
                                     @endif
                                 </tbody>
@@ -111,10 +111,10 @@
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__cart_list_footer_button">
-                        <h6>total cart</h6>
-                        <p>subtotal: <span id="subtotal">{{currencyPosition(cartTotal())}}</span></p>
-                        <p>delivery: <span>$00.00</span></p>
-                        <p>discount: <span id="discount">
+                        <h6>Total du panier</h6>
+                        <p>Sous-total: <span id="subtotal">{{currencyPosition(cartTotal())}}</span></p>
+                        <p>Livraison: <span>€00.00</span></p>
+                        <p>Réduction: <span id="discount">
                             {{ config('settings.site_currency_icon') }}0
                         </span></p>
                         <p class="total"><span>total:</span> <span id="final_total">
@@ -122,13 +122,13 @@
                         </span></p>
                         <form id="coupon_form">
                             <input type="text" id="coupon_code" name="code" placeholder="Coupon Code">
-                            <button type="submit">apply</button>
+                            <button type="submit">Appliquer</button>
                         </form>
                         <div class="coupon_card">
                             @if(session()->has('coupon'))
                                 <div class="card mt-2">
                                     <div class="m-3">
-                                        <span><b class="v_coupon_code">Applied Coupon: {{session()->get('coupon')['code']}}</b></span>
+                                        <span><b class="v_coupon_code">Code promo appliqué: {{session()->get('coupon')['code']}}</b></span>
                                         <span>
                                             <button class="remove_coupon">
                                                 <i class="far fa-times"></i>
@@ -138,7 +138,7 @@
                                 </div>
                             @endif
                         </div>
-                        <a class="common_btn" href="{{route('checkout.index')}}">checkout</a>
+                        <a class="common_btn" href="{{route('checkout.index')}}">Valider la commande</a>
                     </div>
                 </div>
             </div>

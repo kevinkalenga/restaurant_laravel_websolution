@@ -7,10 +7,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Our Latest Food Blogs</h1>
+                    <h1>Nos derniers articles culinaires</h1>
                     <ul>
-                        <li><a href="{{url('/')}}">home</a></li>
-                        <li><a href="javascript:;">blogs</a></li>
+                        <li><a href="{{url('/')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Actualités</a></li>
                     </ul>
                 </div>
             </div>
@@ -31,18 +31,18 @@
             <form class="fp__search_menu_form mb-4" action="{{route('blogs')}}" method="GET">
                 <div class="row">
                     <div class="col-xl-6 col-md-5">
-                        <input type="text" placeholder="Search..." name="search" value="{{ @request()->search }}">
+                        <input type="text" placeholder="Rechercher..." name="search" value="{{ @request()->search }}">
                     </div>
                     <div class="col-xl-4 col-md-4">
                         <select class="nice-select" name="category">
-                            <option value="">All</option>
+                            <option value="">Tout</option>
                             @foreach($categories as $category)
                                <option @selected(@request()->category == $category->id) value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach  
                         </select>
                     </div>
                     <div class="col-xl-2 col-md-3">
-                        <button type="submit" class="common_btn">search</button>
+                        <button type="submit" class="common_btn">Rechercher</button>
                     </div>
                 </div>
             </form>

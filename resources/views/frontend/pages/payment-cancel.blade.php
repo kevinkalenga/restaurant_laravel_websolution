@@ -12,7 +12,7 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Order</h1>
+                    <h1>Commande</h1>
                     <ul>
                         <!-- <li><a href="{{url('/')}}">home</a></li>
                         <li><a href="javascript:;">payment</a></li> -->
@@ -38,9 +38,9 @@
                     <div class="mb-4">
                         <i class="fas fa-times-circle order-cancel-style"></i>
                     </div>
-                   <h4>Transaction Failed!</h4>
+                   <h4>Échec de la transaction !</h4>
                    <p><b class="mx-5">{{session()->has('errors') ? session('errors')->first('error') : '' }}</b></p>
-                   <a class="common_btn mt-3" href="{{route('make.payment')}}">Go To Payment Page</a>
+                   <a class="common_btn mt-3" href="{{route('make.payment')}}">Accéder à la page de paiement</a>
                 </div>
                 
             </div>

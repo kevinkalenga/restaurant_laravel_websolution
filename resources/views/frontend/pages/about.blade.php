@@ -9,10 +9,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>About Us</h1>
+                    <h1>Qui sommes-nous ?</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
-                        <li><a href="javascript:;">about us</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Qui sommes-nous ?</a></li>
                     </ul>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="fp__about_video_text">
-                                <p>Watch Videos</p>
+                                <p>Voir les vidéos</p>
                                 <a class="play_btn venobox" data-autoplay="true" data-vbtype="video"
                                     href="{{$about->video_link}}">
                                     <i class=" fas fa-play"></i>

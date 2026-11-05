@@ -12,10 +12,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>payment</h1>
+                    <h1>Paiement</h1>
                     <ul>
-                        <li><a href="{{url('/')}}">home</a></li>
-                        <li><a href="javascript:;">payment</a></li>
+                        <li><a href="{{url('/')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Paiement</a></li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +31,7 @@
     ==============================-->
     <section class="fp__payment_page mt_100 xs_mt_70 mb_100 xs_mb_70">
         <div class="container">
-             <h2>Choose Your Payment Gateway</h2>
+             <h2>Choisissez votre moyen de paiement</h2>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="fp__payment_area">
@@ -56,16 +56,16 @@
 
                 <div class="col-lg-4 mt_25 wow fadeInUp" data-wow-duration="1s">
                     <div class="fp__cart_list_footer_button">
-                        <h6>total cart</h6>
+                        <h6>Total du panier</h6>
                           
-                        <p>subtotal: <span>{{ currencyPosition(number_format($subTotal, 2, '.', '')) }}</span></p>
+                        <p>Sous-total: <span>{{ currencyPosition(number_format($subTotal, 2, '.', '')) }}</span></p>
 
-                        <p>delivery: <span>{{ currencyPosition(number_format($delivery, 2, '.', '')) }}</span></p>
+                        <p>Livraison: <span>{{ currencyPosition(number_format($delivery, 2, '.', '')) }}</span></p>
 
-                        <p>discount: <span>{{ currencyPosition(number_format($discount, 2, '.', '')) }}</span></p>
+                        <p>Réduction: <span>{{ currencyPosition(number_format($discount, 2, '.', '')) }}</span></p>
 
                         <p class="total">
-                            <span>total:</span>
+                            <span>Total:</span>
                             <span>{{ currencyPosition(number_format($finalTotal, 2, '.', '')) }}</span>
                         </p>
                      

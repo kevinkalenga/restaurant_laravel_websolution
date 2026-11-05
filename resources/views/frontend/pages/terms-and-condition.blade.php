@@ -12,10 +12,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>Terms and Conditions</h1>
+                    <h1>Conditions générales de vente et d'utilisation</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
-                        <li><a href="javascript:;">Terms and Conditions</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="javascript:;">Conditions générales de vente et d'utilisation</a></li>
                     </ul>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <div class="fp__career_det_text">
                         {!! $termsAndConditions->content !!}
                         <br />
-                        <a href="{{route('home')}}" class="common_btn">go home</a>
+                        <a href="{{route('home')}}" class="common_btn">Retour à l'accueil</a>
                     </div> 
 
 

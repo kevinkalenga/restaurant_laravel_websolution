@@ -24,7 +24,7 @@
                             
                               @if($dailyOffer->product->offer_price > 0)
                                 
-                                 <span>{{discountInPercent($dailyOffer->product->price, $dailyOffer->product->offer_price)}}% off</span>
+                                 <span>{{discountInPercent($dailyOffer->product->price, $dailyOffer->product->offer_price)}}% de réduction</span>
                              
                               @endif
                             <a class="title" href="{{route('product.show', $dailyOffer->product->slug)}}">{!! $dailyOffer->product->name !!}</a>
