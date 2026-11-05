@@ -171,11 +171,12 @@
                                 </div>
                             @endif
                             <div class="details_quentity">
-                                <h5>select quentity</h5>
+                                <h5>Sélectionner la quantité</h5>
                                 <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                                     <div class="quentity_btn">
                                         <button class="btn btn-danger  v_decrement"><i class="fal fa-minus"></i></button>
-                                        <input type="text" name="quantity" placeholder="1" value="1" readonly id="v_quantity">
+                                        <input type="text" name="quantity" placeholder="1" value="{{ $product->minimum_persons }}" readonly id="v_quantity">
+                                        <!-- <input type="text" name="quantity" placeholder="1" value="1" readonly id="v_quantity"> -->
                                         <button class="btn btn-success v_increment"><i class="fal fa-plus"></i></button>
                                     </div>
                                     <h3 id="v_total_price">{{$product->offer_price > 0 ? currencyPosition($product->offer_price) : currencyPosition($product->price)}}</h3>
@@ -416,7 +417,8 @@
         // to remove the check attribute when we refraish the page
         $('.v_product_size').prop('checked', false);
         $('.v_product_option').prop('checked', false);
-        $('#v_quantity').val(1)
+        //$('#v_quantity').val(1)
+        $('#v_quantity').val({{ $product->minimum_persons }})
         
         $('.v_product_size').on('change', function(){
             v_updateTotalPrice()
@@ -428,26 +430,58 @@
 
         
         // Event handlers for increment and decrement buttons
-        $('.v_increment').on('click', function(e){
+        // $('.v_increment').on('click', function(e){
+        //     e.preventDefault();
+        //     let quantity = $('#v_quantity');
+        //     let currentQuantity = parseFloat(quantity.val());
+        //     if (currentQuantity + 1 <= {{ $product->quantity }}) {
+        //         quantity.val(currentQuantity + 1);
+        //         v_updateTotalPrice();
+        //     }
+        //     //quantity.val(currentQuantity + 1)
+        //     // v_updateTotalPrice()
+        // })
+        
+        // $('.v_decrement').on('click', function(e){
+        //     e.preventDefault();
+        //     let quantity = $('#v_quantity');
+        //     let currentQuantity = parseFloat(quantity.val());
+        //     if(currentQuantity > 1){
+        //       quantity.val(currentQuantity - 1)
+        //       v_updateTotalPrice()
+        //     }
+        // })
+        
+        
+        // Initialisation de la quantité minimale
+        let minQuantity = {{ $product->minimum_persons }};
+        let maxQuantity = {{ $product->quantity }};
+
+        $('#v_quantity').val(minQuantity);
+
+        // Bouton +
+        $('.v_increment').on('click', function(e) {
             e.preventDefault();
-            let quantity = $('#v_quantity');
-            let currentQuantity = parseFloat(quantity.val());
-            quantity.val(currentQuantity + 1)
-            v_updateTotalPrice()
-        })
-        $('.v_decrement').on('click', function(e){
+
+            let currentQuantity = parseInt($('#v_quantity').val());
+
+            if (currentQuantity < maxQuantity) {
+                $('#v_quantity').val(currentQuantity + 1);
+                v_updateTotalPrice();
+            }
+        });
+
+        // Bouton -
+        $('.v_decrement').on('click', function(e) {
             e.preventDefault();
-            let quantity = $('#v_quantity');
-            let currentQuantity = parseFloat(quantity.val());
-            if(currentQuantity > 1){
-              quantity.val(currentQuantity - 1)
-              v_updateTotalPrice()
+
+            let currentQuantity = parseInt($('#v_quantity').val());
+
+            if (currentQuantity > minQuantity) {
+                $('#v_quantity').val(currentQuantity - 1);
+                v_updateTotalPrice();
             }
         })
-        
-        
-        
-        
         
         // Function to update the total price base on selected option
         function v_updateTotalPrice() {
@@ -474,6 +508,9 @@
 
           $('#v_total_price').text("{{config('settings.site_currency_icon')}}" + totalPrice);
         } 
+
+        // Calculer le prix dès l'ouverture de la page
+        v_updateTotalPrice();
 
          
         $('.v_submit_button').on('click', function(e){
