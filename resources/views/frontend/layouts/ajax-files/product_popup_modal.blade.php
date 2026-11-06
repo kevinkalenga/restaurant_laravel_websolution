@@ -24,14 +24,19 @@
             <span>(201)</span>
         </p>
 
+        @php
+            $basePrice = $product->offer_price > 0
+                ? $product->offer_price
+                : $product->price;
+        @endphp
+
         <h4 class="price">
+            <input type="hidden" name="base_price" value="{{ $basePrice }}">
+
+            {{ currencyPosition($basePrice * $product->minimum_persons) }}
+
             @if($product->offer_price > 0)
-                <input type="hidden" name="base_price" value="{{$product->offer_price}}">
-                {{currencyPosition($product->offer_price)}}
-                <del>{{currencyPosition($product->price)}}</del>
-            @else 
-                <input type="hidden" name="base_price" value="{{$product->price}}">
-                {{currencyPosition($product->price)}}
+                <del>{{ currencyPosition($product->price * $product->minimum_persons) }}</del>
             @endif
         </h4>
 
@@ -68,7 +73,7 @@
         @endif
 
         <div class="details_quentity">
-            <h5>select quentity</h5>
+            <h5>Selectionner La Quantité</h5>
 
             <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                 <div class="quentity_btn">
@@ -76,17 +81,23 @@
                         <i class="fal fa-minus"></i>
                     </button>
 
-                    <input id="quantity" name="quantity" type="text" placeholder="1" value="1" readonly>
+                   <input
+                        id="quantity"
+                        name="quantity"
+                        type="text"
+                        value="{{ $product->minimum_persons }}"
+                        data-min="{{ $product->minimum_persons }}"
+                        max="{{ $product->quantity }}"
+                        readonly
+                    >
 
                     <button class="btn btn-success increment">
                         <i class="fal fa-plus"></i>
                     </button>
                 </div>
-                @if($product->offer_price > 0)
-                  <h3 id="total_price"> {{currencyPosition($product->offer_price)}}</h3>
-                @else 
-                  <h3 id="total_price"> {{currencyPosition($product->price)}}</h3>
-                @endif
+                 <h3 id="total_price">
+                    {{ currencyPosition($basePrice * $product->minimum_persons) }}
+                </h3>
             </div>
         </div>
 
@@ -116,20 +127,32 @@
         // Event handlers for increment and decrement buttons
         $('.increment').on('click', function(e){
             e.preventDefault();
+
             let quantity = $('#quantity');
-            let currentQuantity = parseFloat(quantity.val());
-            quantity.val(currentQuantity + 1)
-            updateTotalPrice()
-        })
+            let currentQuantity = parseInt(quantity.val());
+            let maxQuantity = parseInt(quantity.attr('max'));
+
+            if (currentQuantity < maxQuantity) {
+                quantity.val(currentQuantity + 1);
+                updateTotalPrice();
+            }
+        });
+
         $('.decrement').on('click', function(e){
             e.preventDefault();
+
             let quantity = $('#quantity');
-            let currentQuantity = parseFloat(quantity.val());
-            if(currentQuantity > 1){
-              quantity.val(currentQuantity - 1)
-              updateTotalPrice()
+            let currentQuantity = parseInt(quantity.val());
+            let minQuantity = parseInt(quantity.data('min'));
+
+            if (currentQuantity > minQuantity) {
+                quantity.val(currentQuantity - 1);
+                updateTotalPrice();
             }
-        })
+        });
+        
+        
+        
         
         // Function to update the total price base on selected option
         function updateTotalPrice() {
@@ -156,6 +179,8 @@
 
           $('#total_price').text("{{config('settings.site_currency_icon')}}" + totalPrice);
         }
+
+        updateTotalPrice();
 
         // Add to cart function
         $("#modal_add_to_cart_form").on('submit', function(e) {

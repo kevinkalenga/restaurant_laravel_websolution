@@ -116,7 +116,7 @@
                                   <li><a href="{{$menuItem['link']}}">{{$menuItem['label']}}</a></li>
                                 @endforeach
                                 <li>
-                                   <a href="{{ url('/page/legal-notice') }}">Mentions légales</a>
+                                   <a href="{{ url('/page/mentions-legales') }}">Mentions légales</a>
                                 </li>
                                 
                                 <li>
