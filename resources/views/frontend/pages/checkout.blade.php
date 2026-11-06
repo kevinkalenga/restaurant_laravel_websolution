@@ -73,22 +73,22 @@
                                                         
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="First Name" name="first_name">
+                                                                <input type="text" placeholder="Prénom" name="first_name">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Last Name" name="last_name">
+                                                                <input type="text" placeholder="Nom" name="last_name">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Phone" name="phone">
+                                                                <input type="text" placeholder="Téléphone" name="phone">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-lg-12 col-xl-6">
                                                             <div class="fp__check_single_form">
-                                                                <input type="text" placeholder="Email" name="email">
+                                                                <input type="text" placeholder="e-mail" name="email">
                                                             </div>
                                                         </div>
                                                       
@@ -174,7 +174,7 @@
                     <div id="sticky_sidebar" class="fp__cart_list_footer_button">
                         <h6>Total du panier</h6>
                         <p>Sous-total: <span>{{currencyPosition(cartTotal())}}</span></p>
-                        <p>Livraison: <span id="delivery_fee">$00.00</span></p>
+                        <p>Livraison: <span id="delivery_fee">€00.00</span></p>
                         <p>
                             Réduction:
                             <span>

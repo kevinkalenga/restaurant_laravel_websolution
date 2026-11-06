@@ -12,10 +12,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>user dashboard</h1>
+                    <h1>Tableau de bord client</h1>
                     <ul>
-                        <li><a href="index.html">home</a></li>
-                        <li><a href="#">dashboard</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="#">Tableau de bord</a></li>
                     </ul>
                 </div>
             </div>
@@ -51,34 +51,34 @@
                                 aria-orientation="vertical">
                                 <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-                                    aria-selected="true"><span><i class="fas fa-user"></i></span> Parsonal Info</button>
+                                    aria-selected="true"><span><i class="fas fa-user"></i></span> Informations personnelles</button>
 
                                 <button class="nav-link" id="v-pills-address-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-address" type="button" role="tab"
                                     aria-controls="v-pills-address" aria-selected="true"><span><i
-                                            class="fas fa-user"></i></span>address</button>
+                                            class="fas fa-user"></i></span>Adresse</button>
 
                                 <button class="nav-link" id="v-pills-reservation-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-reservation" type="button" role="tab"
                                     aria-controls="v-pills-reservation" aria-selected="false"><span><i
-                                            class="fas fa-bags-shopping"></i></span> Reservation</button>
+                                            class="fas fa-bags-shopping"></i></span> Réservation</button>
                                 
                                 <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-profile" type="button" role="tab"
                                     aria-controls="v-pills-profile" aria-selected="false"><span><i
-                                            class="fas fa-bags-shopping"></i></span> Order</button>
+                                            class="fas fa-bags-shopping"></i></span> Commande</button>
                                 
                                 
 
                                 <button class="nav-link" id="v-pills-wishlist-tab2" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-wishlist" type="button" role="tab"
                                     aria-controls="v-pills-wishlist" aria-selected="false"><span><i
-                                            class="far fa-heart"></i></span> wishlist</button>
+                                            class="far fa-heart"></i></span> Liste de souhaits</button>
 
                                 <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-messages" type="button" role="tab"
                                     aria-controls="v-pills-messages" aria-selected="false"><span><i
-                                            class="fas fa-star"></i></span> Reviews</button>
+                                            class="fas fa-star"></i></span> Mes avis</button>
                                 
                                  @php 
 
@@ -102,7 +102,7 @@
                                 <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-settings" type="button" role="tab"
                                     aria-controls="v-pills-settings" aria-selected="false">
-                                    <span><i class="fas fa-user-lock"></i></span> Change Password
+                                    <span><i class="fas fa-user-lock"></i></span>Modifier le mot de passe
                                 </button>
 
                              
@@ -112,7 +112,7 @@
 
                                         <button class="nav-link" onclick="event.preventDefault();
                                                   this.closest('form').submit();" type="button"><span> <i class="fas fa-sign-out-alt"></i>
-                                          </span> Logout</button> 
+                                          </span> Déconnexion</button> 
                                 </form>
 <!-- 
                                   <form method="POST" action="{{ route('logout') }}">
