@@ -10,10 +10,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>sign in</h1>
+                    <h1>Connexion</h1>
                     <ul>
-                        <li><a href="{{route('home')}}">home</a></li>
-                        <li><a href="#">sign in</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="#">Connexion</a></li>
                     </ul>
                 </div>
             </div>
@@ -33,15 +33,15 @@
                 <div class="row wow fadeInUp" data-wow-duration="1s">
                     <div class="col-xxl-5 col-xl-6 col-md-9 col-lg-7 m-auto">
                         <div class="fp__login_area">
-                            <h2>Welcome back!</h2>
-                            <p>sign in to continue</p>
+                            <h2>Bon retour parmi nous!</h2>
+                            <p>Connectez-vous pour continuer</p>
                             <form method="POST" action="{{ route('login') }}"  novalidate>
                                 @csrf
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>email</label>
-                                            <input type="email"  name="email" placeholder="Email" value="{{old('email')}}"  required>
+                                            <label>Email</label>
+                                            <input type="email"  name="email" placeholder="E-mail" value="{{old('email')}}"  required>
                                         </div>
                                     </div>
                                     
@@ -49,8 +49,8 @@
                                     
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>password</label>
-                                            <input type="password" name="password" placeholder="Password">
+                                            <label>Mot de password</label>
+                                            <input type="password" name="password" placeholder="Votre mot de passe">
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
@@ -59,10 +59,10 @@
                                                 <input class="form-check-input" type="checkbox" value=""
                                                     id="flexCheckDefault" name="remember">
                                                 <label class="form-check-label" for="flexCheckDefault">
-                                                    Remeber Me
+                                                    Se souvenir de moi
                                                 </label>
                                             </div>
-                                            <a href="{{route('password.request')}}">Forgot Password ?</a>
+                                            <a href="{{route('password.request')}}">Mot de passe oublié ?</a>
                                         </div>
                                     </div>
                                     
@@ -70,14 +70,14 @@
                                     
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <button type="submit" class="common_btn">login</button>
+                                            <button type="submit" class="common_btn">Connexion</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            <p class="or"><span>or</span></p>
+                            <p class="or"><span>Ou</span></p>
                             
-                            <p class="create_account">Dont’t have an aceount ? <a href="{{route('register')}}">Create Account</a>
+                            <p class="create_account">N'avez vous pas un compte ? <a href="{{route('register')}}">Créer un compte</a>
                             </p>
                         </div>
                     </div>

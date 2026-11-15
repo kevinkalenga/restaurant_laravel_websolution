@@ -27,12 +27,17 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4 menu-detail-gallery">
                 @if($menu->image)
-                    <img
-                        src="{{ asset('storage/' . $menu->image) }}"
-                        alt="{{ $menu->title }}"
-                        class="img-fluid w-100 rounded">
+                    
+                                <img
+                    src="{{ asset('storage/' . $menu->image) }}"
+                    alt="{{ $menu->title }}"
+                    class="menu-detail-main-image rounded">
+                
+                    
+                
+                    
                 @else
                     <div class="bg-light text-center p-5">
                         <i class="fas fa-utensils fa-4x"></i>
@@ -136,11 +141,11 @@
             </div>
         </div>
 
-       
+       <hr class="menu-detail-separator">
 
-      <hr class="my-5">
+     
 
-        <div class="row align-items-stretch">
+        <div class="row align-items-stretch  menu-detail-composition">
             <div class="col-12">
                 
                 <h3 class="mb-4">Composition du menu</h3>

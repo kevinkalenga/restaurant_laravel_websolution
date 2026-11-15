@@ -144,9 +144,14 @@ class ProductController extends Controller
       $product->seo_title = $request->seo_title;
       $product->seo_description = $request->seo_description;
       $product->show_at_home = $request->show_at_home;
-      $product->allergens()->sync($request->input('allergens', []));
+     //$product->allergens()->sync($request->input('allergens', []));
       $product->status = $request->status;
+
+      // Enregistrer le produit avant les allergènes
       $product->save();
+
+       // Associer les allergènes au produit
+       $product->allergens()->sync($request->input('allergens', []));
 
       return redirect()
         ->route('admin.product.index')
