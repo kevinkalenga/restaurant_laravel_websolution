@@ -39,7 +39,7 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 
 
 <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-For what reason would it be advisable for me to think about business content? That might be little bit risky to have crew member like them.
+   Pour quelle raison devrais-je m’intéresser au contenu professionnel ? Il pourrait être quelque peu risqué d’avoir des collaborateurs de ce genre.
 </div>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -88,14 +88,20 @@ For what reason would it be advisable for me to think about business content? Th
                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
                             <img src="https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png" width="125" height="120" style="display: block; border: 0px;" /><br>
                             <h2 style="font-size: 30px; font-weight: 800; line-height: 36px; color: #333333; margin: 0;">
-                                Thank You For Your Order!
+                                Merci pour votre commande !
                             </h2>
                         </td>
                     </tr>
                     <tr>
                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 10px;">
                             <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #777777;">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium iste ipsa numquam odio dolores, nam.
+                                
+
+                                Nous vous remercions d'avoir choisi Vite & Gourmand !
+
+                                Votre commande a bien été enregistrée. Notre équipe vous remercie pour votre confiance et prépare votre commande avec soin afin de vous offrir une expérience gourmande et agréable.
+
+                                Vous trouverez ci-dessous le récapitulatif de votre commande.
                             </p>
                         </td>
                     </tr>
@@ -104,7 +110,7 @@ For what reason would it be advisable for me to think about business content? Th
                             <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
-                                        Order Confirmation #
+                                        Numéro de confirmation #
                                     </td>
                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
                                         {{$order->invoice_id}}
@@ -112,7 +118,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
-                                        Purchased Item ({{$order->product_qty}})
+                                        Article acheté ({{$order->product_qty}})
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
                                         {{currencyPosition($order->subtotal)}}
@@ -120,7 +126,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        Delivery + Handling
+                                        Livraison et frais de traitement
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
                                            {{currencyPosition($order->delivery_charge)}}
@@ -128,7 +134,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 </tr>
                                 <tr>
                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
-                                        Discount
+                                        Réduction
                                     </td>
                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 5px 10px;">
                                         -{{currencyPosition(@$order->discount)}}
@@ -165,7 +171,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px;">
                                     <tr>
                                         <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
-                                            <p style="font-weight: 800;">Delivery Address</p>
+                                            <p style="font-weight: 800;">Adresse de livraison</p>
                                             <p>{{$order->address}}</p>
 
                                         </td>
@@ -176,7 +182,7 @@ For what reason would it be advisable for me to think about business content? Th
                                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px;">
                                     <tr>
                                         <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
-                                            <p style="font-weight: 800;">Estimated Delivery Date</p>
+                                            <p style="font-weight: 800;">Délai de livraison estimé</p>
                                             <p>{{@$order->deliveryArea->min_delivery_time}} - {{@$order->deliveryArea->max_delivery_time}}</p>
                                         </td>
                                     </tr>
@@ -207,7 +213,7 @@ For what reason would it be advisable for me to think about business content? Th
                     <tr>
                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px;">
                             <p style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
-                                If you didn't create an account using this email address, please ignore this email or <a href="#" target="_blank" style="color: #777777;">unsusbscribe</a>.
+                                Vous recevez cet e-mail à la suite d'une commande effectuée sur Vite & Gourmand. Si vous n'êtes pas à l'origine de cette commande, vous pouvez ignorer ce message. <a href="#" target="_blank" style="color: #777777;">unsusbscribe</a>.
                             </p>
                         </td>
                     </tr>

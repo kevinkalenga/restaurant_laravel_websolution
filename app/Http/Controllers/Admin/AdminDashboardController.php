@@ -9,7 +9,6 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Blog;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 use App\Models\OrderStatistic;
 
 
@@ -44,7 +43,6 @@ class AdminDashboardController extends Controller
             'thisYearEarnings',
             'totalUsers',
             'totalAdmins',
-            'totalProducts',
             'totalProducts',
             'totalBlogs'
         ));

@@ -11,10 +11,10 @@
         <div class="fp__breadcrumb_overlay">
             <div class="container">
                 <div class="fp__breadcrumb_text">
-                    <h1>sign up</h1>
+                    <h1>Inscription</h1>
                     <ul>
-                        <li><a href="index.html">home</a></li>
-                        <li><a href="#">sign up</a></li>
+                        <li><a href="{{route('home')}}">Accueil</a></li>
+                        <li><a href="#">Inscription</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,21 +34,21 @@
                 <div class="row wow fadeInUp" data-wow-duration="1s">
                     <div class="col-xxl-5 col-xl-6 col-md-9 col-lg-7 m-auto">
                         <div class="fp__login_area">
-                            <h2>Welcome back!</h2>
-                            <p>sign up to continue</p>
+                            <h2>Bon retour parmi nous!</h2>
+                            <p>Inscrivez-vous pour continuer</p>
                              <form method="POST" action="{{ route('register') }}"  novalidate>
                                 @csrf
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>name</label>
-                                            <input type="text" placeholder="Name" name="name" value="{{old('name')}}" required>
+                                            <label>Nom</label>
+                                            <input type="text" placeholder="Nom" name="name" value="{{old('name')}}" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>email</label>
-                                            <input type="email" placeholder="Email" name="email" value="{{old('email')}}">
+                                            <label>Email</label>
+                                            <input type="email" placeholder="E-mail" name="email" value="{{old('email')}}">
                                         </div>
                                     </div>
                                     
@@ -66,34 +66,30 @@
                                            
                                         </div>
                                     </div>
-
-
-                                    
-                                    
                                     
                                     
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>password</label>
-                                            <input type="password" placeholder="Password"  name="password">
+                                            <label>Mot de passe</label>
+                                            <input type="password" placeholder="Votre mot de passe"  name="password">
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <label>confirm password</label>
-                                            <input type="password" placeholder="Confirm Password" name="password_confirmation">
+                                            <label>Confirmation de mot de passe</label>
+                                            <input type="password" placeholder="Confirmation de mot de passe" name="password_confirmation">
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
-                                            <button type="submit" class="common_btn">Register</button>
+                                            <button type="submit" class="common_btn">S'inscrire</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            <p class="or"><span>or</span></p>
+                            <p class="or"><span>Ou</span></p>
                            
-                            <p class="create_account">Dont’t have an account ? <a href="{{route('login')}}">login</a></p>
+                            <p class="create_account">Avez-vous deja un compte ? <a href="{{route('login')}}">Connectez-vous</a></p>
                         </div>
                     </div>
                 </div>
