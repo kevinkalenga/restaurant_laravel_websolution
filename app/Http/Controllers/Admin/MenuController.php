@@ -7,10 +7,10 @@ use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\MenuGallery;
+use App\Models\MenuItem;
 
 class MenuController extends Controller
 {
@@ -23,20 +23,34 @@ class MenuController extends Controller
 
     public function create()
     {
-        $products = Product::orderBy('name')->get();
+        $menuItems = MenuItem::orderBy('category')
+            ->orderBy('name')
+            ->get();
 
-        return view('admin.catering-menus.create', compact('products'));
+        return view('admin.catering-menus.create', compact('menuItems'));
     }
 
     public function edit(Menu $menu)
     {
-        $products = Product::orderBy('name')->get();
+        $menuItems = MenuItem::orderBy('category')
+            ->orderBy('name')
+            ->get();
 
-        $menu->load(['products', 'galleries']);
+        $menu->load(['menuItems', 'galleries']);
 
-        return view('admin.catering-menus.edit', compact('menu', 'products'));
+        return view(
+            'admin.catering-menus.edit',
+            compact('menu', 'menuItems')
+        );
     }
 
+    
+    
+    
+    
+    
+    
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -56,7 +70,7 @@ class MenuController extends Controller
             'status' => ['nullable', 'boolean'],
         ]);
 
-        $selectedProducts = $this->validatedMenuProducts($request);
+        $selectedMenuItems = $this->validatedMenuItems($request);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('catering-menus', 'public');
@@ -73,7 +87,7 @@ class MenuController extends Controller
         }
 
         $menu = Menu::create($validated);
-        $menu->products()->sync($selectedProducts);
+        $menu->menuItems()->sync($selectedMenuItems);
 
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $image) {
@@ -111,7 +125,7 @@ class MenuController extends Controller
             'status' => ['nullable', 'boolean'],
         ]);
 
-        $selectedProducts = $this->validatedMenuProducts($request);
+        $selectedMenuItems = $this->validatedMenuItems($request);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('catering-menus', 'public');
@@ -134,7 +148,7 @@ class MenuController extends Controller
         }
 
         $menu->update($validated);
-        $menu->products()->sync($selectedProducts);
+        $menu->menuItems()->sync($selectedMenuItems);
 
 
         // Supprimer les photos sélectionnées
@@ -174,51 +188,59 @@ class MenuController extends Controller
     /**
      * Valide et prépare les produits sélectionnés pour la table pivot.
      */
-    private function validatedMenuProducts(Request $request): array
-    {
-            $rows = collect($request->input('products', []))
-                ->filter(fn ($row) => is_array($row) && !empty($row['selected']))
-                ->map(function ($row, $productId) {
-                    return [
-                        'id' => $productId,
-                        'dish_type' => $row['dish_type'] ?? null,
-                        'quantity' => $row['quantity'] ?? null,
-                    ];
-                })
-                ->values()
-                ->all();
-
-            $validator = Validator::make(
-                ['products' => $rows],
-                [
-                    'products' => ['array'],
-                    'products.*.id' => ['required', 'integer', 'distinct', 'exists:products,id'],
-                    'products.*.dish_type' => [
-                        'required',
-                        Rule::in(['entree', 'plat', 'dessert']),
-                    ],
-                    'products.*.quantity' => ['required', 'integer', 'min:1'],
-                ],
-                [
-                    'products.*.dish_type.required' => 'Choisis une catégorie pour chaque plat sélectionné.',
-                    'products.*.quantity.required' => 'Indique une quantité pour chaque plat sélectionné.',
-                ]
-            );
-
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            return collect($validator->validated()['products'])
-                ->mapWithKeys(fn ($product) => [
-                    $product['id'] => [
-                        'dish_type' => $product['dish_type'],
-                        'quantity' => $product['quantity'],
-                    ],
-                ])
-                ->all();
-    }
     
+    
+     /**
+ * Valide et prépare les éléments sélectionnés
+ * pour la table pivot catering_menu_item.
+ */
+    private function validatedMenuItems(Request $request): array
+    {
+        $rows = collect($request->input('menu_items', []))
+            ->filter(fn ($row) => is_array($row) && !empty($row['selected']))
+            ->map(function ($row, $menuItemId) {
+                return [
+                    'id' => $menuItemId,
+                    'quantity' => $row['quantity'] ?? null,
+                ];
+            })
+            ->values()
+            ->all();
+
+        $validator = Validator::make(
+            ['menu_items' => $rows],
+            [
+                'menu_items' => ['array'],
+                'menu_items.*.id' => [
+                    'required',
+                    'integer',
+                    'distinct',
+                    'exists:catering_menu_items,id',
+                ],
+                'menu_items.*.quantity' => [
+                    'required',
+                    'integer',
+                    'min:1',
+                ],
+            ],
+            [
+                'menu_items.*.quantity.required' =>
+                    'Indique une quantité pour chaque élément sélectionné.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        return collect($validator->validated()['menu_items'])
+            ->mapWithKeys(fn ($item) => [
+                $item['id'] => [
+                    'quantity' => $item['quantity'],
+                ],
+            ])
+            ->all();
+    }
 
 
 

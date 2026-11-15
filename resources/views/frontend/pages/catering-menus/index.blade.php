@@ -149,6 +149,42 @@
                                 {{ \Illuminate\Support\Str::limit($menu->description, 120) }}
                             </p>
 
+                            @if($menu->menuItems->isNotEmpty())
+                                <div class="mt-3 mb-3">
+                                    <strong>Composition du menu :</strong>
+
+                                    <ul class="list-unstyled mt-2">
+                                        @foreach($menu->menuItems->groupBy('category') as $category => $items)
+                                            <li class="mb-1">
+                                                <i class="fas fa-check text-success"></i>
+
+                                                <strong>
+                                                    @switch($category)
+                                                        @case('entree')
+                                                            Entrées :
+                                                            @break
+                                                        @case('plat')
+                                                            Plats :
+                                                            @break
+                                                        @case('dessert')
+                                                            Desserts :
+                                                            @break
+                                                    @endswitch
+                                                </strong>
+
+                                                {{ $items->count() }} élément(s)
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                                                        
+                            
+                            
+                            
+                            
+                            
+                            
                             <h5 class="price">
                                 {{ currencyPosition($menu->price) }}
                             </h5>
@@ -232,6 +268,44 @@ document.addEventListener('DOMContentLoaded', function () {
                    </div>`;
 
             const description = escapeHtml(menu.description || '');
+            
+            const composition = menu.menu_items || [];
+
+            const compositionHtml = composition.length
+                ? `
+                    <div class="mt-3 mb-3">
+                        <strong>Composition du menu :</strong>
+                        <ul class="list-unstyled mt-2">
+                            ${['entree', 'plat', 'dessert'].map(category => {
+                                const items = composition.filter(
+                                    item => item.category === category
+                                );
+
+                                if (!items.length) return '';
+
+                                const labels = {
+                                    entree: 'Entrées',
+                                    plat: 'Plats',
+                                    dessert: 'Desserts'
+                                };
+
+                                return `
+                                    <li class="mb-1">
+                                        <i class="fas fa-check text-success"></i>
+                                        <strong>${labels[category]} :</strong>
+                                        ${items.length} élément(s)
+                                    </li>`;
+                            }).join('')}
+                        </ul>
+                    </div>`
+                : '';
+            
+            
+            
+            
+            
+            
+            
             const shortDescription = description.length > 120
                 ? description.substring(0, 120) + '…'
                 : description;
@@ -257,6 +331,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             </a>
 
                             <p>${shortDescription}</p>
+
+                             ${compositionHtml}
 
                             <h5 class="price">${price}</h5>
 

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
-use Illuminate\Http\Request;
 use App\Models\CateringOrderReview;
+use Illuminate\Http\Request;
 
 class CateringMenuController extends Controller
 {
@@ -16,7 +16,11 @@ class CateringMenuController extends Controller
     {
         $menus = Menu::query()
             ->where('status', 1)
-            ->with(['galleries', 'products.allergens']);
+            ->with([
+                'galleries',
+                'menuItems',
+                'products.allergens',
+            ]);
 
         if ($request->filled('theme')) {
             $menus->where('theme', $request->theme);
@@ -44,20 +48,25 @@ class CateringMenuController extends Controller
 
         $menus = $menus->latest()->paginate(9)->withQueryString();
 
-        return view('frontend.pages.catering-menus.index', compact('menus'));
+        return view(
+            'frontend.pages.catering-menus.index',
+            compact('menus')
+        );
     }
 
     /**
      * Détail public d'un menu traiteur.
      */
-    
-     
     public function show(string $slug)
     {
         $menu = Menu::query()
             ->where('status', 1)
             ->where('slug', $slug)
-            ->with(['galleries', 'products', 'products.allergens'])
+            ->with([
+                'galleries',
+                'menuItems.allergens',
+                'products.allergens',
+            ])
             ->firstOrFail();
 
         $reviews = CateringOrderReview::with('user')
@@ -74,21 +83,6 @@ class CateringMenuController extends Controller
         );
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * Réponse JSON destinée aux filtres AJAX.
      */
@@ -96,7 +90,11 @@ class CateringMenuController extends Controller
     {
         $menus = Menu::query()
             ->where('status', 1)
-            ->with(['galleries', 'products']);
+            ->with([
+                'galleries',
+                'menuItems',
+                'products',
+            ]);
 
         if ($request->filled('theme')) {
             $menus->where('theme', $request->theme);
@@ -129,14 +127,31 @@ class CateringMenuController extends Controller
                     'title' => $menu->title,
                     'slug' => $menu->slug,
                     'description' => $menu->description,
+
                     'image' => $menu->image
                         ? asset('storage/' . $menu->image)
                         : null,
+
                     'price' => (float) $menu->price,
                     'minimum_persons' => $menu->minimum_persons,
                     'theme' => $menu->theme,
                     'diet' => $menu->diet,
                     'available_stock' => $menu->available_stock,
+
+                    'menu_items' => $menu->menuItems->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'name' => $item->name,
+                            'category' => $item->category,
+                            'description' => $item->description,
+                            'image' => $item->image
+                                ? asset('storage/' . $item->image)
+                                : null,
+                            'price' => $item->price,
+                            'quantity' => $item->pivot->quantity,
+                        ];
+                    }),
+
                     'url' => route('catering-menus.show', $menu->slug),
                 ];
             }),

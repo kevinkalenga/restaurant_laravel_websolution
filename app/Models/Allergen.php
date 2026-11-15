@@ -14,7 +14,17 @@ class Allergen extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)
+        return $this->belongsToMany(Product::class, 'allergen_product')
             ->withTimestamps();
+    }
+
+    public function menuItems(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            MenuItem::class,
+            'allergen_catering_menu_item',
+            'allergen_id',
+            'menu_item_id'
+        )->withTimestamps();
     }
 }

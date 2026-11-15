@@ -145,9 +145,9 @@
 
      
 
-        <div class="row align-items-stretch  menu-detail-composition">
+        
+        <div class="row align-items-stretch menu-detail-composition">
             <div class="col-12">
-                
                 <h3 class="mb-4">Composition du menu</h3>
             </div>
 
@@ -161,9 +161,7 @@
 
             @foreach($dishTypes as $type => $label)
                 @php
-                    $dishes = $menu->products->filter(function ($product) use ($type) {
-                        return $product->pivot->dish_type === $type;
-                    });
+                    $dishes = $menu->menuItems->where('category', $type);
                 @endphp
 
                 <div class="col-lg-4 mb-4">
@@ -173,38 +171,64 @@
 
                             @forelse($dishes as $dish)
                                 <div class="border-bottom pb-3 mb-3">
+
+                                    @if($dish->image)
+                                        <img
+                                            src="{{ asset('storage/' . $dish->image) }}"
+                                            alt="{{ $dish->name }}"
+                                            class="img-fluid rounded mb-3"
+                                            style="width: 100%; height: 180px; object-fit: cover;"
+                                            loading="lazy">
+                                    @endif
+
                                     <h5>{{ $dish->name }}</h5>
 
-                                    @if($dish->short_description)
-                                        <p>{{ $dish->short_description }}</p>
+                                    @if($dish->description)
+                                        <p>{{ $dish->description }}</p>
                                     @endif
 
-                                    @if($dish->pivot->quantity > 1)
-                                        <p class="text-muted">
-                                            Quantité prévue :
-                                            {{ $dish->pivot->quantity }}
+                                    @if($dish->price !== null)
+                                        <p>
+                                            <strong>Prix indicatif :</strong>
+                                            {{ currencyPosition($dish->price) }}
                                         </p>
                                     @endif
+
+                                    <p class="text-muted">
+                                        Quantité prévue :
+                                        {{ $dish->pivot->quantity }}
+                                    </p>
 
                                     @if($dish->allergens->isNotEmpty())
-                                        <p class="mb-1">
-                                            <strong>Allergènes :</strong>
-                                        </p>
-                                        <ul class="mb-0">
-                                            @foreach($dish->allergens as $allergen)
-                                                <li>
-                                                    {{ $allergen->name }}
-                                                    @if($allergen->description)
-                                                        — {{ $allergen->description }}
-                                                    @endif
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                        <div class="mt-2">
+                                            <strong class="text-danger">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                Allergènes :
+                                            </strong>
+
+                                            <ul>
+                                                @foreach($dish->allergens as $allergen)
+                                                    <li>
+                                                        {{ $allergen->name }}
+
+                                                        @if($allergen->description)
+                                                            — {{ $allergen->description }}
+                                                        @endif
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     @else
-                                        <p class="text-muted mb-0">
+                                        <p class="text-muted">
                                             Aucun allergène renseigné.
                                         </p>
                                     @endif
+                                
+                                
+                                
+                                
+                                
+                                
                                 </div>
                             @empty
                                 <p class="text-muted">
@@ -216,6 +240,7 @@
                 </div>
             @endforeach
         </div>
+
 
     </div>
 </section>

@@ -282,32 +282,35 @@
                 </div>
 
                  
+                
                 <hr>
 
                 <h4 class="mb-3">Composition du menu</h4>
+
                 <p class="text-muted">
-                    Coche les produits à conserver dans le menu, puis définis leur catégorie et leur quantité.
+                    Coche les éléments à conserver dans le menu et définis leurs quantités.
                 </p>
 
                 @php
-                    $selectedProducts = old('products');
+                    $selectedMenuItems = old('menu_items');
 
-                    if ($selectedProducts === null) {
-                        $selectedProducts = $menu->products->mapWithKeys(function ($product) {
-                            return [
-                                $product->id => [
-                                    'selected' => '1',
-                                    'dish_type' => $product->pivot->dish_type,
-                                    'quantity' => $product->pivot->quantity,
-                                ],
-                            ];
-                        })->all();
+                    if ($selectedMenuItems === null) {
+                        $selectedMenuItems = $menu->menuItems
+                            ->mapWithKeys(function ($menuItem) {
+                                return [
+                                    $menuItem->id => [
+                                        'selected' => '1',
+                                        'quantity' => $menuItem->pivot->quantity,
+                                    ],
+                                ];
+                            })
+                            ->all();
                     }
                 @endphp
 
-                @if ($products->isEmpty())
+                @if ($menuItems->isEmpty())
                     <div class="alert alert-warning">
-                        Aucun produit disponible. Crée d'abord des produits dans la rubrique Products.
+                        Aucun élément traiteur disponible.
                     </div>
                 @else
                     <div class="table-responsive">
@@ -315,51 +318,59 @@
                             <thead>
                                 <tr>
                                     <th>Sélection</th>
-                                    <th>Produit</th>
-                                    <th>Prix du produit</th>
-                                    <th>Catégorie dans le menu</th>
+                                    <th>Élément</th>
+                                    <th>Catégorie</th>
+                                    <th>Prix indicatif</th>
                                     <th>Quantité</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($menuItems as $menuItem)
                                     @php
-                                        $values = $selectedProducts[$product->id] ?? [];
+                                        $values = $selectedMenuItems[$menuItem->id] ?? [];
                                     @endphp
+
                                     <tr>
                                         <td>
                                             <input
                                                 type="checkbox"
-                                                name="products[{{ $product->id }}][selected]"
+                                                name="menu_items[{{ $menuItem->id }}][selected]"
                                                 value="1"
                                                 @checked(!empty($values['selected']))
                                             >
                                         </td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ number_format((float) $product->price, 2, ',', ' ') }} €</td>
+
+                                        <td>{{ $menuItem->name }}</td>
+
                                         <td>
-                                            <select
-                                                name="products[{{ $product->id }}][dish_type]"
-                                                class="form-control"
-                                            >
-                                                <option value="entree"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'entree')>
+                                            @switch($menuItem->category)
+                                                @case('entree')
                                                     Entrée
-                                                </option>
-                                                <option value="plat"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'plat')>
+                                                    @break
+
+                                                @case('plat')
                                                     Plat
-                                                </option>
-                                                <option value="dessert"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'dessert')>
+                                                    @break
+
+                                                @case('dessert')
                                                     Dessert
-                                                </option>
-                                            </select>
+                                                    @break
+                                            @endswitch
                                         </td>
+
+                                        <td>
+                                            @if ($menuItem->price !== null)
+                                                {{ number_format((float) $menuItem->price, 2, ',', ' ') }} €
+                                            @else
+                                                —
+                                            @endif
+                                        </td>
+
                                         <td>
                                             <input
                                                 type="number"
-                                                name="products[{{ $product->id }}][quantity]"
+                                                name="menu_items[{{ $menuItem->id }}][quantity]"
                                                 class="form-control"
                                                 min="1"
                                                 value="{{ $values['quantity'] ?? 1 }}"
@@ -371,6 +382,7 @@
                         </table>
                     </div>
                 @endif
+
 
                 <button type="submit" class="btn btn-primary">
                     Enregistrer les modifications
