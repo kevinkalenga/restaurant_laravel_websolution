@@ -236,6 +236,15 @@
                       </li>
 
                       <li>
+                          <a class="nav-link" href="{{ route('admin.menu-items.index') }}">
+                              <i class="fas fa-utensils"></i>
+                              Éléments traiteur
+                          </a>
+                      </li>
+                      
+                      
+                      
+                      <li>
                           <a class="nav-link" href="{{ route('admin.allergens.index') }}">
                               <i class="fas fa-allergies"></i>
                               Allergènes

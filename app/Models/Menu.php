@@ -50,4 +50,18 @@ class Menu extends Model
     {
         return $this->hasMany(MenuGallery::class);
     }
+
+
+    public function menuItems(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            MenuItem::class,
+            'catering_menu_item',
+            'catering_menu_id',
+            'menu_item_id'
+        )
+        ->withPivot('quantity')
+        ->withTimestamps();
+    }
+
 }

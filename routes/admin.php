@@ -41,6 +41,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\AllergenController;
 use App\Http\Controllers\Admin\AdminCateringReviewController;
+use App\Http\Controllers\Admin\MenuItemController;
 
 
 
@@ -486,5 +487,10 @@ Route::get('/catering-reviews', [AdminCateringReviewController::class, 'index'])
 
 Route::patch('/catering-reviews/{id}/status', [AdminCateringReviewController::class, 'toggleStatus'])
     ->name('catering-reviews.toggle-status');
+
+// Menu item
+Route::resource('menu-items', MenuItemController::class)
+    ->except(['show'])
+    ->names('menu-items');
 
 
