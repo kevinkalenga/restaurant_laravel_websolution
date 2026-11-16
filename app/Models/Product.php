@@ -43,6 +43,25 @@ class Product extends Model
             ->withTimestamps();
     }
 
+    
+    public function menuItems(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(
+            MenuItem::class,
+            'product_menu_item',
+            'product_id',
+            'menu_item_id'
+        )
+        ->withPivot('quantity')
+        ->withTimestamps();
+    }
+
+    
+    
+    
+    
+    
+    
     public function allergens(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Allergen::class, 'allergen_product')

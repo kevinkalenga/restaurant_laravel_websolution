@@ -206,10 +206,90 @@
                 
                 
                 
-                
-                
-                
-                
+                                
+                    
+                  
+                {{-- Composition du produit avec les éléments traiteur --}}
+                <div class="form-group border rounded p-3 mb-4">
+                    <label class="font-weight-bold">Composition du produit</label>
+                    <p class="text-muted">
+                        Sélectionnez les éléments traiteur qui composent ce produit et indiquez leur quantité.
+                    </p>
+
+                    @php
+                        $selectedMenuItems = old(
+                            'menu_items',
+                            $product->menuItems->pluck('id')->all()
+                        );
+                    @endphp
+
+                    @foreach([
+                        'entree' => 'Entrées',
+                        'plat' => 'Plats',
+                        'dessert' => 'Desserts'
+                    ] as $category => $label)
+
+                        @php
+                            $items = $menuItems->where('category', $category);
+                        @endphp
+
+                        @if($items->isNotEmpty())
+                            <h6 class="font-weight-bold mt-3">{{ $label }}</h6>
+
+                            @foreach($items as $item)
+                                <div class="row align-items-center border-bottom py-2">
+                                    <div class="col-md-6">
+                                        <div class="custom-control custom-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                class="custom-control-input"
+                                                id="menu_item_{{ $item->id }}"
+                                                name="menu_items[]"
+                                                value="{{ $item->id }}"
+                                                {{ in_array($item->id, $selectedMenuItems) ? 'checked' : '' }}
+                                            >
+                                            <label class="custom-control-label" for="menu_item_{{ $item->id }}">
+                                                {{ $item->name }}
+                                                <small class="text-muted">({{ number_format($item->price, 2, ',', ' ') }} €)</small>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="quantity_{{ $item->id }}" class="mb-0">Quantité</label>
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            id="quantity_{{ $item->id }}"
+                                            name="quantities[{{ $item->id }}]"
+                                            min="1"
+                                            value="{{ old('quantities.' . $item->id, optional($product->menuItems->firstWhere('id', $item->id))->pivot->quantity ?? 1) }}"
+                                        >
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    @endforeach
+
+                    @if($menuItems->isEmpty())
+                        <p class="text-muted mb-0">Aucun élément traiteur actif disponible.</p>
+                    @endif
+
+                    @error('menu_items')
+                        <div class="text-danger mt-2">{{ $message }}</div>
+                    @enderror
+
+                    @error('menu_items.*')
+                        <div class="text-danger mt-2">{{ $message }}</div>
+                    @enderror
+
+                    @error('quantities.*')
+                        <div class="text-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                                
+                                
                 
                 
                 
