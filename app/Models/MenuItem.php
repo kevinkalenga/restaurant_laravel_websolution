@@ -25,7 +25,21 @@ class MenuItem extends Model
         'status' => 'boolean',
     ];
 
+     
 
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_menu_item',
+            'menu_item_id',
+            'product_id'
+        )
+        ->withPivot('quantity')
+        ->withTimestamps();
+    }
+
+    
     public function cateringMenus(): BelongsToMany
     {
         return $this->belongsToMany(

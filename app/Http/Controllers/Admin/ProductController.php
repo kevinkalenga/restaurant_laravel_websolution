@@ -11,6 +11,8 @@ use App\Traits\FileUploadTrait;
 use Illuminate\Support\Str;
 use App\Models\Allergen;
 use App\Models\SectionTitle;
+use App\Models\Menu;
+use App\Models\MenuItem;
 
 class ProductController extends Controller
 {
@@ -85,7 +87,12 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $allergens = Allergen::orderBy('name')->get();
-         return view('admin.product.create', compact('categories', 'allergens'));
+        $menus = Menu::orderBy('title')->get();
+        $menuItems = MenuItem::where('status', 1)
+        ->orderBy('category')
+        ->orderBy('name')
+        ->get();
+         return view('admin.product.create', compact('categories', 'allergens', 'menus', 'menuItems'));
     }
 
     /**
@@ -113,6 +120,12 @@ class ProductController extends Controller
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
+        'menus' => ['sometimes', 'array'],
+        'menus.*' => ['integer', 'distinct', 'exists:catering_menus,id'],
+        'menu_items' => ['sometimes', 'array'],
+        'menu_items.*' => ['integer', 'distinct', 'exists:catering_menu_items,id'],
+        'quantities' => ['sometimes', 'array'],
+        'quantities.*' => ['integer', 'min:1'],
         'show_at_home' => ['required', 'boolean'],
         'allergens' => ['sometimes', 'array'],
         'allergens.*' => ['integer', 'distinct', 'exists:allergens,id'],
@@ -153,7 +166,31 @@ class ProductController extends Controller
        // Associer les allergènes au produit
        $product->allergens()->sync($request->input('allergens', []));
 
-      return redirect()
+            $menuAssociations = collect($request->input('menus', []))
+            ->mapWithKeys(fn ($menuId) => [
+                $menuId => [
+                    'dish_type' => null,
+                    'quantity' => 1,
+                ],
+            ])
+            ->all();
+
+        $product->menus()->sync($menuAssociations);
+
+
+        $menuItemAssociations = collect($request->input('menu_items', []))
+            ->mapWithKeys(fn ($menuItemId) => [
+                $menuItemId => [
+                    'quantity' => $request->input('quantities.' . $menuItemId, 1),
+                ],
+            ])
+            ->all();
+
+        $product->menuItems()->sync($menuItemAssociations);
+      
+      
+      
+       return redirect()
         ->route('admin.product.index')
         ->with('success', 'Product created successfully!');
     }
@@ -165,14 +202,24 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::with('allergens')->findOrFail($id);
+        $product = Product::with(['allergens', 'menus', 'menuItems'])->findOrFail($id);
         $categories = Category::all();
         $allergens = Allergen::orderBy('name')->get();
-
+        $menus = Menu::orderBy('title')->get();
+        
+        $menuItems = MenuItem::where('status', 1)
+        ->orderBy('category')
+        ->orderBy('name')
+        ->get();
+        
+        
+        
         return view('admin.product.edit', compact(
             'product',
             'categories',
-            'allergens'
+            'allergens',
+            'menus',
+            'menuItems'
         ));
     }
 
@@ -206,6 +253,13 @@ class ProductController extends Controller
         'sku' => ['nullable', 'string', 'max:255'],
         'seo_title' => ['nullable', 'string', 'max:255'],
         'seo_description' => ['nullable', 'string'],
+        'menus' => ['sometimes', 'array'],
+        'menus.*' => ['integer', 'distinct', 'exists:catering_menus,id'],
+        'menu_items' => ['sometimes', 'array'],
+        'menu_items.*' => ['integer', 'distinct', 'exists:catering_menu_items,id'],
+        'quantities' => ['sometimes', 'array'],
+        'quantities.*' => ['integer', 'min:1'],
+        
         'show_at_home' => ['required', 'boolean'],
         'allergens' => ['sometimes', 'array'],
         'allergens.*' => ['integer', 'distinct', 'exists:allergens,id'],
@@ -237,10 +291,34 @@ class ProductController extends Controller
     $product->seo_title = $request->seo_title;
     $product->seo_description = $request->seo_description;
     $product->show_at_home = $request->show_at_home;
-    $product->allergens()->sync($request->input('allergens', []));
     $product->status = $request->status;
     $product->save();
 
+    $product->allergens()->sync($request->input('allergens', []));
+
+    $menuAssociations = collect($request->input('menus', []))
+    ->mapWithKeys(fn ($menuId) => [
+        $menuId => [
+            'dish_type' => null,
+            'quantity' => 1,
+        ],
+    ])
+    ->all();
+
+    $product->menus()->sync($menuAssociations);
+     
+    $menuItemAssociations = collect($request->input('menu_items', []))
+    ->mapWithKeys(fn ($menuItemId) => [
+        $menuItemId => [
+            'quantity' => $request->input('quantities.' . $menuItemId, 1),
+        ],
+    ])
+    ->all();
+
+    $product->menuItems()->sync($menuItemAssociations);
+    
+    
+    
     return redirect()
         ->route('admin.product.index')
         ->with('success', 'Product updated successfully!');

@@ -233,41 +233,38 @@
                                     </div>
                                 @endif
                             
-                                
-                            {{-- Composition des menus associés au produit --}}
-                            @if($product->menus->isNotEmpty())
+                              
+                            {{-- Composition directe du produit avec les éléments traiteur --}}
+                            @if($product->menuItems->isNotEmpty())
 
-                                @foreach($product->menus as $menu)
+                                <hr class="my-4">
 
-                                    <hr class="my-4">
+                                <h3 class="mb-4">Composition de notre menu</h3>
 
-                                    <h3 class="mb-4">
-                                        Composition du menu : {{ $menu->title }}
-                                    </h3>
+                                @php
+                                    $categories = [
+                                        'entree' => 'Entrées',
+                                        'plat' => 'Plats',
+                                        'dessert' => 'Desserts',
+                                    ];
+                                @endphp
 
-                                    @php
-                                        $categories = [
-                                            'entree' => 'Entrées',
-                                            'plat' => 'Plats',
-                                            'dessert' => 'Desserts',
-                                        ];
-                                    @endphp
+                                <div class="row align-items-stretch">
 
-                                    <div class="row align-items-stretch">
+                                    @foreach($categories as $category => $label)
 
-                                        @foreach($categories as $category => $label)
+                                        @php
+                                            $items = $product->menuItems->where('category', $category);
+                                        @endphp
 
-                                            @php
-                                                $items = $menu->menuItems->where('category', $category);
-                                            @endphp
-
+                                        @if($items->isNotEmpty())
                                             <div class="col-lg-4 mb-4">
                                                 <div class="card h-100">
                                                     <div class="card-body">
 
                                                         <h4 class="mb-3">{{ $label }}</h4>
 
-                                                        @forelse($items as $item)
+                                                        @foreach($items as $item)
 
                                                             <div class="border-bottom pb-3 mb-3">
 
@@ -297,7 +294,6 @@
                                                                 </p>
 
                                                                 @if($item->allergens->isNotEmpty())
-
                                                                     <div class="mt-2">
                                                                         <strong class="text-danger">
                                                                             <i class="fas fa-exclamation-triangle"></i>
@@ -316,7 +312,6 @@
                                                                             @endforeach
                                                                         </ul>
                                                                     </div>
-
                                                                 @else
                                                                     <p class="text-muted">
                                                                         Aucun allergène renseigné.
@@ -325,25 +320,20 @@
 
                                                             </div>
 
-                                                        @empty
-
-                                                            <p class="text-muted">
-                                                                Aucun élément renseigné dans cette catégorie.
-                                                            </p>
-
-                                                        @endforelse
+                                                        @endforeach
 
                                                     </div>
                                                 </div>
                                             </div>
+                                        @endif
 
-                                        @endforeach
+                                    @endforeach
 
-                                    </div>
-
-                                @endforeach
+                                </div>
 
                             @endif
+  
+                          
 
                             
                                     
