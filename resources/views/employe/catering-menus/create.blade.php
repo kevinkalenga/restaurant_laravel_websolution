@@ -129,84 +129,113 @@
                     </select>
                 </div>
 
-                
                 <hr>
 
                 <h4 class="mb-3">Composition du menu</h4>
                 <p class="text-muted">
-                    Sélectionne les produits qui composeront ce menu, puis précise leur catégorie et leur quantité.
+                    Sélectionne les éléments traiteur créés dans l'administration,
+                    puis indique la quantité souhaitée pour chacun.
+                    Leur catégorie est définie automatiquement.
                 </p>
 
-                @if ($products->isEmpty())
+                @if ($menuItems->isEmpty())
                     <div class="alert alert-warning">
-                        Aucun produit disponible. Crée d'abord des produits dans la rubrique Products.
+                        Aucun élément traiteur disponible.
+                        Demande à l'administrateur d'en créer dans la rubrique
+                        Éléments traiteur.
                     </div>
                 @else
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Sélection</th>
-                                    <th>Produit</th>
-                                    <th>Prix du produit</th>
-                                    <th>Catégorie dans le menu</th>
-                                    <th>Quantité</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $product)
-                                    <tr>
-                                        <td>
-                                            <input
-                                                type="checkbox"
-                                                name="products[{{ $product->id }}][selected]"
-                                                value="1"
-                                                {{ old("products.{$product->id}.selected") ? 'checked' : '' }}
-                                            >
-                                        </td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ number_format((float) $product->price, 2, ',', ' ') }} €</td>
-                                        <td>
-                                            <select
-                                                name="products[{{ $product->id }}][dish_type]"
-                                                class="form-control"
-                                            >
-                                                <option value="entree"
-                                                    @selected(old("products.{$product->id}.dish_type") === 'entree')>
-                                                    Entrée
-                                                </option>
-                                                <option value="plat"
-                                                    @selected(old("products.{$product->id}.dish_type", 'plat') === 'plat')>
-                                                    Plat
-                                                </option>
-                                                <option value="dessert"
-                                                    @selected(old("products.{$product->id}.dish_type") === 'dessert')>
-                                                    Dessert
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                name="products[{{ $product->id }}][quantity]"
-                                                class="form-control"
-                                                min="1"
-                                                value="{{ old("products.{$product->id}.quantity", 1) }}"
-                                            >
-                                        </td>
-                                    </tr>
+                    @php
+                        $categories = [
+                            'entree' => 'Entrées',
+                            'plat' => 'Plats',
+                            'dessert' => 'Desserts',
+                        ];
+                    @endphp
+
+                    @foreach ($categories as $category => $categoryLabel)
+                        @php
+                            $categoryItems = $menuItems->where('category', $category);
+                        @endphp
+
+                        @if ($categoryItems->isNotEmpty())
+                            <h5 class="mt-4 mb-3">{{ $categoryLabel }}</h5>
+
+                            <div class="row">
+                                @foreach ($categoryItems as $menuItem)
+                                    <div class="col-md-6 col-lg-4 mb-3">
+                                        <div class="card h-100 border">
+                                            @if ($menuItem->image)
+                                                <img
+                                                    src="{{ asset('storage/' . $menuItem->image) }}"
+                                                    alt="{{ $menuItem->name }}"
+                                                    class="card-img-top"
+                                                    style="height:180px; object-fit:cover;"
+                                                >
+                                            @endif
+
+                                            <div class="card-body">
+                                                <div class="custom-control custom-checkbox mb-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        class="custom-control-input"
+                                                        id="menu-item-{{ $menuItem->id }}"
+                                                        name="menu_items[{{ $menuItem->id }}][selected]"
+                                                        value="1"
+                                                        @checked(old("menu_items.{$menuItem->id}.selected"))
+                                                    >
+                                                    <label
+                                                        class="custom-control-label font-weight-bold"
+                                                        for="menu-item-{{ $menuItem->id }}"
+                                                    >
+                                                        {{ $menuItem->name }}
+                                                    </label>
+                                                </div>
+
+                                                <span class="badge badge-info">
+                                                    {{ $categoryLabel }}
+                                                </span>
+
+                                                @if ($menuItem->description)
+                                                    <p class="text-muted mt-2 mb-2">
+                                                        {{ $menuItem->description }}
+                                                    </p>
+                                                @endif
+
+                                                <p class="font-weight-bold mb-3">
+                                                    Prix indicatif :
+                                                    {{ number_format((float) $menuItem->price, 2, ',', ' ') }} €
+                                                </p>
+
+                                                <div class="form-group mb-0">
+                                                    <label for="quantity-{{ $menuItem->id }}">
+                                                        Quantité
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        id="quantity-{{ $menuItem->id }}"
+                                                        name="menu_items[{{ $menuItem->id }}][quantity]"
+                                                        class="form-control"
+                                                        min="1"
+                                                        value="{{ old("menu_items.{$menuItem->id}.quantity", 1) }}"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            </div>
+                        @endif
+                    @endforeach
                 @endif
-                <div class="mt-2">
+
+                <div class="mt-4">
                     <button type="submit" class="btn btn-primary">
                         Créer le menu
                     </button>
 
                     <a href="{{ route('employe.catering-menus.index') }}"
-                    class="btn btn-secondary">
+                       class="btn btn-secondary">
                         Annuler
                     </a>
                 </div>

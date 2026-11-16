@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Employe;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
-use App\Models\Product;
+use App\Models\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -23,26 +23,34 @@ class EmployeeMenuController extends Controller
 
     public function create()
     {
-        $products = Product::orderBy('name')->get();
+        $menuItems = MenuItem::orderBy('category')
+            ->orderBy('name')
+            ->get();
 
-        return view('employe.catering-menus.create', compact('products'));
+        return view(
+            'employe.catering-menus.create',
+            compact('menuItems')
+        );
     }
 
     public function edit(Menu $menu)
     {
-        $products = Product::orderBy('name')->get();
-        $menu->load('products');
+        $menuItems = MenuItem::orderBy('category')
+            ->orderBy('name')
+            ->get();
+
+        $menu->load('menuItems');
 
         return view(
             'employe.catering-menus.edit',
-            compact('menu', 'products')
+            compact('menu', 'menuItems')
         );
     }
 
     public function store(Request $request)
     {
         $validated = $this->validateMenu($request);
-        $selectedProducts = $this->validatedMenuProducts($request);
+        $selectedMenuItems = $this->validatedMenuItems($request);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')
@@ -53,7 +61,8 @@ class EmployeeMenuController extends Controller
         $validated['status'] = $request->boolean('status');
 
         $menu = Menu::create($validated);
-        $menu->products()->sync($selectedProducts);
+
+        $menu->menuItems()->sync($selectedMenuItems);
 
         return redirect()
             ->route('employe.catering-menus.index')
@@ -63,7 +72,7 @@ class EmployeeMenuController extends Controller
     public function update(Request $request, Menu $menu)
     {
         $validated = $this->validateMenu($request);
-        $selectedProducts = $this->validatedMenuProducts($request);
+        $selectedMenuItems = $this->validatedMenuItems($request);
 
         if ($request->hasFile('image')) {
             if ($menu->image) {
@@ -84,7 +93,8 @@ class EmployeeMenuController extends Controller
         $validated['status'] = $request->boolean('status');
 
         $menu->update($validated);
-        $menu->products()->sync($selectedProducts);
+
+        $menu->menuItems()->sync($selectedMenuItems);
 
         return redirect()
             ->route('employe.catering-menus.index')
@@ -95,8 +105,8 @@ class EmployeeMenuController extends Controller
     {
         $image = $menu->image;
 
-        // Détacher les plats avant la suppression du menu.
-        $menu->products()->detach();
+        $menu->menuItems()->detach();
+
         $menu->delete();
 
         if ($image) {
@@ -140,7 +150,10 @@ class EmployeeMenuController extends Controller
 
         while (
             Menu::where('slug', $slug)
-                ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+                ->when(
+                    $ignoreId,
+                    fn ($query) => $query->where('id', '!=', $ignoreId)
+                )
                 ->exists()
         ) {
             $slug = $baseSlug . '-' . $counter++;
@@ -149,14 +162,13 @@ class EmployeeMenuController extends Controller
         return $slug;
     }
 
-    private function validatedMenuProducts(Request $request): array
+    private function validatedMenuItems(Request $request): array
     {
-        $rows = collect($request->input('products', []))
+        $rows = collect($request->input('menu_items', []))
             ->filter(fn ($row) => is_array($row) && !empty($row['selected']))
-            ->map(function ($row, $productId) {
+            ->map(function ($row, $menuItemId) {
                 return [
-                    'id' => $productId,
-                    'dish_type' => $row['dish_type'] ?? null,
+                    'id' => $menuItemId,
                     'quantity' => $row['quantity'] ?? null,
                 ];
             })
@@ -164,24 +176,26 @@ class EmployeeMenuController extends Controller
             ->all();
 
         $validator = Validator::make(
-            ['products' => $rows],
+            ['menu_items' => $rows],
             [
-                'products' => ['array'],
-                'products.*.id' => [
-                    'required', 'integer', 'distinct', 'exists:products,id',
+                'menu_items' => ['array'],
+                'menu_items.*.id' => [
+                    'required',
+                    'integer',
+                    'distinct',
+                    'exists:catering_menu_items,id',
                 ],
-                'products.*.dish_type' => [
-                    'required', Rule::in(['entree', 'plat', 'dessert']),
-                ],
-                'products.*.quantity' => [
-                    'required', 'integer', 'min:1',
+                'menu_items.*.quantity' => [
+                    'required',
+                    'integer',
+                    'min:1',
                 ],
             ],
             [
-                'products.*.dish_type.required' =>
-                    'Choisis une catégorie pour chaque plat sélectionné.',
-                'products.*.quantity.required' =>
-                    'Indique une quantité pour chaque plat sélectionné.',
+                'menu_items.*.quantity.required' =>
+                    'Indique une quantité pour chaque élément sélectionné.',
+                'menu_items.*.quantity.min' =>
+                    'La quantité doit être au minimum de 1.',
             ]
         );
 
@@ -189,11 +203,10 @@ class EmployeeMenuController extends Controller
             throw new ValidationException($validator);
         }
 
-        return collect($validator->validated()['products'])
-            ->mapWithKeys(fn ($product) => [
-                $product['id'] => [
-                    'dish_type' => $product['dish_type'],
-                    'quantity' => $product['quantity'],
+        return collect($validator->validated()['menu_items'] ?? [])
+            ->mapWithKeys(fn ($menuItem) => [
+                $menuItem['id'] => [
+                    'quantity' => $menuItem['quantity'],
                 ],
             ])
             ->all();

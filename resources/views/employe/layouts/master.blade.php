@@ -55,7 +55,8 @@
                 <a href="{{ route('employe.catering-menus.index') }}" class="btn btn-outline-primary">
                     <i class="bi bi-card-list me-1"></i> Gestion des menus
                 </a>
-
+                
+                
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn btn-outline-secondary">
