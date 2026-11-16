@@ -87,21 +87,32 @@ class CheckoutController extends Controller
     public function checkoutRedirect(Request $request)
     {
         $request->validate([
-            'id' => ['required', 'integer']
+            'id' => ['required', 'integer'],
+            'service_location' => ['required', 'string', 'max:255'],
+            'delivery_date' => ['required', 'date', 'after_or_equal:today'],
+            'delivery_time' => ['required', 'date_format:H:i'],
         ]);
 
-        $address = Address::with('deliveryArea')->where('user_id', auth()->id())->findOrFail($request->id);
+        $address = Address::with('deliveryArea')
+            ->where('user_id', auth()->id())
+            ->findOrFail($request->id);
 
-        $selectedAddress = $address->address . ', Area: ' . ($address->deliveryArea?->area_name ?? '');
+        $selectedAddress = $address->address . ', Area: ' .
+            ($address->deliveryArea?->area_name ?? '');
 
         session([
             'address' => $selectedAddress,
             'email' => auth()->user()->email,
             'delivery_fee' => $address->deliveryArea->delivery_fee,
             'delivery_area_id' => $address->deliveryArea->id,
+
+            // Informations sur la prestation
+            'service_location' => $request->service_location,
+            'delivery_date' => $request->delivery_date,
+            'delivery_time' => $request->delivery_time,
         ]);
-         \Log::info(session()->all());
-       
+
+        \Log::info(session()->all());
 
         return response()->json([
             'redirect_url' => route('payment.index')

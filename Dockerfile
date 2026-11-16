@@ -52,11 +52,16 @@ RUN npm ci
 
 COPY . .
 
+RUN mkdir -p bootstrap/cache \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs
+
 RUN rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+
 RUN php artisan package:discover --ansi \
     && npm run build \
-    && mkdir -p storage/framework/cache storage/framework/sessions \
-       storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 8000
