@@ -205,6 +205,62 @@
                     </div>
                 </div>
             </div>
+        
+              <!-- Here -->
+        
+             
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h5>Informations sur la prestation</h5>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="fp__check_single_form">
+                        <label for="service_location">Lieu de prestation *</label>
+                        <input
+                            type="text"
+                            id="service_location"
+                            name="service_location"
+                            placeholder="Adresse ou lieu de prestation"
+                            value="{{ old('service_location') }}"
+                            maxlength="255"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="fp__check_single_form">
+                        <label for="delivery_date">Date de prestation *</label>
+                        <input
+                            type="date"
+                            id="delivery_date"
+                            name="delivery_date"
+                            min="{{ now()->toDateString() }}"
+                            value="{{ old('delivery_date') }}"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="fp__check_single_form">
+                        <label for="delivery_time">Heure souhaitée *</label>
+                        <input
+                            type="time"
+                            id="delivery_time"
+                            name="delivery_time"
+                            value="{{ old('delivery_time') }}"
+                            required
+                        >
+                    </div>
+                </div>
+            </div>
+
+        
+        
+        
+        
         </div>
     </section>
     <!--============================
@@ -254,9 +310,22 @@
             
             let address = $('.v_address:checked');
             let id = address.val();
+            
+            
+            let serviceLocation = $('#service_location').val().trim();
+            let deliveryDate = $('#delivery_date').val();
+            let deliveryTime = $('#delivery_time').val();
+            
+            
             if(address.length === 0) {
                 
-                alert("Please select an address");
+                alert("Veuillez sélectionner une adresse.");
+                return;
+            }
+
+
+            if (!serviceLocation || !deliveryDate || !deliveryTime) {
+                alert("Veuillez renseigner le lieu, la date et l'heure de prestation.");
                 return;
             }
             
@@ -264,7 +333,14 @@
             $.ajax({
                 method: 'POST',
                 url: '{{route("checkout.redirect")}}',
-                data: {id:id},
+                data: {
+                    id: id,
+                    service_location: serviceLocation,
+                    delivery_date: deliveryDate,
+                    delivery_time: deliveryTime
+                },
+                
+                
                 beforeSend: function() {
                     showLoader()
                 },

@@ -87,6 +87,16 @@ class PaymentController extends Controller
           
        }catch(\Exception $e) {
           
+           \Log::error('Erreur création commande avant paiement', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'user_id' => auth()->id(),
+                'session_order_id' => session('order_id'),
+            ]);
+       
+           
+       
           return response()->json([
             'message' => 'Payment could not be processed. Please try again.'
           ], 500);

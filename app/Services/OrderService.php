@@ -49,17 +49,23 @@ class OrderService {
                 ->where('payment_status', 'pending')
                 ->where('address', session('address'))
                 ->first();
+         
+           if (
+                  $existingOrder &&
+                  round((float) $existingOrder->subtotal, 2) ===
+                  round((float) cartTotal(), 2)
+               ) {
+                  $existingOrder->service_location = session('service_location');
+                  $existingOrder->delivery_date = session('delivery_date');
+                  $existingOrder->delivery_time = session('delivery_time');
+                  $existingOrder->save();
 
-            if (
-                $existingOrder &&
-                round((float) $existingOrder->subtotal, 2) ===
-                round((float) cartTotal(), 2)
-            ) {
-                session()->put('grand_total', $existingOrder->grand_total);
+                  session()->put('grand_total', $existingOrder->grand_total);
 
-                return $existingOrder;
+                  return $existingOrder;
             }
-        }
+        
+         }
     
     
     
@@ -71,6 +77,10 @@ class OrderService {
          $order->invoice_id = generateInvoiceId();
          $order->user_id = Auth()->user()->id;
          $order->address = session()->get('address');
+         $order->service_location = session('service_location');
+         $order->delivery_date = session('delivery_date');
+         $order->delivery_time = session('delivery_time');
+         
          $couponDiscount = session('coupon.discount', 0);
          $ecfDiscount = session('ecf_discount', 0);
 
@@ -129,6 +139,11 @@ class OrderService {
        session()->forget('address');
        session()->forget('delivery_fee');
        session()->forget('delivery_area_id');
+       session()->forget([
+         'service_location',
+         'delivery_date',
+         'delivery_time',
+       ]);
        session()->forget([
          'order_id',
          'grand_total',
