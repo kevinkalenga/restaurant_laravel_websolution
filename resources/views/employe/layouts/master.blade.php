@@ -56,6 +56,10 @@
                     <i class="bi bi-card-list me-1"></i> Gestion des menus
                 </a>
                 
+                <a href="{{ route('employe.products.index') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-box-seam me-1"></i> Gestion des produits
+                </a>
+                
                 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

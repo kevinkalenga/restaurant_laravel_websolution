@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\CartController;
@@ -24,6 +23,7 @@ use App\Http\Controllers\Employe\EmployeeProductReviewController;
 use App\Http\Controllers\Employe\EmployeeMenuController;
 use App\Models\Order;
 use App\Http\Controllers\Employe\EmployeeAllergenController;
+use App\Http\Controllers\Employe\EmployeeProductController;
 
 
 /**  Show Home Page  **/ 
@@ -263,7 +263,21 @@ Route::middleware(['auth', 'role:employe'])
 
     Route::get('/allergens', [EmployeeAllergenController::class, 'index'])
     ->name('allergens.index');
-  });
+
+
+    // Gestion des produits
+    Route::get('/products', [EmployeeProductController::class, 'index'])
+        ->name('products.index');
+
+    Route::get('/products/{product}/composition', [EmployeeProductController::class, 'editComposition'])
+        ->name('products.composition.edit');
+
+    Route::put('/products/{product}/composition', [EmployeeProductController::class, 'updateComposition'])
+        ->name('products.composition.update');
+  
+  
+  
+});
 
 
 
