@@ -232,6 +232,123 @@
                                         </ul>
                                     </div>
                                 @endif
+                            
+                                
+                            {{-- Composition des menus associés au produit --}}
+                            @if($product->menus->isNotEmpty())
+
+                                @foreach($product->menus as $menu)
+
+                                    <hr class="my-4">
+
+                                    <h3 class="mb-4">
+                                        Composition du menu : {{ $menu->title }}
+                                    </h3>
+
+                                    @php
+                                        $categories = [
+                                            'entree' => 'Entrées',
+                                            'plat' => 'Plats',
+                                            'dessert' => 'Desserts',
+                                        ];
+                                    @endphp
+
+                                    <div class="row align-items-stretch">
+
+                                        @foreach($categories as $category => $label)
+
+                                            @php
+                                                $items = $menu->menuItems->where('category', $category);
+                                            @endphp
+
+                                            <div class="col-lg-4 mb-4">
+                                                <div class="card h-100">
+                                                    <div class="card-body">
+
+                                                        <h4 class="mb-3">{{ $label }}</h4>
+
+                                                        @forelse($items as $item)
+
+                                                            <div class="border-bottom pb-3 mb-3">
+
+                                                                @if($item->image)
+                                                                    <img
+                                                                        src="{{ asset('storage/' . $item->image) }}"
+                                                                        alt="{{ $item->name }}"
+                                                                        class="img-fluid rounded mb-3"
+                                                                        style="width:100%; height:180px; object-fit:cover;"
+                                                                        loading="lazy">
+                                                                @endif
+
+                                                                <h5>{{ $item->name }}</h5>
+
+                                                                @if($item->description)
+                                                                    <p>{{ $item->description }}</p>
+                                                                @endif
+
+                                                                <p>
+                                                                    <strong>Prix indicatif :</strong>
+                                                                    {{ currencyPosition($item->price) }}
+                                                                </p>
+
+                                                                <p class="text-muted">
+                                                                    Quantité prévue :
+                                                                    {{ $item->pivot->quantity }}
+                                                                </p>
+
+                                                                @if($item->allergens->isNotEmpty())
+
+                                                                    <div class="mt-2">
+                                                                        <strong class="text-danger">
+                                                                            <i class="fas fa-exclamation-triangle"></i>
+                                                                            Allergènes :
+                                                                        </strong>
+
+                                                                        <ul>
+                                                                            @foreach($item->allergens as $allergen)
+                                                                                <li>
+                                                                                    {{ $allergen->name }}
+
+                                                                                    @if($allergen->description)
+                                                                                        — {{ $allergen->description }}
+                                                                                    @endif
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    </div>
+
+                                                                @else
+                                                                    <p class="text-muted">
+                                                                        Aucun allergène renseigné.
+                                                                    </p>
+                                                                @endif
+
+                                                            </div>
+
+                                                        @empty
+
+                                                            <p class="text-muted">
+                                                                Aucun élément renseigné dans cette catégorie.
+                                                            </p>
+
+                                                        @endforelse
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        @endforeach
+
+                                    </div>
+
+                                @endforeach
+
+                            @endif
+
+                            
+                                    
+
+                            
                             </div>
                             <div class="tab-pane fade" id="pills-contact" role="tabpanel"
                                 aria-labelledby="pills-contact-tab" tabindex="0">

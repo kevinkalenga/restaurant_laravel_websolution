@@ -38,7 +38,6 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Titre --}}
                 <div class="form-group">
                     <label for="title">Titre du menu *</label>
                     <input
@@ -51,7 +50,6 @@
                     >
                 </div>
 
-                {{-- Image principale --}}
                 <div class="form-group">
                     <label for="image-upload">Image principale</label>
 
@@ -79,7 +77,6 @@
                     </small>
                 </div>
 
-                {{-- Description --}}
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea
@@ -90,7 +87,6 @@
                     >{{ old('description', $menu->description) }}</textarea>
                 </div>
 
-                {{-- Prix --}}
                 <div class="form-group">
                     <label for="price">Prix du menu (€) *</label>
                     <input
@@ -108,7 +104,6 @@
                     </small>
                 </div>
 
-                {{-- Minimum de personnes --}}
                 <div class="form-group">
                     <label for="minimum_persons">Nombre minimum de personnes *</label>
                     <input
@@ -122,7 +117,6 @@
                     >
                 </div>
 
-                {{-- Stock --}}
                 <div class="form-group">
                     <label for="available_stock">Stock disponible *</label>
                     <input
@@ -136,7 +130,6 @@
                     >
                 </div>
 
-                {{-- Thème --}}
                 <div class="form-group">
                     <label for="theme">Thème *</label>
                     <select name="theme" id="theme" class="form-control" required>
@@ -155,7 +148,6 @@
                     </select>
                 </div>
 
-                {{-- Régime alimentaire --}}
                 <div class="form-group">
                     <label for="diet">Régime alimentaire *</label>
                     <select name="diet" id="diet" class="form-control" required>
@@ -171,7 +163,6 @@
                     </select>
                 </div>
 
-                {{-- Délai de commande --}}
                 <div class="form-group">
                     <label for="advance_notice_hours">Délai de commande (heures) *</label>
                     <input
@@ -185,7 +176,6 @@
                     >
                 </div>
 
-                {{-- Conservation --}}
                 <div class="form-group">
                     <label for="storage_conditions">Conditions de conservation</label>
                     <textarea
@@ -196,7 +186,6 @@
                     >{{ old('storage_conditions', $menu->storage_conditions) }}</textarea>
                 </div>
 
-                {{-- Conditions de commande --}}
                 <div class="form-group">
                     <label for="order_conditions">Conditions de commande</label>
                     <textarea
@@ -207,7 +196,6 @@
                     >{{ old('order_conditions', $menu->order_conditions) }}</textarea>
                 </div>
 
-                {{-- Statut --}}
                 <div class="form-group">
                     <label for="status">Statut *</label>
                     <select name="status" id="status" class="form-control" required>
@@ -220,106 +208,144 @@
                     </select>
                 </div>
 
-                 
                 <hr>
 
                 <h4 class="mb-3">Composition du menu</h4>
+
                 <p class="text-muted">
-                    Coche les produits à conserver dans le menu, puis définis leur catégorie et leur quantité.
+                    Coche les éléments traiteur à conserver dans ce menu.
+                    Leur catégorie est définie automatiquement depuis l'administration.
+                    Tu peux modifier leur quantité.
                 </p>
 
                 @php
-                    $selectedProducts = old('products');
+                    $selectedMenuItems = old('menu_items');
 
-                    if ($selectedProducts === null) {
-                        $selectedProducts = $menu->products->mapWithKeys(function ($product) {
-                            return [
-                                $product->id => [
-                                    'selected' => '1',
-                                    'dish_type' => $product->pivot->dish_type,
-                                    'quantity' => $product->pivot->quantity,
-                                ],
-                            ];
-                        })->all();
+                    if ($selectedMenuItems === null) {
+                        $selectedMenuItems = $menu->menuItems
+                            ->mapWithKeys(function ($menuItem) {
+                                return [
+                                    $menuItem->id => [
+                                        'selected' => '1',
+                                        'quantity' => $menuItem->pivot->quantity,
+                                    ],
+                                ];
+                            })
+                            ->all();
                     }
+
+                    $categories = [
+                        'entree' => 'Entrées',
+                        'plat' => 'Plats',
+                        'dessert' => 'Desserts',
+                    ];
                 @endphp
 
-                @if ($products->isEmpty())
+                @if ($menuItems->isEmpty())
                     <div class="alert alert-warning">
-                        Aucun produit disponible. Crée d'abord des produits dans la rubrique Products.
+                        Aucun élément traiteur disponible.
+                        Demande à l'administrateur d'en créer dans la rubrique
+                        Éléments traiteur.
                     </div>
                 @else
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Sélection</th>
-                                    <th>Produit</th>
-                                    <th>Prix du produit</th>
-                                    <th>Catégorie dans le menu</th>
-                                    <th>Quantité</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($products as $product)
+
+                    @foreach ($categories as $category => $categoryLabel)
+                        @php
+                            $categoryItems = $menuItems->where('category', $category);
+                        @endphp
+
+                        @if ($categoryItems->isNotEmpty())
+                            <h5 class="mt-4 mb-3">{{ $categoryLabel }}</h5>
+
+                            <div class="row">
+                                @foreach ($categoryItems as $menuItem)
                                     @php
-                                        $values = $selectedProducts[$product->id] ?? [];
+                                        $values = $selectedMenuItems[$menuItem->id] ?? [];
                                     @endphp
-                                    <tr>
-                                        <td>
-                                            <input
-                                                type="checkbox"
-                                                name="products[{{ $product->id }}][selected]"
-                                                value="1"
-                                                @checked(!empty($values['selected']))
-                                            >
-                                        </td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ number_format((float) $product->price, 2, ',', ' ') }} €</td>
-                                        <td>
-                                            <select
-                                                name="products[{{ $product->id }}][dish_type]"
-                                                class="form-control"
-                                            >
-                                                <option value="entree"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'entree')>
-                                                    Entrée
-                                                </option>
-                                                <option value="plat"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'plat')>
-                                                    Plat
-                                                </option>
-                                                <option value="dessert"
-                                                    @selected(($values['dish_type'] ?? 'plat') === 'dessert')>
-                                                    Dessert
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                name="products[{{ $product->id }}][quantity]"
-                                                class="form-control"
-                                                min="1"
-                                                value="{{ $values['quantity'] ?? 1 }}"
-                                            >
-                                        </td>
-                                    </tr>
+
+                                    <div class="col-md-6 col-lg-4 mb-3">
+                                        <div class="card h-100 border">
+
+                                            @if ($menuItem->image)
+                                                <img
+                                                    src="{{ asset('storage/' . $menuItem->image) }}"
+                                                    alt="{{ $menuItem->name }}"
+                                                    class="card-img-top"
+                                                    style="height:180px;object-fit:cover;"
+                                                >
+                                            @endif
+
+                                            <div class="card-body">
+
+                                                <div class="custom-control custom-checkbox mb-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        class="custom-control-input"
+                                                        id="menu-item-{{ $menuItem->id }}"
+                                                        name="menu_items[{{ $menuItem->id }}][selected]"
+                                                        value="1"
+                                                        @checked(!empty($values['selected']))
+                                                    >
+
+                                                    <label
+                                                        class="custom-control-label font-weight-bold"
+                                                        for="menu-item-{{ $menuItem->id }}"
+                                                    >
+                                                        {{ $menuItem->name }}
+                                                    </label>
+                                                </div>
+
+                                                <span class="badge badge-info">
+                                                    {{ $categoryLabel }}
+                                                </span>
+
+                                                @if ($menuItem->description)
+                                                    <p class="text-muted mt-2 mb-2">
+                                                        {{ $menuItem->description }}
+                                                    </p>
+                                                @endif
+
+                                                <p class="font-weight-bold mb-3">
+                                                    Prix indicatif :
+                                                    {{ number_format((float) $menuItem->price, 2, ',', ' ') }} €
+                                                </p>
+
+                                                <div class="form-group mb-0">
+                                                    <label for="quantity-{{ $menuItem->id }}">
+                                                        Quantité
+                                                    </label>
+
+                                                    <input
+                                                        type="number"
+                                                        id="quantity-{{ $menuItem->id }}"
+                                                        name="menu_items[{{ $menuItem->id }}][quantity]"
+                                                        class="form-control"
+                                                        min="1"
+                                                        value="{{ $values['quantity'] ?? 1 }}"
+                                                    >
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            </div>
+                        @endif
+                    @endforeach
+
                 @endif
-                <div class="mt-2">
+
+                <div class="mt-4">
                     <button type="submit" class="btn btn-primary">
                         Enregistrer les modifications
                     </button>
 
                     <a href="{{ route('employe.catering-menus.index') }}"
-                    class="btn btn-secondary">
+                       class="btn btn-secondary">
                         Annuler
                     </a>
                 </div>
+
             </form>
         </div>
     </div>

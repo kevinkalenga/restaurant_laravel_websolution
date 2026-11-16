@@ -23,6 +23,7 @@ use App\Http\Controllers\Employe\EmployeeOrderController;
 use App\Http\Controllers\Employe\EmployeeProductReviewController;
 use App\Http\Controllers\Employe\EmployeeMenuController;
 use App\Models\Order;
+use App\Http\Controllers\Employe\EmployeeAllergenController;
 
 
 /**  Show Home Page  **/ 
@@ -252,6 +253,13 @@ Route::middleware(['auth', 'role:employe'])
     ->except(['show'])
     ->parameters(['catering-menus' => 'menu'])
     ->names('catering-menus');
+
+    // Création des allergènes par l'employé
+    Route::get('/allergens/create', [EmployeeAllergenController::class, 'create'])
+        ->name('allergens.create');
+
+    Route::post('/allergens', [EmployeeAllergenController::class, 'store'])
+        ->name('allergens.store');
   });
 
 
