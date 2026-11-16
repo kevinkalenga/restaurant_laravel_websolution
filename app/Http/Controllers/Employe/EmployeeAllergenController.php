@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class EmployeeAllergenController extends Controller
 {
+    public function index()
+    {
+        $allergens = Allergen::orderBy('name')->paginate(10);
+
+        return view('employe.allergens.index', compact('allergens'));
+    }
+
+
     public function create()
     {
         return view('employe.allergens.create');

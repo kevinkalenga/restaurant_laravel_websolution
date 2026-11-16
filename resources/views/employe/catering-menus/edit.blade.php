@@ -1,4 +1,3 @@
-
 @extends('employe.layouts.master')
 
 @section('content')
@@ -38,6 +37,7 @@
                 @csrf
                 @method('PUT')
 
+                {{-- Titre --}}
                 <div class="form-group">
                     <label for="title">Titre du menu *</label>
                     <input
@@ -50,6 +50,7 @@
                     >
                 </div>
 
+                {{-- Image principale --}}
                 <div class="form-group">
                     <label for="image-upload">Image principale</label>
 
@@ -77,6 +78,77 @@
                     </small>
                 </div>
 
+                {{-- Galerie photos existante --}}
+                <div class="form-group">
+                    <label>Galerie photos actuelle</label>
+
+                    @if ($menu->galleries->isNotEmpty())
+                        <div class="row">
+                            @foreach ($menu->galleries as $gallery)
+                                <div class="col-md-3 mb-3">
+                                    <div class="card h-100">
+                                        <img
+                                            src="{{ asset('storage/' . $gallery->image) }}"
+                                            alt="Photo de la galerie"
+                                            style="width:100%;height:150px;object-fit:cover;"
+                                        >
+
+                                        <div class="card-body">
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    class="custom-control-input"
+                                                    id="delete-gallery-{{ $gallery->id }}"
+                                                    name="delete_gallery[]"
+                                                    value="{{ $gallery->id }}"
+                                                    @checked(in_array($gallery->id, old('delete_gallery', [])))
+                                                >
+
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="delete-gallery-{{ $gallery->id }}"
+                                                >
+                                                    Supprimer cette photo
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-muted">Aucune photo dans la galerie.</p>
+                    @endif
+                </div>
+
+                <hr>
+
+                {{-- Ajouter de nouvelles photos --}}
+                <div class="form-group">
+                    <label for="gallery-upload">Ajouter des photos à la galerie</label>
+
+                    <input
+                        type="file"
+                        name="gallery[]"
+                        id="gallery-upload"
+                        class="form-control"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <small class="form-text text-muted">
+                        Tu peux sélectionner plusieurs photos. Les photos actuelles
+                        seront conservées sauf celles cochées pour suppression.
+                    </small>
+
+                    <div
+                        id="gallery-preview"
+                        class="d-flex flex-wrap mt-3"
+                        style="gap:10px;"
+                    ></div>
+                </div>
+
+                {{-- Description --}}
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea
@@ -87,6 +159,7 @@
                     >{{ old('description', $menu->description) }}</textarea>
                 </div>
 
+                {{-- Prix --}}
                 <div class="form-group">
                     <label for="price">Prix du menu (€) *</label>
                     <input
@@ -104,6 +177,7 @@
                     </small>
                 </div>
 
+                {{-- Nombre minimum de personnes --}}
                 <div class="form-group">
                     <label for="minimum_persons">Nombre minimum de personnes *</label>
                     <input
@@ -117,6 +191,7 @@
                     >
                 </div>
 
+                {{-- Stock --}}
                 <div class="form-group">
                     <label for="available_stock">Stock disponible *</label>
                     <input
@@ -130,6 +205,7 @@
                     >
                 </div>
 
+                {{-- Thème --}}
                 <div class="form-group">
                     <label for="theme">Thème *</label>
                     <select name="theme" id="theme" class="form-control" required>
@@ -148,6 +224,7 @@
                     </select>
                 </div>
 
+                {{-- Régime alimentaire --}}
                 <div class="form-group">
                     <label for="diet">Régime alimentaire *</label>
                     <select name="diet" id="diet" class="form-control" required>
@@ -163,6 +240,7 @@
                     </select>
                 </div>
 
+                {{-- Délai de commande --}}
                 <div class="form-group">
                     <label for="advance_notice_hours">Délai de commande (heures) *</label>
                     <input
@@ -176,6 +254,7 @@
                     >
                 </div>
 
+                {{-- Conditions de conservation --}}
                 <div class="form-group">
                     <label for="storage_conditions">Conditions de conservation</label>
                     <textarea
@@ -186,6 +265,7 @@
                     >{{ old('storage_conditions', $menu->storage_conditions) }}</textarea>
                 </div>
 
+                {{-- Conditions de commande --}}
                 <div class="form-group">
                     <label for="order_conditions">Conditions de commande</label>
                     <textarea
@@ -196,6 +276,7 @@
                     >{{ old('order_conditions', $menu->order_conditions) }}</textarea>
                 </div>
 
+                {{-- Statut --}}
                 <div class="form-group">
                     <label for="status">Statut *</label>
                     <select name="status" id="status" class="form-control" required>
@@ -210,6 +291,7 @@
 
                 <hr>
 
+                {{-- Composition du menu --}}
                 <h4 class="mb-3">Composition du menu</h4>
 
                 <p class="text-muted">
@@ -255,6 +337,7 @@
                         @endphp
 
                         @if ($categoryItems->isNotEmpty())
+
                             <h5 class="mt-4 mb-3">{{ $categoryLabel }}</h5>
 
                             <div class="row">
@@ -263,7 +346,7 @@
                                         $values = $selectedMenuItems[$menuItem->id] ?? [];
                                     @endphp
 
-                                    <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <div class="card h-100 border">
 
                                             @if ($menuItem->image)
@@ -271,7 +354,7 @@
                                                     src="{{ asset('storage/' . $menuItem->image) }}"
                                                     alt="{{ $menuItem->name }}"
                                                     class="card-img-top"
-                                                    style="height:180px;object-fit:cover;"
+                                                    style="width:100%;height:150px;object-fit:cover;"
                                                 >
                                             @endif
 
@@ -330,11 +413,13 @@
                                     </div>
                                 @endforeach
                             </div>
+
                         @endif
                     @endforeach
 
                 @endif
 
+                {{-- Boutons --}}
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary">
                         Enregistrer les modifications
@@ -355,6 +440,8 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Aperçu de l'image principale
     const imageUpload = document.getElementById('image-upload');
     const imagePreview = document.getElementById('image-preview');
 
@@ -386,6 +473,35 @@ document.addEventListener('DOMContentLoaded', function () {
             imagePreview.appendChild(img);
         });
     }
+
+    // Aperçu des nouvelles photos de la galerie
+    const galleryUpload = document.getElementById('gallery-upload');
+    const galleryPreview = document.getElementById('gallery-preview');
+
+    if (galleryUpload && galleryPreview) {
+        galleryUpload.addEventListener('change', function () {
+            galleryPreview.innerHTML = '';
+
+            Array.from(this.files).forEach(function (file) {
+                if (!file.type.startsWith('image/')) {
+                    return;
+                }
+
+                const img = document.createElement('img');
+                const previewUrl = URL.createObjectURL(file);
+
+                img.src = previewUrl;
+                img.alt = file.name;
+                img.style.width = '120px';
+                img.style.height = '120px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '8px';
+
+                galleryPreview.appendChild(img);
+            });
+        });
+    }
+
 });
 </script>
 @endpush
