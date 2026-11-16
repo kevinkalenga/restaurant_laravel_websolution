@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
 use App\Services\SettingsService;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+    
         Paginator::useBootstrap();
 
         if ($this->app->environment('testing')) {
