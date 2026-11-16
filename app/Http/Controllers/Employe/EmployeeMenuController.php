@@ -39,7 +39,7 @@ class EmployeeMenuController extends Controller
             ->orderBy('name')
             ->get();
 
-        $menu->load('menuItems');
+        $menu->load(['menuItems', 'galleries']);
 
         return view(
             'employe.catering-menus.edit',
@@ -63,6 +63,17 @@ class EmployeeMenuController extends Controller
         $menu = Menu::create($validated);
 
         $menu->menuItems()->sync($selectedMenuItems);
+
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                $path = $image->store('catering-menus/gallery', 'public');
+
+                $menu->galleries()->create([
+                    'image' => $path,
+                ]);
+            }
+        }
+
 
         return redirect()
             ->route('employe.catering-menus.index')
@@ -96,6 +107,31 @@ class EmployeeMenuController extends Controller
 
         $menu->menuItems()->sync($selectedMenuItems);
 
+        // Supprimer les photos sélectionnées
+        if ($request->filled('delete_gallery')) {
+            $galleries = $menu->galleries()
+                ->whereIn('id', $request->input('delete_gallery'))
+                ->get();
+
+            foreach ($galleries as $gallery) {
+                Storage::disk('public')->delete($gallery->image);
+                $gallery->delete();
+            }
+        }
+
+        // Ajouter les nouvelles photos
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $image) {
+                $path = $image->store('catering-menus/gallery', 'public');
+
+                $menu->galleries()->create([
+                    'image' => $path,
+                ]);
+            }
+        }
+
+
+
         return redirect()
             ->route('employe.catering-menus.index')
             ->with('success', 'Menu modifié avec succès.');
@@ -105,12 +141,23 @@ class EmployeeMenuController extends Controller
     {
         $image = $menu->image;
 
+        // Récupérer les photos de la galerie avant suppression
+        $galleries = $menu->galleries()->get();
+
+        // Détacher les éléments du menu
         $menu->menuItems()->detach();
 
+        // Supprimer le menu
         $menu->delete();
 
+        // Supprimer l'image principale
         if ($image) {
             Storage::disk('public')->delete($image);
+        }
+
+        // Supprimer les fichiers de la galerie
+        foreach ($galleries as $gallery) {
+            Storage::disk('public')->delete($gallery->image);
         }
 
         return redirect()
@@ -118,12 +165,17 @@ class EmployeeMenuController extends Controller
             ->with('success', 'Menu supprimé avec succès.');
     }
 
+
     private function validateMenu(Request $request): array
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'max:2048'],
+            'gallery' => ['nullable', 'array'],
+            'gallery.*' => ['image', 'max:2048'],
+            'delete_gallery' => ['nullable', 'array'],
+            'delete_gallery.*' => ['integer'],
             'price' => ['required', 'numeric', 'min:0'],
             'minimum_persons' => ['required', 'integer', 'min:1'],
             'theme' => [

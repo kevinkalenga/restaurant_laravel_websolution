@@ -126,10 +126,10 @@
                     Gestion des menus traiteur
             </a>
 
-            <a href="{{ route('employe.allergens.create') }}"
+            <a href="{{ route('employe.allergens.index') }}"
                 class="btn btn-outline-warning">
-                <i class="bi bi-exclamation-triangle me-1"></i>
-                Ajouter un allergène
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Gestion des allergènes
             </a>
 
         </div>

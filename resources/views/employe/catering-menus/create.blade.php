@@ -51,6 +51,29 @@
                     </div>
                 </div>
 
+
+                <div class="form-group">
+                    <label for="gallery-upload">Galerie photos du menu</label>
+
+                    <input
+                        type="file"
+                        name="gallery[]"
+                        id="gallery-upload"
+                        class="form-control"
+                        accept="image/*"
+                        multiple
+                    >
+
+                    <small class="form-text text-muted">
+                        Tu peux sélectionner plusieurs photos pour illustrer ce menu.
+                    </small>
+
+                    <div id="gallery-preview"
+                        class="d-flex flex-wrap mt-3"
+                        style="gap: 10px;">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description"
@@ -268,6 +291,34 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+
+    // Prévisualisation des photos de la galerie
+    const galleryUpload = document.getElementById('gallery-upload');
+    const galleryPreview = document.getElementById('gallery-preview');
+
+    if (galleryUpload && galleryPreview) {
+        galleryUpload.addEventListener('change', function () {
+            galleryPreview.innerHTML = '';
+
+            Array.from(this.files).forEach(function (file) {
+                if (!file.type.startsWith('image/')) {
+                    return;
+                }
+
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = file.name;
+                img.style.width = '120px';
+                img.style.height = '120px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '8px';
+
+                galleryPreview.appendChild(img);
+            });
+        });
+    }
+
 });
 </script>
 @endpush

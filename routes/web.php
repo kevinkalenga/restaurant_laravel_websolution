@@ -260,6 +260,9 @@ Route::middleware(['auth', 'role:employe'])
 
     Route::post('/allergens', [EmployeeAllergenController::class, 'store'])
         ->name('allergens.store');
+
+    Route::get('/allergens', [EmployeeAllergenController::class, 'index'])
+    ->name('allergens.index');
   });
 
 
