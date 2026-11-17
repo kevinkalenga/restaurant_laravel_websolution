@@ -66,8 +66,8 @@ return [
         
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('MONGODB_URI'),
-            'database' => env('MONGODB_DATABASE'),
+            'dsn' => trim(env('MONGODB_URI')),
+            'database' => trim(env('MONGODB_DATABASE')),
         ],
         
         
