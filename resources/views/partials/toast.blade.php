@@ -1,40 +1,4 @@
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    // Success / Info messages
-    @if (session('status'))
-        iziToast.success({
-            title: 'Success',
-            message: {!! json_encode(session('status')) !!},
-            position: 'topRight',
-            timeout: 4000
-        });
-    @endif
-
-    // Error messages
-    @if (session('error'))
-        iziToast.error({
-            title: 'Error',
-            message: {!! json_encode(session('error')) !!},
-            position: 'topRight',
-            timeout: 5000
-        });
-    @endif
-
-    // Validation errors
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            iziToast.error({
-                title: 'Error',
-                message: {!! json_encode($error) !!},
-                position: 'topRight',
-                timeout: 5000
-            });
-        @endforeach
-    @endif
-
-});
-</script> -->
+<!-- 
 
 
 
@@ -70,7 +34,45 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         @endforeach
     @endif
+</script> -->
+
+
+
+
+<script>
+    // Notifications de succès
+    @if(session('status'))
+        iziToast.success({
+            title: 'Succès',
+            message: {!! json_encode(session('status')) !!},
+            position: 'topRight',
+            timeout: 4000
+        });
+    @endif
+
+    // Notifications d'erreur
+    @if(session('error'))
+        iziToast.error({
+            title: 'Erreur',
+            message: {!! json_encode(session('error')) !!},
+            position: 'topRight',
+            timeout: 5000
+        });
+    @endif
+
+    // Erreurs de validation
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            iziToast.error({
+                title: 'Erreur de validation',
+                message: {!! json_encode($error) !!},
+                position: 'topRight',
+                timeout: 5000
+            });
+        @endforeach
+    @endif
 </script>
+
 
 
 

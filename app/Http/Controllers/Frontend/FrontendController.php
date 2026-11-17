@@ -179,7 +179,7 @@ class FrontendController extends Controller
             'discount' => $discount,
             'finalTotal' => $finalTotal,
             'coupon_code' => $code,
-            'message' => 'Coupon Applied Successfully.'
+            'message' => 'Code promotionnel appliqué avec succès !'
         ]);
     }
 
@@ -191,7 +191,7 @@ class FrontendController extends Controller
         if (!session()->has('coupon')) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No coupon found.'
+                'message' => 'Aucun code promotionnel trouvé.'
             ]);
         }
 
@@ -199,7 +199,7 @@ class FrontendController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Coupon Removed!',
+            'message' => 'Code promotionnel supprimé !',
             'subtotal' => cartTotal(),
             'discount' => 0,
             'finalTotal' => cartTotal()
@@ -286,7 +286,7 @@ class FrontendController extends Controller
        $comment->comment = $request->comment;
        $comment->save();
 
-        return redirect()->back()->with('success', 'Comment successfully added!');
+        return redirect()->back()->with('success', 'Commentaire ajouté avec succès !');
     }
 
     public function about()
@@ -352,7 +352,7 @@ class FrontendController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Message Sent Successfully!'
+            'message' => 'Message envoyé avec succès!'
         ]);
     }
 
@@ -368,7 +368,7 @@ class FrontendController extends Controller
 
         if (!auth()->check()) {
             throw ValidationException::withMessages([
-                'auth' => 'Please login to request reservation'
+                'auth' => 'Veuillez vous connecter pour effectuer une demande de réservation.'
             ]);
         }
 
@@ -390,7 +390,7 @@ class FrontendController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Reservation created successfully!'
+            'message' => 'Demande de réservation créée avec succès!'
         ]);
     }
 
@@ -399,7 +399,7 @@ class FrontendController extends Controller
         $request->validate([
             'email' => ['required', 'email', 'max:255', 'unique:subscribers,email']
         ], [
-            'email.unique' => 'Email is already subscribed!'
+            'email.unique' => 'Cette adresse e-mail est déjà inscrite à notre newsletter !'
         ]);
 
         $subcriber = new Subscriber();
@@ -411,7 +411,7 @@ class FrontendController extends Controller
 
          return response()->json([
             'status' => true,
-            'message' => 'Subscribed successfully!'
+            'message' => 'Inscription à la newsletter réussie!'
         ]);
     }
 
@@ -446,7 +446,7 @@ class FrontendController extends Controller
 
             if (!$order) {
                 throw ValidationException::withMessages([
-                    'product_id' => 'Buy the product in order to submit the review please!'
+                    'product_id' => 'Veuillez acheter ce produit avant de pouvoir publier un avis.'
                 ]);
             }
 
@@ -456,7 +456,7 @@ class FrontendController extends Controller
 
             if ($alreadyReviewed) {
                 throw ValidationException::withMessages([
-                    'product_id' => 'You have already reviewed this product.'
+                    'product_id' => 'Vous avez déjà publié un avis sur ce produit.'
                 ]);
             }
             
@@ -474,7 +474,7 @@ class FrontendController extends Controller
 
             return redirect()->back()->with(
                 'success',
-                'Review submitted successfully!'
+                'Votre avis a été envoyé avec succès!'
             );
     }
 

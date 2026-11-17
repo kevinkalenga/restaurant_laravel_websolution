@@ -18,13 +18,13 @@ class CartController extends Controller
             ->findOrFail($request->product_id);
         if ($product->quantity < $request->quantity) {
             throw ValidationException::withMessages([
-                'quantity' => 'Quantity is not available!'
+                'quantity' => "La quantité demandée n'est pas disponible !"
             ]);
         }
 
         if ($request->quantity < $product->minimum_persons) {
             throw ValidationException::withMessages([
-                'quantity' => "This menu requires at least {$product->minimum_persons} people."
+                'quantity' => "Ce menu nécessite au minimum {$product->minimum_persons} personnes."
             ]);
         }
       try{
@@ -40,7 +40,7 @@ class CartController extends Controller
             // sécurité métier
             if (!$productSize) {
                 return redirect()->back()
-                    ->withErrors('Invalid size for this product');
+                    ->withErrors("La taille sélectionnée n'est pas valide pour ce produit");
             }
         }
 
@@ -91,7 +91,7 @@ class CartController extends Controller
        ]);
        $this->invalidatePendingCheckout();
 
-        return response(['status' => 'success', 'message' => "Product Added Into Card Successfully!"], 200);
+        return response(['status' => 'success', 'message' => "Produit ajouté au panier avec succès !"], 200);
       }catch(\Exception $e){
         return response(['status' => 'error', 'message' => "Something went wrong!"], 500);
       }   
@@ -127,7 +127,7 @@ class CartController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Item has been removed!',
+                'message' => "L'article a été supprimé",
                 'cart_total' => $subtotal
             ]);
 
@@ -187,7 +187,7 @@ class CartController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Something went wrong'
+                'message' => 'Une erreur est survenue.'
             ], 500);
         }
     }

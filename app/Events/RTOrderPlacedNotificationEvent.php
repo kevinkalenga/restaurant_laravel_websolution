@@ -24,7 +24,7 @@ class RTOrderPlacedNotificationEvent implements ShouldBroadcast
      */
     public function __construct(Order $order)
     {
-      $this->message = '#'.$order->invoice_id.' a new order has been placed!';
+      $this->message = '#'.$order->invoice_id.' Une nouvelle commande a été passée!';
       $this->orderId = $order->id;
       $this->date = date('h:i A | d-F-Y', strtotime($order->created_at));
        

@@ -36,7 +36,7 @@ class ProfileController extends Controller
 
       $user->phone = $request->phone;
       $user->save();
-      return redirect('/profile')->with('status', 'User Updated Successfully!');
+      return redirect('/profile')->with('status', 'Utilisateur mis à jour avec succès!');
     }
 
 
@@ -46,7 +46,7 @@ class ProfileController extends Controller
          $user->password = bcrypt($request->password); //new pwd
          $user->save();
 
-         return redirect()->back()->with('status', 'Password Updated Successfully!');
+         return redirect()->back()->with('status', 'Mot de passe mis à jour avec succès !');
     }
 
 
@@ -59,6 +59,6 @@ class ProfileController extends Controller
         $user->avatar = $imagePath;
         $user->save();
 
-        return redirect()->back()->with('status', 'Avatar Updated Successfully!');
+        return redirect()->back()->with('status', 'Photo de profil mise à jour avec succès!');
     }
 }

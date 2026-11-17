@@ -23,7 +23,7 @@ class PaymentController extends Controller
                 !session()->has('address')
             ) {
                 return redirect()->route('checkout.index')
-                    ->with('error', 'Please complete the checkout information first.');
+                    ->with('error', "Veuillez d'abord compléter les informations nécessaires à la validation de votre commande.");
         }
     
         $subTotal = cartTotal();
@@ -63,7 +63,7 @@ class PaymentController extends Controller
             // redirect user to the payment host
             if (!$order) {
                 return response()->json([
-                    'message' => 'Failed to create order.'
+                    'message' => 'Une erreur est survenue lors de la création de votre commande.'
                 ], 500);
             }
              
@@ -80,7 +80,7 @@ class PaymentController extends Controller
 
                 default:
                     return response()->json([
-                        'message' => 'Unsupported payment gateway.'
+                        'message' => 'Moyen de paiement non pris en charge.'
                     ], 400);
             }
          
@@ -98,7 +98,7 @@ class PaymentController extends Controller
            
        
           return response()->json([
-            'message' => 'Payment could not be processed. Please try again.'
+            'message' => "Le paiement n'a pas pu être traité. Veuillez réessayer."
           ], 500);
        }
 
@@ -203,7 +203,7 @@ class PaymentController extends Controller
                 empty($approvalUrl) ||
                 !filter_var($approvalUrl, FILTER_VALIDATE_URL)
             ) {
-                \Log::warning('PayPal order creation returned an invalid response.', [
+                \Log::warning('PayPal a renvoyé une réponse invalide lors de la création de la commande.', [
                     'order_id' => $order->id,
                 ]);
 
@@ -248,7 +248,7 @@ class PaymentController extends Controller
                 $paypalOrderId === '' ||
                 !hash_equals($paypalOrderId, (string) $request->token)
             ) {
-                \Log::warning('PayPal return token does not match the session.');
+                \Log::warning('Le jeton de retour PayPal ne correspond pas à la session en cours.');
 
                 return redirect()->route('payment.cancel')
                     ->withErrors([
@@ -318,7 +318,7 @@ class PaymentController extends Controller
                     empty($capture['id']) ||
                     !isset($capture['amount']['value'], $capture['amount']['currency_code'])
                 ) {
-                    \Log::warning('PayPal capture details are invalid.', [
+                    \Log::warning('Les informations de validation du paiement PayPal sont invalides.', [
                         'order_id' => $order->id,
                         'custom_id_present' => $customOrderId !== null,
                         'capture_present' => is_array($capture),
@@ -360,7 +360,7 @@ class PaymentController extends Controller
                     $capturedAmount !== $expectedAmount ||
                     $capturedCurrency !== $expectedCurrency
                 ) {
-                    \Log::warning('PayPal amount or currency does not match order.', [
+                    \Log::warning('Le montant ou la devise du paiement PayPal ne correspond pas à ceux de la commande.', [
                         'order_id' => $order->id,
                         'expected_amount' => $expectedAmount,
                         'captured_amount' => $capturedAmount,
@@ -390,7 +390,7 @@ class PaymentController extends Controller
                         // Ne pas modifier une commande déjà payée par une autre transaction.
                         if ($lockedOrder->transaction_id !== $capture['id']) {
                             throw new \RuntimeException(
-                                'Order already completed with a different transaction.'
+                                'Cette commande a déjà été réglée avec une autre transaction.'
                             );
                         }
 
@@ -402,7 +402,7 @@ class PaymentController extends Controller
                         $lockedOrder->order_status !== 'pending'
                     ) {
                         throw new \RuntimeException(
-                            'Order is not eligible for payment confirmation.'
+                            "Cette commande ne peut pas faire l'objet d'une confirmation de paiement."
                         );
                     }
 
@@ -446,7 +446,7 @@ class PaymentController extends Controller
                 return redirect()->route('payment.success');
 
             } catch (\Throwable $e) {
-                \Log::error('PayPal payment confirmation failed.', [
+                \Log::error('La confirmation du paiement PayPal a échoué.', [
                     'message' => $e->getMessage(),
                 ]);
 
@@ -618,7 +618,7 @@ class PaymentController extends Controller
                 ->first();
 
             if (!$order) {
-                \Log::warning('Stripe return order not found for current user.', [
+                \Log::warning("Aucune commande correspondant au retour Stripe n'a été trouvée pour cet utilisateur.", [
                     'order_id' => $orderId,
                 ]);
 
@@ -635,7 +635,7 @@ class PaymentController extends Controller
                 strtolower((string) $stripeSession->currency) !== $expectedCurrency ||
                 (string) $stripeSession->client_reference_id !== (string) $order->id
             ) {
-                \Log::warning('Stripe payment details do not match order.', [
+                \Log::warning('Les informations du paiement Stripe ne correspondent pas à celles de la commande.', [
                     'order_id' => $order->id,
                     'stripe_session_id' => $stripeSession->id,
                 ]);
@@ -659,7 +659,7 @@ class PaymentController extends Controller
                 if ($lockedOrder->payment_status === 'completed') {
                     if ($lockedOrder->transaction_id !== $paymentIntent) {
                         throw new \RuntimeException(
-                            'Order already completed with a different transaction.'
+                            'Cette commande a déjà été réglée avec une autre transaction.'
                         );
                     }
 
@@ -671,7 +671,7 @@ class PaymentController extends Controller
                     $lockedOrder->order_status === 'cancelled'
                 ) {
                     throw new \RuntimeException(
-                        'Order is not eligible for payment confirmation.'
+                        "Cette commande ne peut pas faire l'objet d'une confirmation de paiement."
                     );
                 }
 
@@ -724,7 +724,7 @@ class PaymentController extends Controller
             return redirect()->route('payment.success');
 
         } catch (\Throwable $e) {
-            \Log::error('Stripe payment confirmation failed.', [
+            \Log::error('La confirmation du paiement Stripe a échoué.', [
                 'message' => $e->getMessage(),
                 'session_id' => $request->session_id,
             ]);
