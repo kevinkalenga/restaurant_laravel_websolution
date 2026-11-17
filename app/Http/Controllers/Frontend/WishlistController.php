@@ -14,13 +14,13 @@ class WishlistController extends Controller
         if (!auth()->check()) {
             return response([
                 'status' => 'error',
-                'message' => 'You must be logged in to add a product to your wishlist.'
+                'message' => 'Vous devez être connecté pour ajouter un produit à votre liste de souhaits.'
             ], 401);
         }
     
         $productAlreadyExist = Wishlist::where(['user_id' => auth()->user()->id, 'product_id' => $productId])->exists();
         if($productAlreadyExist) {
-            throw ValidationException::withMessages(['Product has already been added to wishlist']);
+            throw ValidationException::withMessages(['Ce produit figure déjà dans votre liste de souhaits.']);
         }
     
          $wishlist = new Wishlist();
@@ -28,7 +28,7 @@ class WishlistController extends Controller
          $wishlist->product_id = $productId;
          $wishlist->save();
 
-         return response(['status' => 'success', 'message' => 'Product added to wishlist']);
+         return response(['status' => 'success', 'message' => 'Produit ajouté à votre liste de souhaits.']);
     }
 
     
@@ -37,14 +37,14 @@ class WishlistController extends Controller
         $obj = Wishlist::find($id);
 
         if (!$obj) {
-            return redirect()->back()->with('error', 'Wishlist item not found!');
+            return redirect()->back()->with('error', 'Article introuvable dans votre liste de souhaits!');
         }
 
         $obj->delete();
 
         return redirect()->back()->with(
             'success',
-            'Wishlist item is deleted successfully!'
+            'Article supprimé de votre liste de souhaits avec succès !'
         );
     }
 

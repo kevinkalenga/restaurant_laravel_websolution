@@ -77,7 +77,7 @@ class CheckoutController extends Controller
                 \Log::error('Delivery calculation error: '.$e->getMessage());
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Something went wrong'
+                    'message' => 'Une erreur est survenue.'
                 ], 500);
             }
 

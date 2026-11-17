@@ -11,8 +11,8 @@ class OrderController extends Controller
     public function cancelOrder($id, OrderService $orderService): RedirectResponse { 
         $cancelled = $orderService->cancelOrder($id); 
         if (!$cancelled) { 
-            return back()->with( 'error', 'This order can no longer be cancelled.' ); 
+            return back()->with( 'error', 'Cette commande ne peut plus être annulée.' ); 
         } 
-        return back()->with( 'success', 'Your order has been cancelled successfully.' ); 
+        return back()->with( 'success', 'Votre commande a été annulée avec succès.' ); 
     }
 }

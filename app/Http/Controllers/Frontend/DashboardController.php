@@ -76,7 +76,7 @@ class DashboardController extends Controller
 
       return redirect()
             ->back()
-            ->with('success', 'Address created successfully!');
+            ->with('success', 'Adresse ajoutée avec succès!');
    }
 
    public function updateAddress(Request $request, $id)
@@ -107,7 +107,7 @@ class DashboardController extends Controller
 
       return redirect()
          ->route('dashboard')
-         ->with('success', 'Address updated successfully!');
+         ->with('success', 'Adresse mise à jour avec succès !');
    }
 
    public function deleteAddress($id)
@@ -118,6 +118,6 @@ class DashboardController extends Controller
 
     return redirect()
         ->route('admin.dashboard')
-        ->with('success', 'Address deleted successfully!');
+        ->with('success', 'Adresse supprimée avec succès!');
    }
 }
