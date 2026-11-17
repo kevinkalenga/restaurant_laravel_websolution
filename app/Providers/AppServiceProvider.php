@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         
+        app(SettingsService::class)->setGlobalSettings();
         $settings = app(SettingsService::class)->getSettings();
 
         config([
