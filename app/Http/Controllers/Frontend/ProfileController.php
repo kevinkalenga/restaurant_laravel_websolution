@@ -37,7 +37,7 @@ class ProfileController extends Controller
 
       $user->phone = $request->phone;
       $user->save();
-      return redirect('/profile')->with('status', 'Utilisateur mis à jour avec succès!');
+      return redirect('dashboard')->with('status', 'Utilisateur mis à jour avec succès!');
     }
 
 
