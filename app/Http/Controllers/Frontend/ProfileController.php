@@ -28,7 +28,8 @@ class ProfileController extends Controller
     {
       //dd($request->all());
       $user = Auth::user();
-      $user->name = $request->name;
+      $user->firstname = $request->firstname;
+      $user->lastname = $request->lastname;
       if ($user->email !== $request->email) {
             $user->email = $request->email;
             $user->email_verified_at = null;
