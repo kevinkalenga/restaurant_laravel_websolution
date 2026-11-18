@@ -3,10 +3,11 @@
             <div class="row add_slider wow fadeInUp" data-wow-duration="1s">
                 @foreach($bannerSliders as $item)
                     <div class="col-xl-4">
-                        <a href="{{$item->url}}" class="fp__add_slider_single" style="background: url('{{asset($item->banner)}}');">
+                        <a href="javascript:;" class="fp__add_slider_single" style="background: url('{{asset($item->banner)}}');">
                             <div class="text">
                                 <h3>{{$item->title}}</h3>
                                 <p>{!! $item->sub_title !!}</p>
+                                <!-- {{$item->url}} -->
                             </div>
                         </a>
                     </div>
