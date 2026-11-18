@@ -123,7 +123,7 @@
             </ul>
             <p class="subtotal">Sous-total <span class="cart_subtotal">{{currencyPosition(cartTotal())}}</span></p>
             <a class="cart_view" href="{{route('cart.index')}}"> Voir le panier</a>
-            <a class="checkout" href="javascript:;">Passer à la commande</a>
+            <a class="checkout" href="{{route('checkout.index')}}">Passer à la commande</a>
         </div>
     </div>
 

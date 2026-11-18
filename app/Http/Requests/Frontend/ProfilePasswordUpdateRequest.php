@@ -32,7 +32,7 @@ class ProfilePasswordUpdateRequest extends FormRequest
     {
         // input field name and validation name
         return [
-            'current_password.current_password' => 'Current Password is invalid!'
+            'current_password.current_password' => 'Le mot de passe actuel est incorrect!'
         ];
     }
 }

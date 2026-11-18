@@ -42,13 +42,19 @@
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
                                             <label>Nom</label>
-                                            <input type="text" placeholder="Nom" name="name" value="{{old('name')}}" required>
+                                            <input type="text" placeholder="Nom" name="lastname" value="{{old('lastname')}}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <div class="fp__login_imput">
+                                            <label>Prénom</label>
+                                            <input type="text" placeholder="Prenom" name="firstname" value="{{old('firstname')}}" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="fp__login_imput">
                                             <label>Email</label>
-                                            <input type="email" placeholder="E-mail" name="email" value="{{old('email')}}">
+                                            <input type="email" placeholder="Mail" name="email" value="{{old('email')}}">
                                         </div>
                                     </div>
                                     
