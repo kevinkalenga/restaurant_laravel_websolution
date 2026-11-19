@@ -33,32 +33,26 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'lastname' => ['required', 'string', 'max:255'],
-            'firstname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:20'],
-            'password' => [
-                'required', 
-                'confirmed', 
-                 Password::min(10) 
-                          ->mixedCase() 
-                          ->numbers() 
-                          ->symbols(),
-            ],
-             
-            [ 
-                'password.required' => 'Le mot de passe est obligatoire.', 
-                'password.confirmed' => 'Les mots de passe ne correspondent pas.', 
-                'password.min' => 'Le mot de passe doit contenir au moins 10 caractères.', 
-                'password.mixed' => 'Le mot de passe doit contenir au moins une majuscule et une minuscule.', 
-                'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.', 
-                'password.symbols' => 'Le mot de passe doit contenir au moins un caractère spécial.', 
-            ]
-            
-           
+                'lastname' => ['required', 'string', 'max:255'],
+                'firstname' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+                'phone' => ['required', 'string', 'max:20'],
+                'password' => [
+                    'required',
+                    'confirmed',
+                    Password::min(10)
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols(),
+                ],
+            ], [
+                'password.required' => 'Le mot de passe est obligatoire.',
+                'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+                'password.min' => 'Le mot de passe doit contenir au moins 10 caractères.',
         ]);
 
         $user = User::create([
+            'name' => trim($request->firstname . ' ' . $request->lastname),
             'lastname' => $request->lastname,
             'firstname' => $request->firstname,
             'email' => $request->email,
