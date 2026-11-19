@@ -2,39 +2,40 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $defaultAvatar = '/uploads/avatar.png';
 
-        User::insert([
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Admin',
-                'email' => 'admin@gmail.com',
+                'firstname' => 'Administrateur',
+                'lastname' => 'Admin',
                 'role' => 'admin',
                 'password' => Hash::make('12345678'),
                 'avatar' => $defaultAvatar,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+                'is_active' => true,
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'user@gmail.com'],
             [
                 'name' => 'User',
-                'email' => 'user@gmail.com',
+                'firstname' => 'Utilisateur',
+                'lastname' => 'User',
                 'role' => 'user',
                 'password' => Hash::make('12345678'),
                 'avatar' => $defaultAvatar,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+                'is_active' => true,
+            ]
+        );
     }
 }
