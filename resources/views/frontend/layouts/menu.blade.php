@@ -7,9 +7,9 @@
    
    
    <!--=============================
-        MENU START
+        MENU START navbar-expand-lg
     ==============================-->
-    <nav class="navbar navbar-expand-lg main_menu">
+    <nav class="navbar navbar-expand-xl main_menu">
         <div class="container">
             <a class="navbar-brand" href="{{route('home')}}">
                 <img src="{{asset(config('settings.logo'))}}" alt="vite and gourmand" class="img-fluid"> 
